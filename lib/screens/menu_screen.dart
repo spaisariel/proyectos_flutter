@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/screens/auditoria_screen.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class MenuScreen extends StatefulWidget {
@@ -13,7 +14,9 @@ class _MenuScreenState extends State<MenuScreen> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+
+  List<Widget> _widgetOptions = <Widget>[
+    AuditoriaScreen(),
     Text(
       'Index 0: Home',
       style: optionStyle,
