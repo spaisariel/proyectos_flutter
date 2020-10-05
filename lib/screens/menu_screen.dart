@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
+import 'package:prueba3_git/widgets/appbar_widget.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class MenuScreen extends StatefulWidget {
@@ -40,9 +41,7 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('BottomNavigationBar Sample'),
-      ),
+      //appBar: AppBarWidget('Auditoria'),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
