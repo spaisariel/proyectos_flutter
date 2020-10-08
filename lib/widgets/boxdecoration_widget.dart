@@ -11,7 +11,7 @@ class BoxDecorationWidget extends StatelessWidget {
         margin: const EdgeInsets.all(30.0),
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
-          border: Border.all(width: 3.0, color: Style.Colors.secondColor),
+          border: Border.all(width: 3.0, color: Style.Colors.mainColor),
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
         ),
         child: widget);
