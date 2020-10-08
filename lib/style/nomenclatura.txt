@@ -1,0 +1,9 @@
+Nomenclatura
+archivos: siempre minusculas y separadas las palabras por guion bajo ej: ej: auditoria_datatable_widget.dart
+
+Clases: CamelCase. ej AuditoriaDatatableWidget.
+Widgets: nombre de la pantalla(screen) a la que pertenece dentro de la aplicacion + nombre +"widget".
+si es un widget que se usa en mas de una pantalla no se le agrega la screen.
+Pantallas: nombre de la pantalla + "screen". ej: auditoria_screen.dart
+
+
