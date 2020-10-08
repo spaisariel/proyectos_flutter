@@ -4,6 +4,10 @@ import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
 import 'package:prueba3_git/models/photo.dart';
 import 'package:prueba3_git/models/photo_response.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
+import '../blocs/get_photolist_bloc.dart';
+import '../models/photo.dart';
+import '../models/photo_response.dart';
+import '../screens/auditoria_screen.dart';
 
 class MenuScaffoldWidget extends StatefulWidget {
   @override
