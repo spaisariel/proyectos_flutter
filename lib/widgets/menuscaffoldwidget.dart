@@ -1,9 +1,10 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba1_bloc/bloc/get_album_lista_bloc.dart';
-import 'package:prueba1_bloc/model/photo.dart';
-import 'package:prueba1_bloc/screens/auditoria_screen.dart';
-import 'package:prueba1_bloc/model/photo_response.dart';
+
+import '../blocs/get_photolist_bloc.dart';
+import '../models/photo.dart';
+import '../models/photo_response.dart';
+import '../screens/auditoria_screen.dart';
 
 class MenuScaffoldWidget extends StatefulWidget {
   @override
