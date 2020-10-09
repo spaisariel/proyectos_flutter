@@ -5,41 +5,6 @@ import '../style/theme.dart' as Style;
 class BotonesBusquedaWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-    //   Container(
-    //       height: 150.0,
-    //       child: Card(
-    //         child: Container(
-    //           child: ListTile(
-    //             contentPadding:
-    //                 EdgeInsets.symmetric(horizontal: 50.0, vertical: 20),
-    //             trailing: Column(
-    //               children: [
-    //                 Expanded(
-    //                   child: IconButton(
-    //                       //iconSize: 50,
-    //                       icon: Icon(EvaIcons.edit),
-    //                       onPressed: () {}),
-    //                 ),
-    //                 Expanded(child: Text("Busqueda manual"))
-    //               ],
-    //             ),
-    //             leading: Column(
-    //               children: [
-    //                 Expanded(
-    //                   child: IconButton(
-    //                       //iconSize: 50,
-    //                       icon: Icon(Icons.scanner),
-    //                       onPressed: () {}),
-    //                 ),
-    //                 Expanded(child: Text("QR"))
-    //               ],
-    //             ),
-    //           ),
-    //         ),
-    //       ))
-    // ]);
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
