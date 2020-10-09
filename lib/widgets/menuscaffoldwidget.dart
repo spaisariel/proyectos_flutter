@@ -1,6 +1,9 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
+import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
+import 'package:prueba3_git/models/photo.dart';
+import 'package:prueba3_git/models/photo_response.dart';
+import 'package:prueba3_git/screens/auditoria_screen.dart';
 import '../blocs/get_photolist_bloc.dart';
 import '../models/photo.dart';
 import '../models/photo_response.dart';
@@ -18,13 +21,13 @@ class _MenuScaffoldWidgetState extends State<MenuScaffoldWidget> {
   @override
   void initState() {
     super.initState();
-    albumListaBloc..getPhotoLista();
+    photoListBloc..getPhotoLista();
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PhotoResponse>(
-      stream: albumListaBloc.subject.stream,
+      stream: photoListBloc.subject.stream,
       builder: (context, AsyncSnapshot<PhotoResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {

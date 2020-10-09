@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/widgets/appbar_widget.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
+import 'package:prueba3_git/widgets/auditoria_datatable_widget.dart';
+import 'package:prueba3_git/widgets/boxdecoration_widget.dart';
 import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
 
 class AuditoriaScreen extends StatefulWidget {
@@ -16,7 +18,11 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
       appBar: AppBarWidget('Auditoria'),
       body: ListView(
         children: <Widget>[
-          BotonesBusquedaWidget(),
+          BoxDecorationWidget(
+            BotonesBusquedaWidget(),
+          ),
+          BoxDecorationWidget(AuditoriaTablaWidget()),
+
           //Tabla_widget()
           //
         ],

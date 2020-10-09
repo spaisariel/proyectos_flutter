@@ -9,8 +9,8 @@ class BotonesBusquedaWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         FlatButton(
-            minWidth: 150,
-            height: 150,
+            // minWidth: 150,
+            // height: 150,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
                 side: BorderSide(
@@ -34,8 +34,8 @@ class BotonesBusquedaWidget extends StatelessWidget {
             ])),
         SizedBox(width: 10),
         FlatButton(
-            minWidth: 150,
-            height: 150,
+            //minWidth: 150,
+            // height: 150,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(18.0),
                 side: BorderSide(
