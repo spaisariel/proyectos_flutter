@@ -1,91 +1,20 @@
-// import 'package:flutter/material.dart';
-// import '../blocs/get_login_bloc.dart';
-// import '../provider/provider_login.dart';
-
-// class LoginScreen extends StatelessWidget {
-//   Widget build(context) {
-//     final bloc = Provider.of(context);
-
-//     return Container(
-//       margin: EdgeInsets.all(20.0),
-//       child: Column(children: [
-//         emailField(bloc),
-//         passwordField(bloc),
-//         Container(margin: EdgeInsets.only(top: 25.0)),
-//         botonLogin(bloc),
-//       ]),
-//     );
-//   }
-
-//   Widget emailField(Bloc bloc) {
-//     return StreamBuilder(
-//       stream: bloc.email,
-//       builder: (context, snapshot) {
-//         return TextField(
-//           onChanged: bloc.cambiarEmail,
-//           keyboardType: TextInputType.emailAddress,
-//           decoration: InputDecoration(
-//               hintText: 'ejemplo@ejemplo.com',
-//               labelText: 'Direccion de correo',
-//               errorText: snapshot.error),
-//         );
-//       },
-//     );
-//   }
-
-//
-
-// Widget botonLogin(Bloc bloc) {
-//   return StreamBuilder(
-//     stream: bloc.validacionLogin,
-//     builder: (context, snapshot) {
-//       return RaisedButton(
-//         child: Text('Ingresar'),
-//         color: Colors.amberAccent,
-//         onPressed: snapshot.hasData
-//             ? () {
-//                 // ignore: unnecessary_statements
-//                 bloc.enviar;
-//                 print("" + bloc.enviar.toString());
-//               }
-//             : null,
-//       );
-//     },
-//   );
-// }
-// }
-
-/*
-class LoginScreen extends StatelessWidget {
-  Widget build(context) {
-    final bloc = Provider.of(context);
-
-    return Container(
-      margin: EdgeInsets.all(20.0),
-      child: Column(children: [
-        emailField(bloc),
-        passwordField(bloc),
-        Container(margin: EdgeInsets.only(top: 25.0)),
-        botonLogin(bloc),
-      ]),
-    );
-  }*/
-
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
+import 'package:prueba3_git/style/theme.dart' as Style;
 
 class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          margin: EdgeInsets.all(20.0),
+      body: Center(
           child: Column(
-            children: [
-              emailField(),
-              passwordField(),
-              botonLogin(),
-            ],
-          )),
+        children: [
+          SizedBox(height: 100),
+          Icon(Icons.ac_unit),
+          emailField(),
+          passwordField(),
+          botonLogin(),
+        ],
+      )),
     );
   }
 }
@@ -123,7 +52,7 @@ Widget botonLogin() {
     builder: (context, snapshot) {
       return RaisedButton(
           child: Text('Ingresar'),
-          color: Colors.amberAccent,
+          color: Style.Colors.mainColor,
           onPressed: () {
             Navigator.push(
               context,

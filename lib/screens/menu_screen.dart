@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/screens/auditoria_screen.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
@@ -19,15 +20,22 @@ class _MenuScreenState extends State<MenuScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   List<Widget> _widgetOptions = <Widget>[
-    //StockScreen(),
+    StockScreen(),
+    Text("Coso1"),
+    Text("Coso2"),
     //AuditoriaScreen(),
-    LoginScreen()
+    //LoginScreen()
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void _logout() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => Login2Screen()), (r) => false);
   }
 
   @override
@@ -42,15 +50,15 @@ class _MenuScreenState extends State<MenuScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Home'),
+            label: ('Home'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            title: Text('Business'),
+            label: ('Business'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school),
-            title: Text('School'),
+            label: ('School'),
           ),
         ],
         currentIndex: _selectedIndex,

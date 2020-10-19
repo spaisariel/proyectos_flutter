@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:prueba3_git/screens/menu_screen.dart';
 
 class Login2Screen extends StatefulWidget {
   @override
@@ -27,13 +27,25 @@ class _Login2ScreenState extends State<Login2Screen> {
             Text('Deposito'),
             ComboBoxDepositoWidget(),
             RaisedButton(
-              child: Text('Continuar'),
-              onPressed: () {},
-            ),
+                child: Text('Continuar'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MenuScreen(),
+                    ),
+                  );
+                }),
             RaisedButton(
-              child: Text('Omitir'),
-              onPressed: () {},
-            ),
+                child: Text('Omitir'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MenuScreen(),
+                    ),
+                  );
+                }),
           ],
         ),
       ),
