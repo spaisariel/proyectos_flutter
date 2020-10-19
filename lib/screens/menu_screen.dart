@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
+import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
@@ -20,7 +21,7 @@ class _MenuScreenState extends State<MenuScreen> {
   List<Widget> _widgetOptions = <Widget>[
     //StockScreen(),
     //AuditoriaScreen(),
-    Login2Screen()
+    LoginScreen()
   ];
 
   void _onItemTapped(int index) {

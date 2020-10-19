@@ -5,6 +5,8 @@ import 'package:prueba3_git/models/comment.dart';
 import 'package:prueba3_git/models/comment_response.dart';
 import 'package:prueba3_git/models/photo.dart';
 import 'package:prueba3_git/models/photo_response.dart';
+import 'package:prueba3_git/models/user.dart';
+import 'package:prueba3_git/models/user_response.dart';
 
 class Repository {
   //final String apiKey = "8a1227b5735a7322c4a43a461953d4ff";
@@ -12,6 +14,7 @@ class Repository {
   final Dio _dio = Dio();
   var getPhotoListUrl = '$mainUrl/photos';
   var getCommentListUrl = '$mainUrl/comments';
+  var getUserListUrl = '$mainUrl/users';
 
   Future<PhotoResponse> getPhotoList() async {
     try {
@@ -43,6 +46,19 @@ class Repository {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return CommentResponse.withError("$error");
+    }
+  }
+
+  Future<UserResponse> getUserList() async {
+    try {
+      Response response = await _dio.get(getUserListUrl,
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      UserResponse userResponse = new UserResponse(userFromJson(x), "");
+      return userResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return UserResponse.withError("$error");
     }
   }
 }
