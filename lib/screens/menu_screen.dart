@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/auditoria_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:prueba3_git/widgets/appbar_widget.dart';
-import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
-import 'package:prueba3_git/widgets/botones_principal_widget.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class MenuScreen extends StatefulWidget {
