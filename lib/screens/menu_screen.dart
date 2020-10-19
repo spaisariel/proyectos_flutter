@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/auditoria_screen.dart';
+import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:prueba3_git/widgets/appbar_widget.dart';
-import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
-import 'package:prueba3_git/widgets/botones_principal_widget.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class MenuScreen extends StatefulWidget {
@@ -21,8 +18,9 @@ class _MenuScreenState extends State<MenuScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   List<Widget> _widgetOptions = <Widget>[
-    StockScreen(),
+    //StockScreen(),
     //AuditoriaScreen(),
+    Login2Screen()
   ];
 
   void _onItemTapped(int index) {
@@ -43,15 +41,15 @@ class _MenuScreenState extends State<MenuScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: ('Home'),
+            title: Text('Home'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            label: ('Business'),
+            title: Text('Business'),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school),
-            label: ('School'),
+            title: Text('School'),
           ),
         ],
         currentIndex: _selectedIndex,

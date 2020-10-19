@@ -48,7 +48,7 @@ class BotonesPrincipalWidget extends StatelessWidget {
             color: Style.Colors.secondColor,
             textColor: Style.Colors.titleColor,
             child: Row(children: <Widget>[
-              Icon(Icons.shopping_bag_outlined, size: 80),
+              Icon(Icons.accessibility, size: 80),
               Text(
                 '''CONTROL DE INVENTARIO'''.toUpperCase(),
                 style: TextStyle(
@@ -68,7 +68,7 @@ class BotonesPrincipalWidget extends StatelessWidget {
             color: Style.Colors.secondColor,
             textColor: Style.Colors.titleColor,
             child: Row(children: <Widget>[
-              Icon(Icons.textsms_outlined, size: 80),
+              Icon(Icons.accessibility_new, size: 80),
               Text(
                 '''CONSULTAS DE AUDITORIAS'''.toUpperCase(),
                 style: TextStyle(

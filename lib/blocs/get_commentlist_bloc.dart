@@ -4,8 +4,7 @@ import 'package:rxdart/rxdart.dart';
 
 class CommentListBloc {
   final Repository _repository = Repository();
-  final BehaviorSubject<CommentResponse> _subject =
-      BehaviorSubject<CommentResponse>();
+  final BehaviorSubject<CommentResponse> _subject = BehaviorSubject<CommentResponse>();
 
   getCommentList() async {
     CommentResponse response = await _repository.getCommentList();
