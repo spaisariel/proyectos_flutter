@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/screens/menu_screen.dart';
-import 'package:flutter/services.dart';
-import 'package:prueba3_git/screens/menu_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 class Login2Screen extends StatefulWidget {
@@ -15,62 +13,35 @@ class _Login2ScreenState extends State<Login2Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 100,
-            ),
-            Icon(
-              Icons.ac_unit,
-              size: 200,
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Text('Sucursal'),
-            ComboBoxSucursalWidget(),
-            Text('Deposito'),
-            ComboBoxDepositoWidget(),
-            SizedBox(
-              height: 100,
-            ),
-            RaisedButton(
-              child: Text('Continuar',
-                  style: TextStyle(color: Style.Colors.mainColor)),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MenuScreen()));
-              },
-            ),
-            RaisedButton(
-              color: Style.Colors.secondColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0),
-                side: BorderSide(color: Style.Colors.mainColor),
+      backgroundColor: Colors.grey[200],
+      body: Container(
+        //decoration: BoxDecoration(
+        // gradient:
+        //     SweepGradient(colors: [Colors.grey[200], Colors.red[200]]),
+        child: Center(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100,
               ),
-              child: Text('Omitir'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MenuScreen(),
-                  ),
-                );
-              },
-            ),
-            RaisedButton(
-              color: Style.Colors.secondColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0),
-                side: BorderSide(color: Style.Colors.mainColor),
+              Icon(
+                Icons.ac_unit,
+                size: 200,
               ),
-              child: Text('Omitir',
-                  style: TextStyle(color: Style.Colors.mainColor)),
-              onPressed: () {},
-            ),
-          ],
+              SizedBox(
+                height: 50,
+              ),
+              Text('Sucursal'),
+              ComboBoxSucursalWidget(),
+              Text('Deposito'),
+              ComboBoxDepositoWidget(),
+              SizedBox(
+                height: 100,
+              ),
+              continuarButton(),
+              omitirButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -153,4 +124,37 @@ class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
       }).toList(),
     );
   }
+}
+
+Widget continuarButton() {
+  return StreamBuilder(builder: (context, snapshot) {
+    return RaisedButton(
+      child: Text('Continuar', style: TextStyle(color: Style.Colors.mainColor)),
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MenuScreen()));
+      },
+    );
+  });
+}
+
+Widget omitirButton() {
+  return StreamBuilder(builder: (context, snapshot) {
+    return RaisedButton(
+      color: Style.Colors.secondColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: new BorderRadius.circular(8.0),
+        side: BorderSide(color: Style.Colors.mainColor),
+      ),
+      child: Text('Omitir'),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MenuScreen(),
+          ),
+        );
+      },
+    );
+  });
 }

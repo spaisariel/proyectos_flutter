@@ -5,16 +5,38 @@ import 'package:prueba3_git/style/theme.dart' as Style;
 class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Column(
-        children: [
-          SizedBox(height: 100),
-          Icon(Icons.ac_unit),
-          emailField(),
-          passwordField(),
-          botonLogin(),
-        ],
-      )),
+      body: SingleChildScrollView(
+        child: Center(
+            child: Column(
+          children: [
+            SizedBox(height: 75),
+            Icon(
+              Icons.ac_unit,
+              size: 200,
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Text(
+              'Bienvenidos!',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            ),
+            Text(
+              'Inicie sesión para continuar',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            emailField(),
+            passwordField(),
+            SizedBox(
+              height: 50,
+            ),
+            botonLogin(),
+          ],
+        )),
+      ),
     );
   }
 }
@@ -22,11 +44,14 @@ class LoginScreen extends StatelessWidget {
 Widget emailField() {
   return StreamBuilder(
     builder: (context, snapshot) {
-      return TextField(
-        keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
-          hintText: 'ejemplo@ejemplo.com',
-          labelText: 'Direccion de correo',
+      return FractionallySizedBox(
+        widthFactor: 0.4,
+        child: TextField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            hintText: 'ejemplo@ejemplo.com',
+            labelText: 'Direccion de correo',
+          ),
         ),
       );
     },
@@ -36,11 +61,14 @@ Widget emailField() {
 Widget passwordField() {
   return StreamBuilder(
     builder: (context, snapshot) {
-      return TextField(
-        obscureText: true,
-        decoration: InputDecoration(
-          hintText: 'Password',
-          labelText: 'Password',
+      return FractionallySizedBox(
+        widthFactor: 0.4,
+        child: TextField(
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'Contraseña',
+            labelText: 'Contraseña',
+          ),
         ),
       );
     },
@@ -52,7 +80,11 @@ Widget botonLogin() {
     builder: (context, snapshot) {
       return RaisedButton(
           child: Text('Ingresar'),
-          color: Style.Colors.mainColor,
+          color: Style.Colors.secondColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(8.0),
+            side: BorderSide(color: Style.Colors.mainColor),
+          ),
           onPressed: () {
             Navigator.push(
               context,
