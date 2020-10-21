@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/screens/menu_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:prueba3_git/screens/menu_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
@@ -56,6 +57,14 @@ class _Login2ScreenState extends State<Login2Screen> {
             ),
 
             RaisedButton(
+              child: Text('Continuar',
+                  style: TextStyle(color: Style.Colors.mainColor)),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MenuScreen()));
+              },
+            ),
+            RaisedButton(
               color: Style.Colors.secondColor,
               shape: RoundedRectangleBorder(
                 borderRadius: new BorderRadius.circular(8.0),
@@ -64,8 +73,12 @@ class _Login2ScreenState extends State<Login2Screen> {
               child: Text('Omitir',
                   style: TextStyle(color: Style.Colors.mainColor)),
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MenuScreen()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MenuScreen(),
+                  ),
+                );
               },
             ),
           ],

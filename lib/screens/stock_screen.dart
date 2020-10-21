@@ -14,7 +14,9 @@ class _StockScreenState extends State<StockScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Style.Colors.secondColor,
-        appBar: AppBarWidget('Auditoria'),
+        appBar: AppBar(
+            leading: new WillPopScope(
+                onWillPop: () async => false, child: Text(''))),
         body: ListView(
           children: [
             BotonesBusquedaWidget(),

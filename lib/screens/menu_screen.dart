@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/screens/auditoria_screen.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
@@ -20,14 +21,19 @@ class _MenuScreenState extends State<MenuScreen> {
 
   List<Widget> _widgetOptions = <Widget>[
     StockScreen(),
-    //AuditoriaScreen(),
-    //LoginScreen()
+    Text("Coso1"),
+    Text("Coso2"),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void _logout() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => Login2Screen()), (r) => false);
   }
 
   @override
