@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/auditoria_screen.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
-import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
@@ -40,7 +38,6 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Style.Colors.secondColor,
-      //appBar: AppBarWidget('Stock'),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -60,7 +57,7 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: Style.Colors.mainColor,
         onTap: _onItemTapped,
       ),
     );

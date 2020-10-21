@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/screens/menu_screen.dart';
-import 'package:flutter/services.dart';
-import 'package:prueba3_git/screens/menu_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 class Login2Screen extends StatefulWidget {
@@ -41,46 +39,9 @@ class _Login2ScreenState extends State<Login2Screen> {
             //Spacer(),
             ButtonTheme(
               minWidth: 200.0,
-              child: RaisedButton(
-                color: Style.Colors.secondColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(8.0),
-                  side: BorderSide(color: Style.Colors.mainColor),
-                ),
-                child: Text('Continuar',
-                    style: TextStyle(color: Style.Colors.mainColor)),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MenuScreen()));
-                },
-              ),
+              child: continuarButton(context),
             ),
-
-            RaisedButton(
-              child: Text('Continuar',
-                  style: TextStyle(color: Style.Colors.mainColor)),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MenuScreen()));
-              },
-            ),
-            RaisedButton(
-              color: Style.Colors.secondColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0),
-                side: BorderSide(color: Style.Colors.mainColor),
-              ),
-              child: Text('Omitir',
-                  style: TextStyle(color: Style.Colors.mainColor)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => MenuScreen(),
-                  ),
-                );
-              },
-            ),
+            omitirButton(context),
           ],
         ),
       ),
@@ -164,4 +125,38 @@ class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
       }).toList(),
     );
   }
+}
+
+Widget continuarButton(context) {
+  return RaisedButton(
+    color: Style.Colors.secondColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: new BorderRadius.circular(8.0),
+      side: BorderSide(color: Style.Colors.mainColor),
+    ),
+    child: Text('Continuar', style: TextStyle(color: Style.Colors.mainColor)),
+    onPressed: () {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => MenuScreen()));
+    },
+  );
+}
+
+Widget omitirButton(context) {
+  return RaisedButton(
+    color: Style.Colors.secondColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: new BorderRadius.circular(8.0),
+      side: BorderSide(color: Style.Colors.mainColor),
+    ),
+    child: Text('Omitir', style: TextStyle(color: Style.Colors.mainColor)),
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MenuScreen(),
+        ),
+      );
+    },
+  );
 }

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_commentlist_bloc.dart';
 import 'package:prueba3_git/models/comment.dart';
 import 'package:prueba3_git/models/comment_response.dart';
-import 'package:lazy_data_table/lazy_data_table.dart';
-import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 
 class AuditoriaTablaWidget extends StatefulWidget {
   @override
