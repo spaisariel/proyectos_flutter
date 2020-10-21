@@ -14,35 +14,40 @@ class _Login2ScreenState extends State<Login2Screen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.ac_unit,
-              size: 200,
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text('Sucursal '), ComboBoxSucursalWidget()],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Deposito '),
-                ComboBoxDepositoWidget(),
-              ],
-            ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+        child: Center(
+          child: Column(
+            children: [
+              Container(
+                child: new Image.asset(
+                  'lib/assets/favicon.png',
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [Text('Sucursal '), ComboBoxSucursalWidget()],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Deposito '),
+                  ComboBoxDepositoWidget(),
+                ],
+              ),
+              SizedBox(height: 25),
 
-            //Spacer(),
-            ButtonTheme(
-              minWidth: 200.0,
-              child: continuarButton(context),
-            ),
-            omitirButton(context),
-          ],
+              //Spacer(),
+              ButtonTheme(
+                minWidth: 200.0,
+                child: continuarButton(context),
+              ),
+              omitirButton(context),
+            ],
+          ),
         ),
       ),
     );
@@ -127,14 +132,16 @@ class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
   }
 }
 
-Widget continuarButton(context) {
+Widget continuarButton(
+  context,
+) {
   return RaisedButton(
-    color: Style.Colors.secondColor,
+    color: Style.Colors.mainColor,
     shape: RoundedRectangleBorder(
       borderRadius: new BorderRadius.circular(8.0),
       side: BorderSide(color: Style.Colors.mainColor),
     ),
-    child: Text('Continuar', style: TextStyle(color: Style.Colors.mainColor)),
+    child: Text('Continuar', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => MenuScreen()));
@@ -144,12 +151,12 @@ Widget continuarButton(context) {
 
 Widget omitirButton(context) {
   return RaisedButton(
-    color: Style.Colors.secondColor,
+    color: Style.Colors.mainColor,
     shape: RoundedRectangleBorder(
       borderRadius: new BorderRadius.circular(8.0),
       side: BorderSide(color: Style.Colors.mainColor),
     ),
-    child: Text('Omitir', style: TextStyle(color: Style.Colors.mainColor)),
+    child: Text('Omitir', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.push(
         context,

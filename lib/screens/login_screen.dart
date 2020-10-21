@@ -6,17 +6,18 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
         child: Center(
             child: Column(
           children: [
-            SizedBox(height: 75),
-            Icon(
-              Icons.ac_unit,
-              size: 200,
+            Container(
+              child: new Image.asset(
+                'lib/assets/favicon.png',
+                height: MediaQuery.of(context).size.height * 0.2,
+                fit: BoxFit.cover,
+              ),
             ),
-            SizedBox(
-              height: 25,
-            ),
+            SizedBox(height: 25),
             Text(
               'Bienvenidos!',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
@@ -79,8 +80,8 @@ Widget botonLogin() {
   return StreamBuilder(
     builder: (context, snapshot) {
       return RaisedButton(
-          child: Text('Ingresar'),
-          color: Style.Colors.secondColor,
+          child: Text('Ingresar', style: TextStyle(color: Colors.white)),
+          color: Style.Colors.mainColor,
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(8.0),
             side: BorderSide(color: Style.Colors.mainColor),
