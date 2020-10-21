@@ -17,37 +17,44 @@ class _Login2ScreenState extends State<Login2Screen> {
       backgroundColor: Colors.grey[100],
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 100,
-            ),
             Icon(
               Icons.ac_unit,
               size: 200,
             ),
-            SizedBox(
-              height: 50,
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Text('Sucursal '), ComboBoxSucursalWidget()],
             ),
-            Text('Sucursal'),
-            ComboBoxSucursalWidget(),
-            Text('Deposito'),
-            ComboBoxDepositoWidget(),
-            SizedBox(
-              height: 100,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Deposito '),
+                ComboBoxDepositoWidget(),
+              ],
             ),
-            RaisedButton(
-              color: Style.Colors.secondColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0),
-                side: BorderSide(color: Style.Colors.mainColor),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+
+            //Spacer(),
+            ButtonTheme(
+              minWidth: 200.0,
+              child: RaisedButton(
+                color: Style.Colors.secondColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(8.0),
+                  side: BorderSide(color: Style.Colors.mainColor),
+                ),
+                child: Text('Continuar',
+                    style: TextStyle(color: Style.Colors.mainColor)),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MenuScreen()));
+                },
               ),
-              child: Text('Continuar',
-                  style: TextStyle(color: Style.Colors.mainColor)),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MenuScreen()));
-              },
             ),
+
             RaisedButton(
               color: Style.Colors.secondColor,
               shape: RoundedRectangleBorder(
@@ -56,7 +63,10 @@ class _Login2ScreenState extends State<Login2Screen> {
               ),
               child: Text('Omitir',
                   style: TextStyle(color: Style.Colors.mainColor)),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MenuScreen()));
+              },
             ),
           ],
         ),

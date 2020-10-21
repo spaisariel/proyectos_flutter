@@ -19,9 +19,9 @@ class _MenuScreenState extends State<MenuScreen> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   List<Widget> _widgetOptions = <Widget>[
-    //StockScreen(),
+    StockScreen(),
     //AuditoriaScreen(),
-    LoginScreen()
+    //LoginScreen()
   ];
 
   void _onItemTapped(int index) {
