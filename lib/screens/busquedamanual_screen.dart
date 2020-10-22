@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
+import 'package:prueba3_git/models/photo.dart';
+import 'package:prueba3_git/models/photo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
+import 'package:prueba3_git/widgets/expandablelistview.dart';
 
 class BusquedaManualScreen extends StatefulWidget {
   BusquedaManualScreen({Key key}) : super(key: key);
@@ -10,32 +14,162 @@ class BusquedaManualScreen extends StatefulWidget {
 
 class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
   @override
+  void initState() {
+    super.initState();
+    photoListBloc..getPhotoLista();
+  }
+
+  bool _value1 = false;
+  void _value1Changed(bool value) => setState(() => _value1 = value);
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Style.Colors.mainColor,
-        title: Text('Busqueda manual'),
-        centerTitle: true,
-      ),
-      body: FiltroWidget(),
+    return StreamBuilder<PhotoResponse>(
+      stream: photoListBloc.subject.stream,
+      builder: (context, AsyncSnapshot<PhotoResponse> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
+            return _buildErrorWidget(snapshot.data.error);
+          }
+          return _buildHomeWidget(snapshot.data);
+        } else if (snapshot.hasError) {
+          return _buildErrorWidget(snapshot.error);
+        } else {
+          return _buildLoadingWidget();
+        }
+      },
     );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
+  }
+
+  Widget _buildErrorWidget(String error) {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Error occured: $error"),
+      ],
+    ));
+  }
+
+  Widget _buildHomeWidget(PhotoResponse data) {
+    List<Photo> albums = data.photos;
+
+    if (albums.length == 0) {
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                Text(
+                  "No More Movies",
+                  style: TextStyle(color: Colors.black45),
+                )
+              ],
+            )
+          ],
+        ),
+      );
+    } else
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Style.Colors.mainColor,
+          title: Text('Busqueda manual'),
+          centerTitle: true,
+        ),
+        body: ListView.builder(
+          itemCount: albums.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Ink(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(color: Style.Colors.mainColor, spreadRadius: 3),
+                ],
+              ),
+
+              //color: Style.Colors.mainColor,
+              child: Column(
+                children: [
+                  ExpansionTile(
+                    //tilePadding: EdgeInsets.all(20),
+
+                    title: Text(albums[index].id.toString()),
+                    children: [
+                      Row(
+                        children: [
+                          Text(albums[index].title),
+                          Checkbox(value: _value1, onChanged: _value1Changed)
+                        ],
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20)
+                ],
+              ),
+            );
+          },
+        ),
+      );
   }
 }
 
 class FiltroWidget extends StatefulWidget {
-  FiltroWidget({Key key}) : super(key: key);
+  final List<Photo> albums;
+  FiltroWidget(this.albums);
 
   @override
-  _FiltroWidgetState createState() => _FiltroWidgetState();
+  _FiltroWidgetState createState() => _FiltroWidgetState(this.albums);
 }
 
 class _FiltroWidgetState extends State<FiltroWidget> {
+  final List<Photo> albums;
+  _FiltroWidgetState(this.albums);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 30,
-      color: Style.Colors.secondColor,
-    );
+        height: 30,
+        color: Style.Colors.secondColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FlatButton(
+              child: Text('Filtro'),
+              onPressed: () {},
+            )
+          ],
+        ));
   }
 }
+
+/*
+  ListView.builder(
+          itemCount: albums.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ExpansionTile(
+              title: Text(albums[index].id.toString()),
+              children: [Text(albums[index].title)],
+            );
+          },
+        ),
+        */
