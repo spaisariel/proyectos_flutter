@@ -1,5 +1,5 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/screens/busquedamanual_screen.dart';
 import '../style/theme.dart' as Style;
 
 class BotonesBusquedaWidget extends StatelessWidget {
@@ -7,55 +7,57 @@ class BotonesBusquedaWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        RaisedButton(
-            // minWidth: 150,
-            // height: 150,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(
-                  color: Style.Colors.mainColor,
-                  width: 2,
-                )),
-            color: Style.Colors.secondColor,
-            textColor: Style.Colors.titleColor,
-            padding: EdgeInsets.all(8.0),
-            onPressed: () {},
-            child: Column(children: <Widget>[
-              Icon(EvaIcons.edit, size: 80),
-              Text(
-                '''Busqueda
-  manual'''
-                    .toUpperCase(),
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
+      children: [
+        ButtonTheme(
+          buttonColor: Style.Colors.mainColor,
+          height: MediaQuery.of(context).size.height * 0.1,
+          minWidth: MediaQuery.of(context).size.width * 0.3,
+          child: RaisedButton.icon(
+              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BusquedaManualScreen(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.edit,
+                color: Style.Colors.secondColor,
+                size: 40,
               ),
-            ])),
-        SizedBox(width: 10),
-        FlatButton(
-            //minWidth: 150,
-            // height: 150,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(
-                  color: Style.Colors.mainColor,
-                  width: 2,
-                )),
-            onPressed: () {},
-            color: Style.Colors.secondColor,
-            textColor: Style.Colors.titleColor,
-            child: Column(children: <Widget>[
-              Icon(Icons.scanner, size: 80),
-              Text(
-                '''Busqueda
-       QR'''
-                    .toUpperCase(),
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
+              label: Column(
+                children: [
+                  Text('Busqueda',
+                      style: TextStyle(color: Colors.white, fontSize: 15)),
+                  Text('Manual',
+                      style: TextStyle(color: Colors.white, fontSize: 15))
+                ],
+              )),
+        ),
+        SizedBox(width: 20),
+        ButtonTheme(
+          buttonColor: Style.Colors.mainColor,
+          height: MediaQuery.of(context).size.height * 0.1,
+          minWidth: MediaQuery.of(context).size.width * 0.4,
+          child: RaisedButton.icon(
+              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              onPressed: () {},
+              icon: Icon(
+                Icons.camera,
+                color: Style.Colors.secondColor,
+                size: 40,
               ),
-            ])),
+              label: Column(
+                children: [
+                  Text('Busqueda',
+                      style: TextStyle(color: Colors.white, fontSize: 15)),
+                  Text('QR',
+                      style: TextStyle(color: Colors.white, fontSize: 15))
+                ],
+              )),
+        )
       ],
     );
   }
