@@ -1,5 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/screens/busquedamanual_screen.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
 import 'package:prueba3_git/widgets/botones_principal_widget.dart';
@@ -16,6 +17,8 @@ class _StockScreenState extends State<StockScreen> {
     return Scaffold(
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
+            title: Text('Stock'),
+            centerTitle: true,
             backgroundColor: Style.Colors.mainColor,
             leading: new WillPopScope(
                 onWillPop: () async => false, child: Text(''))),
@@ -32,7 +35,14 @@ class _StockScreenState extends State<StockScreen> {
                   minWidth: MediaQuery.of(context).size.width * 0.3,
                   child: RaisedButton.icon(
                       shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BusquedaManualScreen(),
+                          ),
+                        );
+                      },
                       icon: Icon(
                         Icons.edit,
                         color: Style.Colors.secondColor,

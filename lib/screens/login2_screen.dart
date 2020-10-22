@@ -29,12 +29,21 @@ class _Login2ScreenState extends State<Login2Screen> {
               SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text('Sucursal '), ComboBoxSucursalWidget()],
+                children: [
+                  Text(
+                    'Sucursal ',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  ComboBoxSucursalWidget()
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Deposito '),
+                  Text(
+                    'Deposito ',
+                    style: TextStyle(fontSize: 20),
+                  ),
                   ComboBoxDepositoWidget(),
                 ],
               ),
@@ -72,7 +81,7 @@ class _ComboBoxSucursalWidgetState extends State<ComboBoxSucursalWidget> {
       icon: Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: Style.Colors.mainColor),
+      style: TextStyle(color: Style.Colors.mainColor, fontSize: 20),
       underline: Container(
         height: 2,
         color: Style.Colors.secondColor,
@@ -111,7 +120,7 @@ class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
       icon: Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: Style.Colors.mainColor),
+      style: TextStyle(color: Style.Colors.mainColor, fontSize: 20),
       underline: Container(
         height: 2,
         color: Style.Colors.secondColor,

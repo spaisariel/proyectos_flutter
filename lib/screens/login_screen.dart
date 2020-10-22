@@ -10,6 +10,7 @@ class LoginScreen extends StatelessWidget {
         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
         child: Center(
             child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
               child: new Image.asset(
