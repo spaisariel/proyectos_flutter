@@ -1,82 +1,64 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/auditoria_screen.dart';
+import 'package:prueba3_git/screens/product_screen.dart';
 import '../style/theme.dart' as Style;
 
 class BotonesPrincipalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        FlatButton(
+    return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      ButtonTheme(
+        buttonColor: Style.Colors.mainColor,
+        height: MediaQuery.of(context).size.height * 0.1,
+        minWidth: MediaQuery.of(context).size.width * 0.8,
+        child: RaisedButton.icon(
+            shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            onPressed: () {},
+            icon: Icon(Icons.shopping_cart,
+                size: 40, color: Style.Colors.secondColor),
+            label: Text(
+              'Auditoria de gondola',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            )),
+      ),
+      SizedBox(height: 20),
+      ButtonTheme(
+        buttonColor: Style.Colors.mainColor,
+        height: MediaQuery.of(context).size.height * 0.1,
+        minWidth: MediaQuery.of(context).size.width * 0.8,
+        child: RaisedButton.icon(
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(
-                  color: Style.Colors.mainColor,
-                  width: 2,
-                )),
-            color: Style.Colors.secondColor,
-            textColor: Style.Colors.titleColor,
-            padding: EdgeInsets.all(8.0),
+                borderRadius: BorderRadius.circular(20.0)),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AuditoriaScreen(),
+                  builder: (context) => ProductScreen(),
                 ),
               );
             },
-            child: Row(children: <Widget>[
-              Icon(EvaIcons.archiveOutline, size: 80),
-              Text(
-                '''AUDITORÁ DE GONDOLA'''.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-            ])),
-        SizedBox(height: 25),
-        FlatButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(
-                  color: Style.Colors.mainColor,
-                  width: 2,
-                )),
+            icon: Icon(
+              Icons.assignment_turned_in,
+              color: Style.Colors.secondColor,
+              size: 40,
+            ),
+            label: Text('Control de inventario',
+                style: TextStyle(color: Colors.white, fontSize: 20))),
+      ),
+      SizedBox(height: 20),
+      ButtonTheme(
+        buttonColor: Style.Colors.mainColor,
+        height: MediaQuery.of(context).size.height * 0.1,
+        minWidth: MediaQuery.of(context).size.width * 0.8,
+        child: RaisedButton.icon(
+            shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
             onPressed: () {},
-            color: Style.Colors.secondColor,
-            textColor: Style.Colors.titleColor,
-            child: Row(children: <Widget>[
-              Icon(Icons.accessibility, size: 80),
-              Text(
-                '''CONTROL DE INVENTARIO'''.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-            ])),
-        SizedBox(height: 25),
-        FlatButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-                side: BorderSide(
-                  color: Style.Colors.mainColor,
-                  width: 2,
-                )),
-            onPressed: () {},
-            color: Style.Colors.secondColor,
-            textColor: Style.Colors.titleColor,
-            child: Row(children: <Widget>[
-              Icon(Icons.accessibility_new, size: 80),
-              Text(
-                '''CONSULTAS DE AUDITORIAS'''.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
-              ),
-            ])),
-      ],
-    );
+            icon: Icon(Icons.assignment,
+                size: 40, color: Style.Colors.secondColor),
+            label: Text(
+              'Consulta de auditorias',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            )),
+      )
+    ]);
   }
 }

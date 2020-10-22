@@ -45,15 +45,15 @@ class _MenuScreenState extends State<MenuScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.dashboard),
-            title: Text('Stock'),
+            label: 'Stock',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.assessment),
-            title: Text('Reporteria'),
+            label: 'Reporteria',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.keyboard_arrow_up),
-            title: Text('Mas'),
+            label: 'Mas',
           ),
         ],
         currentIndex: _selectedIndex,
