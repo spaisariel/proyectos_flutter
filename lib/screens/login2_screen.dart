@@ -13,7 +13,7 @@ class _Login2ScreenState extends State<Login2Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Style.Colors.secondColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
         child: Center(
@@ -38,7 +38,7 @@ class _Login2ScreenState extends State<Login2Screen> {
                   ComboBoxDepositoWidget(),
                 ],
               ),
-              SizedBox(height: 25),
+              SizedBox(height: 140),
 
               //Spacer(),
               ButtonTheme(
@@ -137,10 +137,7 @@ Widget continuarButton(
 ) {
   return RaisedButton(
     color: Style.Colors.mainColor,
-    shape: RoundedRectangleBorder(
-      borderRadius: new BorderRadius.circular(8.0),
-      side: BorderSide(color: Style.Colors.mainColor),
-    ),
+    shape: botonRoundedRectangleBorder(),
     child: Text('Continuar', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.push(
@@ -152,10 +149,7 @@ Widget continuarButton(
 Widget omitirButton(context) {
   return RaisedButton(
     color: Style.Colors.mainColor,
-    shape: RoundedRectangleBorder(
-      borderRadius: new BorderRadius.circular(8.0),
-      side: BorderSide(color: Style.Colors.mainColor),
-    ),
+    shape: botonRoundedRectangleBorder(),
     child: Text('Omitir', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.push(
@@ -165,5 +159,12 @@ Widget omitirButton(context) {
         ),
       );
     },
+  );
+}
+
+RoundedRectangleBorder botonRoundedRectangleBorder() {
+  return RoundedRectangleBorder(
+    borderRadius: new BorderRadius.circular(8.0),
+    side: BorderSide(color: Style.Colors.mainColor),
   );
 }

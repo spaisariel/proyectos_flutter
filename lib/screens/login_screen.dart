@@ -5,6 +5,7 @@ import 'package:prueba3_git/style/theme.dart' as Style;
 class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Style.Colors.secondColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
         child: Center(

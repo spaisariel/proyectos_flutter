@@ -8,7 +8,7 @@ class BotonesBusquedaWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        FlatButton(
+        RaisedButton(
             // minWidth: 150,
             // height: 150,
             shape: RoundedRectangleBorder(

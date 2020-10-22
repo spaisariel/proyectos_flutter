@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class Colors {
   const Colors();
@@ -13,10 +15,36 @@ class Colors {
   //Negro
   static const Color titleColor = const Color(0xFF000000);
 
-  //textStyle
+  static const Color blanco = const Color(0xFFFFFFFF);
+}
 
-  //borderstyle
+class Shapes {
+//shape para botones grandes
+  static RoundedRectangleBorder botonGrandeRoundedRectangleBorder() {
+    return RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0));
+  }
+}
 
-  //shape
-
+class ButtonThemes {
+  static botonGrandeButtonTheme(
+    context,
+    IconData icon,
+    String title,
+  ) {
+    return ButtonTheme(
+      buttonColor: Colors.mainColor,
+      height: MediaQuery.of(context).size.height * 0.1,
+      minWidth: MediaQuery.of(context).size.width * 0.8,
+      child: RaisedButton.icon(
+          shape: Shapes.botonGrandeRoundedRectangleBorder(),
+          onPressed: () {},
+          icon: Icon(
+            Icons.assignment_turned_in,
+            color: Colors.secondColor,
+            size: 40,
+          ),
+          label: Text(title,
+              style: TextStyle(color: Colors.blanco, fontSize: 20))),
+    );
+  }
 }
