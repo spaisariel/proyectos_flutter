@@ -5,6 +5,8 @@ import 'package:prueba3_git/models/comment.dart';
 import 'package:prueba3_git/models/comment_response.dart';
 import 'package:prueba3_git/models/photo.dart';
 import 'package:prueba3_git/models/photo_response.dart';
+import 'package:prueba3_git/models/todo.dart';
+import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/models/user.dart';
 import 'package:prueba3_git/models/user_response.dart';
 
@@ -15,6 +17,7 @@ class Repository {
   var getPhotoListUrl = '$mainUrl/photos';
   var getCommentListUrl = '$mainUrl/comments';
   var getUserListUrl = '$mainUrl/users';
+  var getTodoListUrl = '$mainUrl/todos';
 
   Future<PhotoResponse> getPhotoList() async {
     try {
@@ -59,6 +62,19 @@ class Repository {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return UserResponse.withError("$error");
+    }
+  }
+
+  Future<TodoResponse> getTodoList() async {
+    try {
+      Response response = await _dio.get(getTodoListUrl,
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      TodoResponse todoResponse = new TodoResponse(todoFromJson(x), "");
+      return todoResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return TodoResponse.withError("$error");
     }
   }
 }

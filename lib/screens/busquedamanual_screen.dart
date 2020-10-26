@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
+import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
 import 'package:prueba3_git/models/photo.dart';
 import 'package:prueba3_git/models/photo_response.dart';
+import 'package:prueba3_git/models/todo.dart';
+import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:prueba3_git/widgets/expandablelistview.dart';
 
 class BusquedaManualScreen extends StatefulWidget {
   BusquedaManualScreen({Key key}) : super(key: key);
@@ -13,19 +15,23 @@ class BusquedaManualScreen extends StatefulWidget {
 }
 
 class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
+  List<Todo> lista;
+
   @override
   void initState() {
     super.initState();
-    photoListBloc..getPhotoLista();
+    todoListBloc..getTodoLista();
   }
 
-  bool _value1 = false;
-  void _value1Changed(bool value) => setState(() => _value1 = value);
+  void _value1Changed(bool value, int index) {
+    setState(() => lista[index].completed = value);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PhotoResponse>(
-      stream: photoListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<PhotoResponse> snapshot) {
+    return StreamBuilder<TodoResponse>(
+      stream: todoListBloc.subject.stream,
+      builder: (context, AsyncSnapshot<TodoResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
@@ -67,10 +73,10 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(PhotoResponse data) {
-    List<Photo> albums = data.photos;
-
-    if (albums.length == 0) {
+  Widget _buildHomeWidget(TodoResponse data) {
+    //List<Photo> albums = data.photos;
+    lista = data.todos;
+    if (lista.length == 0) {
       return Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -96,39 +102,47 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
           centerTitle: true,
         ),
         body: ListView.builder(
-          itemCount: albums.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Ink(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(color: Style.Colors.mainColor, spreadRadius: 3),
-                ],
-              ),
+            itemCount: lista.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Ink(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Style.Colors.mainColor,
+                  boxShadow: [
+                    BoxShadow(color: Style.Colors.mainColor, spreadRadius: 3),
+                  ],
+                ),
 
-              //color: Style.Colors.mainColor,
-              child: Column(
-                children: [
-                  ExpansionTile(
-                    //tilePadding: EdgeInsets.all(20),
+                //color: Style.Colors.mainColor,
+                child: Column(
+                  children: [
+                    ExpansionTile(
+                      //backgroundColor: Style.Colors.secondColor,
+                      //tilePadding: EdgeInsets.all(20),
+                      //childrenPadding: EdgeInsets.symmetric(vertical: 20),
 
-                    title: Text(albums[index].id.toString()),
-                    children: [
-                      Row(
-                        children: [
-                          Text(albums[index].title),
-                          Checkbox(value: _value1, onChanged: _value1Changed)
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 20)
-                ],
-              ),
-            );
-          },
-        ),
+                      title: Text(
+                        lista[index].title,
+                        //textAlign: TextAlign.center,
+                      ),
+                      children: [
+                        Row(
+                          children: [
+                            Text(lista[index].title),
+                            Checkbox(
+                              value: lista[index].completed,
+                              onChanged: (value) =>
+                                  _value1Changed(value, index),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                    // SizedBox(height: 20)
+                  ],
+                ),
+              );
+            }),
       );
   }
 }
