@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
-import 'package:prueba3_git/screens/user_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
-/// This is the stateful widget that the main application instantiates.
-class MenuScreen extends StatefulWidget {
-  MenuScreen({Key key}) : super(key: key);
+class NavBar extends StatefulWidget {
+  NavBar({Key key}) : super(key: key);
 
   @override
-  _MenuScreenState createState() => _MenuScreenState();
+  _NavBarState createState() => _NavBarState();
 }
 
-/// This is the private State class that goes with MenuScreen.
-class _MenuScreenState extends State<MenuScreen> {
+class _NavBarState extends State<NavBar> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -22,8 +19,7 @@ class _MenuScreenState extends State<MenuScreen> {
     StockScreen(),
     Text("Coso1"),
     //ProductScreen(),
-    //Text("Coso2"),
-    UserScreen(),
+    Text("Coso2"),
   ];
 
   void _onItemTapped(int index) {

@@ -3,7 +3,6 @@ import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
 import 'package:prueba3_git/models/photo.dart';
 import 'package:prueba3_git/models/photo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:prueba3_git/widgets/expandablelistview.dart';
 
 class BusquedaManualScreen extends StatefulWidget {
   BusquedaManualScreen({Key key}) : super(key: key);

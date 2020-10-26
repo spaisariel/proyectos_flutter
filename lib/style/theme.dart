@@ -13,6 +13,9 @@ class Colors {
   //Negro
   static const Color titleColor = const Color(0xFF000000);
 
+  //Rojo cancelar
+  static const Color cancelColor = const Color(0xFFFF0000);
+
   static const Color blanco = const Color(0xFFFFFFFF);
 }
 

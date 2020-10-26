@@ -1,24 +1,54 @@
 import 'package:flutter/material.dart';
 import '../style/theme.dart' as Style;
 
-class ProductScreen extends StatefulWidget {
-  ProductScreen({Key key}) : super(key: key);
+class DetalleAuditoriaScreen extends StatefulWidget {
+  DetalleAuditoriaScreen({Key key}) : super(key: key);
 
   @override
-  _ProductScreenState createState() => _ProductScreenState();
+  _DetalleAuditoriaScreenState createState() => _DetalleAuditoriaScreenState();
 }
 
-class _ProductScreenState extends State<ProductScreen> {
+class _DetalleAuditoriaScreenState extends State<DetalleAuditoriaScreen> {
   @override
   Widget build(BuildContext context) {
-    new Container(
-      color: Style.Colors.mainColor,
-      child: ListView.builder(
-        itemBuilder: (BuildContext context, int index) =>
-            DatosItem(data[index]),
-        itemCount: data.length,
-      ),
-    );
+    return Scaffold(
+        backgroundColor: Style.Colors.secondColor,
+        appBar: AppBar(
+          title: Text('Producto'),
+          centerTitle: true,
+          backgroundColor: Style.Colors.mainColor,
+        ),
+        body: Column(children: <Widget>[
+          ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(25),
+            itemBuilder: (BuildContext context, int index) => Column(
+              children: [
+                DatosItem(data[index]),
+                SizedBox(height: 20),
+              ],
+            ),
+            itemCount: data.length,
+          ),
+          ButtonTheme(
+            buttonColor: Style.Colors.mainColor,
+            height: MediaQuery.of(context).size.height * 0.1,
+            minWidth: MediaQuery.of(context).size.width * 0.8,
+            child: Expanded(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: RaisedButton(
+                    color: Style.Colors.cancelColor,
+                    shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                    onPressed: () {},
+                    child: Text(
+                      'Quitar de la lista',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    )),
+              ),
+            ),
+          ),
+        ]));
   }
 }
 
@@ -63,6 +93,13 @@ final List<Datos> data = <Datos>[
       ),
     ],
   ),
+  Datos(
+    'Irregularidades',
+    <Datos>[
+      Datos('Actualizar precio'),
+      Datos('Actualizar stock'),
+    ],
+  ),
 ];
 
 class DatosItem extends StatelessWidget {
@@ -72,10 +109,17 @@ class DatosItem extends StatelessWidget {
 
   Widget _buildTiles(Datos root) {
     if (root.children.isEmpty) return ListTile(title: Text(root.title));
-    return ExpansionTile(
-      key: PageStorageKey<Datos>(root),
-      title: Text(root.title),
-      children: root.children.map(_buildTiles).toList(),
+    return Ink(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Style.Colors.mainColor),
+      //color: Style.Colors.mainColor,
+      child: ExpansionTile(
+        backgroundColor: Style.Colors.secondColor,
+        key: PageStorageKey<Datos>(root),
+        title: Text(root.title),
+        children: root.children.map(_buildTiles).toList(),
+      ),
     );
   }
 

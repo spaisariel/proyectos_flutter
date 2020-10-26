@@ -11,7 +11,14 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
+    //MenuScreen();
     return Scaffold(
+      backgroundColor: Style.Colors.secondColor,
+      appBar: AppBar(
+        title: Text('Item'),
+        centerTitle: true,
+        backgroundColor: Style.Colors.mainColor,
+      ),
       body: ListView.builder(
         padding: EdgeInsets.all(25),
         itemBuilder: (BuildContext context, int index) => Column(
@@ -95,5 +102,3 @@ class DatosItem extends StatelessWidget {
     return _buildTiles(datos);
   }
 }
-
-//Coso pruebancdsljvbnsld
