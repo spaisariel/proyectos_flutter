@@ -107,7 +107,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
               return Ink(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Style.Colors.mainColor,
+                  color: Style.Colors.secondColor,
                   boxShadow: [
                     BoxShadow(color: Style.Colors.mainColor, spreadRadius: 3),
                   ],
@@ -123,12 +123,18 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
 
                       title: Text(
                         lista[index].title,
-                        //textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       children: [
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text(lista[index].title),
+                            Text(
+                              lista[index].title,
+                              overflow: TextOverflow.ellipsis,
+                              textWidthBasis: TextWidthBasis.parent,
+                            ),
                             Checkbox(
                               value: lista[index].completed,
                               onChanged: (value) =>
