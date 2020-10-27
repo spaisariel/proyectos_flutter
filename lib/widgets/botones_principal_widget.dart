@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/detalle_auditoria_screen.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
 import '../style/theme.dart' as Style;
 

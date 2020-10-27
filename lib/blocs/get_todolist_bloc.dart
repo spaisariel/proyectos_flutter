@@ -1,4 +1,3 @@
-import 'package:prueba3_git/models/photo_response.dart';
 import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
 import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
 import 'package:prueba3_git/models/photo.dart';
-import 'package:prueba3_git/models/photo_response.dart';
 import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
