@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
+//import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
 import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
 import 'package:prueba3_git/models/photo.dart';
-import 'package:prueba3_git/models/photo_response.dart';
+//import 'package:prueba3_git/models/photo_response.dart';
 import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
@@ -96,30 +96,28 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
       );
     } else
       return Scaffold(
+        backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
           title: Text('Busqueda manual'),
           centerTitle: true,
         ),
         body: ListView.builder(
+            padding: EdgeInsets.all(25),
             itemCount: lista.length,
             itemBuilder: (BuildContext context, int index) {
               return Ink(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Style.Colors.secondColor,
-                  boxShadow: [
-                    BoxShadow(color: Style.Colors.mainColor, spreadRadius: 3),
-                  ],
-                ),
+                    //borderRadius: BorderRadius.circular(20),
+                    //color: Style.Colors.secondColor,
+                    //boxShadow: [   BoxShadow(color: Style.Colors.mainColor, spreadRadius: 3)               ],
+                    ),
 
                 //color: Style.Colors.mainColor,
                 child: Column(
                   children: [
-                    ExpansionTile(
-                      //backgroundColor: Style.Colors.secondColor,
-                      //tilePadding: EdgeInsets.all(20),
-                      //childrenPadding: EdgeInsets.symmetric(vertical: 20),
+                    /* ExpansionTile(
+                    
 
                       title: Text(
                         lista[index].title,
@@ -143,7 +141,11 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                           ],
                         )
                       ],
-                    ),
+                    ),*/
+                    DatosItem(lista[index]),
+                    SizedBox(
+                      height: 20,
+                    )
                     // SizedBox(height: 20)
                   ],
                 ),
@@ -182,14 +184,36 @@ class _FiltroWidgetState extends State<FiltroWidget> {
   }
 }
 
-/*
-  ListView.builder(
-          itemCount: albums.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ExpansionTile(
-              title: Text(albums[index].id.toString()),
-              children: [Text(albums[index].title)],
-            );
-          },
-        ),
-        */
+class Datos {
+  Datos(this.title, [this.children = const <Datos>[]]);
+
+  final String title;
+  final List<Datos> children;
+}
+
+class DatosItem extends StatelessWidget {
+  const DatosItem(this.datos);
+
+  final Todo datos;
+
+  Widget _buildTiles(Todo item) {
+    //if (root.children.isEmpty) return ListTile(title: Text(root.title));
+    return Ink(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Style.Colors.mainColor),
+      //color: Style.Colors.mainColor,
+      child: ExpansionTile(
+        backgroundColor: Style.Colors.secondColor,
+        key: PageStorageKey<Todo>(item),
+        title: Text(item.title),
+        children: [Text(item.id.toString()), Text(item.title)],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildTiles(datos);
+  }
+}
