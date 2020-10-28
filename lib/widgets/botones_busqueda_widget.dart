@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/screens/busquedamanual_screen.dart';
+import 'package:prueba3_git/screens/scan_screen.dart';
 import '../style/theme.dart' as Style;
 
 class BotonesBusquedaWidget extends StatelessWidget {
@@ -43,7 +45,14 @@ class BotonesBusquedaWidget extends StatelessWidget {
           minWidth: MediaQuery.of(context).size.width * 0.4,
           child: RaisedButton.icon(
               shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BusquedaQRscreen(),
+                  ),
+                );
+              },
               icon: Icon(
                 Icons.camera,
                 color: Style.Colors.secondColor,
@@ -61,4 +70,25 @@ class BotonesBusquedaWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+_showMaterialDialog(context, List<Todo> lista) {
+  List<bool> listadefiltros;
+  showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+            title: new Text("Filtrar busqueda"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Aceptar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ));
 }
