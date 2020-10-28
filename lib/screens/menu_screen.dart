@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
 import 'package:prueba3_git/screens/user_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
@@ -15,8 +14,8 @@ class MenuScreen extends StatefulWidget {
 /// This is the private State class that goes with MenuScreen.
 class _MenuScreenState extends State<MenuScreen> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  // static const TextStyle optionStyle =
+  //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   List<Widget> _widgetOptions = <Widget>[
     StockScreen(),
@@ -33,10 +32,10 @@ class _MenuScreenState extends State<MenuScreen> {
     });
   }
 
-  void _logout() {
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (c) => Login2Screen()), (r) => false);
-  }
+  // void _logout() {
+  //   Navigator.of(context).pushAndRemoveUntil(
+  //       MaterialPageRoute(builder: (c) => Login2Screen()), (r) => false);
+  // }
 
   @override
   Widget build(BuildContext context) {
