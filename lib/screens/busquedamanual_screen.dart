@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
 import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/models/todo_response.dart';
+import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
+import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
 
 class BusquedaManualScreen extends StatefulWidget {
   BusquedaManualScreen({Key key}) : super(key: key);
@@ -100,7 +102,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            FiltroWidget(lista),
+            FiltroBusquedaWidget(lista),
             SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -125,62 +127,16 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                     ),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    onPressed: () {}))
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProductScreen(),
+                        ),
+                      );
+                    }))
           ],
         ),
       );
   }
-}
-
-class FiltroWidget extends StatefulWidget {
-  final List<Todo> lista;
-  FiltroWidget(this.lista);
-
-  @override
-  _FiltroWidgetState createState() => _FiltroWidgetState(this.lista);
-}
-
-class _FiltroWidgetState extends State<FiltroWidget> {
-  final List<Todo> lista;
-  _FiltroWidgetState(this.lista);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        height: 30,
-        color: Style.Colors.secondColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            FlatButton(
-              color: Style.Colors.secondColor,
-              child: Text('Filtros'),
-              onPressed: () {
-                _showMaterialDialog(context, lista);
-              },
-            )
-          ],
-        ));
-  }
-}
-
-_showMaterialDialog(context, List<Todo> lista) {
-  List<bool> listadefiltros;
-  showDialog(
-      context: context,
-      builder: (_) => new AlertDialog(
-            title: new Text("Filtrar busqueda"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Aceptar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          ));
 }

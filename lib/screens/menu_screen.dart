@@ -20,7 +20,10 @@ class _MenuScreenState extends State<MenuScreen> {
 
   List<Widget> _widgetOptions = <Widget>[
     StockScreen(),
-    Text("Coso1"),
+    Text(
+      "Reportes",
+      style: TextStyle(fontSize: 40),
+    ),
     UserScreen(),
   ];
 

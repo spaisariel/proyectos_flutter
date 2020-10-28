@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_commentlist_bloc.dart';
 import 'package:prueba3_git/models/comment.dart';
 import 'package:prueba3_git/models/comment_response.dart';
+import 'package:prueba3_git/style/theme.dart' as Style;
 
 class AuditoriaTablaWidget extends StatefulWidget {
   @override
@@ -12,18 +13,9 @@ class _AuditoriaTablaWidgetState extends State<AuditoriaTablaWidget> {
   @override
   void initState() {
     super.initState();
-    //photoListBloc..getPhotoLista();
     commentListBloc..getCommentList();
   }
 
-  /*
-  Metodo para crear columnas para la tabla segun el objeto.
-  List<DataColumn> _getColumns(Photo photo) {
-    List<String> data;
-
-    return data.map((key) => DataColumn(label: Text(key))).toList();
-  }
-  */
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<CommentResponse>(
@@ -126,6 +118,7 @@ class _AuditoriaTablaWidgetState extends State<AuditoriaTablaWidget> {
             ),
           ],
           rows: comments
+              .take(5)
               .map(
                 (comment) =>
                     DataRow(selected: comments.contains(comment), cells: [
@@ -158,6 +151,21 @@ class _AuditoriaTablaWidgetState extends State<AuditoriaTablaWidget> {
               .toList(),
         ),
       );
+  }
+}
+
+class MyColor extends MaterialStateColor {
+  static const int _defaultColor = 0xFFFFFFFF;
+  static const int _pressedColor = 0xFF357ebd;
+
+  const MyColor() : super(_defaultColor);
+
+  @override
+  Color resolve(Set<MaterialState> states) {
+    if (states.contains(MaterialState.pressed)) {
+      return const Color(_pressedColor);
+    }
+    return const Color(_defaultColor);
   }
 }
 
@@ -254,3 +262,12 @@ Widget _listview(CommentResponse data) {
     },
   );
 }
+
+/*
+  Metodo para crear columnas para la tabla segun el objeto.
+  List<DataColumn> _getColumns(Photo photo) {
+    List<String> data;
+
+    return data.map((key) => DataColumn(label: Text(key))).toList();
+  }
+  */

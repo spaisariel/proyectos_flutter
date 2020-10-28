@@ -1,7 +1,4 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/busquedamanual_screen.dart';
-import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
 import 'package:prueba3_git/widgets/botones_principal_widget.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;

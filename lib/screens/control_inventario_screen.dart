@@ -4,15 +4,16 @@ import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/widgets/auditoria_datatable_widget.dart';
-import 'package:prueba3_git/widgets/botones_auditoria_widget.dart';
 import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
+import 'package:prueba3_git/widgets/botones_controlinventario_widget.dart';
 
-class AuditoriaScreen extends StatefulWidget {
+class ControlInventarioScreen extends StatefulWidget {
   @override
-  _AuditoriaScreenState createState() => _AuditoriaScreenState();
+  _ControlInventarioScreenState createState() =>
+      _ControlInventarioScreenState();
 }
 
-class _AuditoriaScreenState extends State<AuditoriaScreen> {
+class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
   List<Todo> lista;
 
   @override
@@ -93,7 +94,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text('Auditoria'),
+          title: Text('Control de inventario'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -105,7 +106,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
               AuditoriaTablaWidget(),
               SizedBox(height: 80),
               Container(
-                child: BotonesAuditoriaWidget(),
+                child: BotonesControlInventarioWidget(),
                 alignment: Alignment.bottomCenter,
               ),
             ],

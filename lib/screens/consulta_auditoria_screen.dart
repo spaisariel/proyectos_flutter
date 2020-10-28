@@ -4,16 +4,20 @@ import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/widgets/auditoria_datatable_widget.dart';
-import 'package:prueba3_git/widgets/botones_auditoria_widget.dart';
-import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
+import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
 
-class AuditoriaScreen extends StatefulWidget {
+class ConsultaAuditoriaScreen extends StatefulWidget {
+  ConsultaAuditoriaScreen({Key key}) : super(key: key);
+
   @override
-  _AuditoriaScreenState createState() => _AuditoriaScreenState();
+  _ConsultaAuditoriaScreenState createState() =>
+      _ConsultaAuditoriaScreenState();
 }
 
-class _AuditoriaScreenState extends State<AuditoriaScreen> {
+class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
   List<Todo> lista;
+  List<bool> filtrosSeleccionados;
+  Todo filtroSeleccionado;
 
   @override
   void initState() {
@@ -90,24 +94,17 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
       );
     } else
       return Scaffold(
-        backgroundColor: Style.Colors.secondColor,
+        backgroundColor: Style.Colors.blanco,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text('Auditoria'),
+          title: Text('Consulta de auditorias'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 30),
-              BotonesBusquedaWidget(),
-              SizedBox(height: 30),
+              FiltroBusquedaWidget(lista),
               AuditoriaTablaWidget(),
-              SizedBox(height: 80),
-              Container(
-                child: BotonesAuditoriaWidget(),
-                alignment: Alignment.bottomCenter,
-              ),
             ],
           ),
         ),

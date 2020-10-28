@@ -17,6 +17,12 @@ class Colors {
   static const Color cancelColor = const Color(0xFFFF0000);
 
   static const Color blanco = const Color(0xFFFFFFFF);
+
+  static const Color cancelColor2 = const Color(0xFFFF5252);
+
+  static const Color acceptColor = const Color(0xFF8BC34A);
+
+  static const Color acceptColor2 = const Color(0xFF4CAF50);
 }
 
 class Shapes {

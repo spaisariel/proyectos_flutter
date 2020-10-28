@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/detalle_auditoria_screen.dart';
-import 'package:prueba3_git/screens/product_screen.dart';
+import 'package:prueba3_git/screens/auditoria_screen.dart';
+import 'package:prueba3_git/screens/consulta_auditoria_screen.dart';
+import 'package:prueba3_git/screens/control_inventario_screen.dart';
 import '../style/theme.dart' as Style;
 
 class BotonesPrincipalWidget extends StatelessWidget {
@@ -13,7 +14,14 @@ class BotonesPrincipalWidget extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width * 0.8,
         child: RaisedButton.icon(
             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AuditoriaScreen(),
+                ),
+              );
+            },
             icon: Icon(Icons.shopping_cart,
                 size: 40, color: Style.Colors.secondColor),
             label: Text(
@@ -33,8 +41,7 @@ class BotonesPrincipalWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  //UNICAMENTE PARA PRUEBA
-                  builder: (context) => ProductScreen(),
+                  builder: (context) => ControlInventarioScreen(),
                 ),
               );
             },
@@ -53,7 +60,14 @@ class BotonesPrincipalWidget extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width * 0.8,
         child: RaisedButton.icon(
             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConsultaAuditoriaScreen(),
+                ),
+              );
+            },
             icon: Icon(Icons.assignment,
                 size: 40, color: Style.Colors.secondColor),
             label: Text(
