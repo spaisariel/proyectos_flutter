@@ -36,7 +36,7 @@ class _FiltroBusquedaWidgetState extends State<FiltroBusquedaWidget> {
 }
 
 _showMaterialDialog(context, List<Todo> lista) {
-  List<bool> listadefiltros;
+  //List<bool> listadefiltros;
   showDialog(
       context: context,
       builder: (_) => new AlertDialog(

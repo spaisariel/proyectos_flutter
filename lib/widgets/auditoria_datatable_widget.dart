@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_commentlist_bloc.dart';
 import 'package:prueba3_git/models/comment.dart';
 import 'package:prueba3_git/models/comment_response.dart';
-import 'package:prueba3_git/style/theme.dart' as Style;
+//import 'package:prueba3_git/style/theme.dart' as Style;
 
 class AuditoriaTablaWidget extends StatefulWidget {
   @override

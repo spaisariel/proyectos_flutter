@@ -1,10 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/models/todo.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
 import 'package:prueba3_git/screens/busquedamanual_screen.dart';
-import 'package:prueba3_git/screens/scan_screen.dart';
+
 import '../style/theme.dart' as Style;
 
-class BotonesBusquedaWidget extends StatelessWidget {
+class BotonesBusquedaWidget extends StatefulWidget {
+  @override
+  _BotonesBusquedaWidgetState createState() => _BotonesBusquedaWidgetState();
+}
+
+class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  // startBarcodeScanStream() async {
+  //   FlutterBarcodeScanner.getBarcodeStreamReceiver(
+  //           "#ff6666", "Cancel", true, ScanMode.BARCODE)
+  //       .listen((barcode) => print(barcode));
+  // }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.QR);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
+    }
+
+    if (!mounted) return;
+  }
+
+  Future<void> scanBarcodeNormal() async {
+    String barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
+    }
+    if (!mounted) return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -46,12 +90,7 @@ class BotonesBusquedaWidget extends StatelessWidget {
           child: RaisedButton.icon(
               shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BusquedaQRscreen(),
-                  ),
-                );
+                _showMaterialDialog(context);
               },
               icon: Icon(
                 Icons.camera,
@@ -70,25 +109,34 @@ class BotonesBusquedaWidget extends StatelessWidget {
       ],
     );
   }
-}
 
-_showMaterialDialog(context, List<Todo> lista) {
-  List<bool> listadefiltros;
-  showDialog(
-      context: context,
-      builder: (_) => new AlertDialog(
-            title: new Text("Filtrar busqueda"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Aceptar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          ));
+  _showMaterialDialog(context) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text("Seleccione su busqueda"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RaisedButton(
+                      onPressed: () => scanBarcodeNormal(),
+                      child: Text("Codigo de barras")),
+                  RaisedButton(onPressed: () => scanQR(), child: Text("QR")),
+                  // RaisedButton(
+                  //     onPressed: () => startBarcodeScanStream(),
+                  //     child: Text("Stream codigo barras")),
+                  // Text('Scan result : $_scanBarcode\n',
+                  //     style: TextStyle(fontSize: 20))
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Cancelar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
+  }
 }
