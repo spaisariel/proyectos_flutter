@@ -78,7 +78,7 @@ class _ComboBoxSucursalWidgetState extends State<ComboBoxSucursalWidget> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: dropdownValue,
-      icon: Icon(Icons.arrow_downward),
+      icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
       elevation: 16,
       style: TextStyle(color: Style.Colors.mainColor, fontSize: 20),
@@ -117,7 +117,7 @@ class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: dropdownValue,
-      icon: Icon(Icons.arrow_downward),
+      icon: Icon(Icons.arrow_drop_down),
       iconSize: 24,
       elevation: 16,
       style: TextStyle(color: Style.Colors.mainColor, fontSize: 20),
