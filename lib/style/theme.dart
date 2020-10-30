@@ -61,8 +61,8 @@ class ButtonThemes {
   ) {
     return ButtonTheme(
       buttonColor: Colors.mainColor,
-      height: MediaQuery.of(context).size.height * 0.1,
-      minWidth: MediaQuery.of(context).size.width * 0.8,
+      //height: MediaQuery.of(context).size.height * 0.1,
+      //minWidth: MediaQuery.of(context).size.width * 0.8,
       child: RaisedButton(
           shape: Shapes.botonGrandeRoundedRectangleBorder(),
           onPressed: () {},

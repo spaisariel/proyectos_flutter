@@ -119,9 +119,17 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   RaisedButton(
+                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                      color: Style.Colors.mainColor,
                       onPressed: () => scanBarcodeNormal(),
-                      child: Text("Codigo de barras")),
-                  RaisedButton(onPressed: () => scanQR(), child: Text("QR")),
+                      child: Text("Codigo de barras",
+                          style: TextStyle(color: Colors.white, fontSize: 20))),
+                  RaisedButton(
+                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                      color: Style.Colors.mainColor,
+                      onPressed: () => scanQR(),
+                      child: Text("QR",
+                          style: TextStyle(color: Colors.white, fontSize: 20))),
                   // RaisedButton(
                   //     onPressed: () => startBarcodeScanStream(),
                   //     child: Text("Stream codigo barras")),
