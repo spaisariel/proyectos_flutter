@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
 import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/models/todo_response.dart';
+import 'package:prueba3_git/screens/login2_screen.dart';
+import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 class UserScreen extends StatefulWidget {
@@ -20,6 +22,11 @@ class _UserScreenState extends State<UserScreen> {
   void initState() {
     super.initState();
     todoListBloc..getTodoLista();
+  }
+
+  void _logout() {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (c) => LoginScreen()), (r) => false);
   }
 
   @override
@@ -173,7 +180,9 @@ class _UserScreenState extends State<UserScreen> {
                 child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    onPressed: () {},
+                    onPressed: () {
+                      _showMaterialDialog(context);
+                    },
                     child: Text('Cambiar de sucursal o deposito',
                         style: TextStyle(color: Colors.white, fontSize: 20))),
               ),
@@ -187,8 +196,10 @@ class _UserScreenState extends State<UserScreen> {
                 child: RaisedButton(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
-                    color: Style.Colors.cancelColor,
-                    onPressed: () {},
+                    color: Style.Colors.cancelColor2,
+                    onPressed: () {
+                      _logout();
+                    },
                     child: Text('Cerrar sesión',
                         style: TextStyle(color: Colors.white, fontSize: 20))),
               ),
@@ -197,4 +208,45 @@ class _UserScreenState extends State<UserScreen> {
         ),
       );
   }
+}
+
+_showMaterialDialog(context) {
+  return showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+            title: new Text("Cambio de sucursal/deposito"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Sucursal ',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    ComboBoxSucursalWidget()
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Deposito ',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    ComboBoxDepositoWidget(),
+                  ],
+                )
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Aceptar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ));
 }
