@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/screens/maps_screen.dart';
 import 'package:prueba3_git/screens/menu_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
@@ -148,9 +149,13 @@ Widget continuarButton(
     color: Style.Colors.mainColor,
     shape: botonRoundedRectangleBorder(),
     child: Text('Continuar', style: TextStyle(color: Colors.white)),
+    // onPressed: () {
+    //   Navigator.push(
+    //       context, MaterialPageRoute(builder: (context) => MenuScreen()));
+    // },
     onPressed: () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => MenuScreen()));
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          builder: (BuildContext context) => MenuScreen()));
     },
   );
 }
@@ -161,12 +166,8 @@ Widget omitirButton(context) {
     shape: botonRoundedRectangleBorder(),
     child: Text('Omitir', style: TextStyle(color: Colors.white)),
     onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MenuScreen(),
-        ),
-      );
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(
+          builder: (BuildContext context) => MenuScreen()));
     },
   );
 }

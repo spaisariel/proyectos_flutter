@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/screens/menu_screen.dart';
 import '../style/theme.dart' as Style;
 
 class BotonesAuditoriaWidget extends StatelessWidget {
@@ -14,7 +15,8 @@ class BotonesAuditoriaWidget extends StatelessWidget {
           child: RaisedButton(
               shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
               onPressed: () {
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
+                _showMaterialDialogCancelar(context);
               },
               child: Column(
                 children: [
@@ -33,7 +35,8 @@ class BotonesAuditoriaWidget extends StatelessWidget {
           child: RaisedButton(
               shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
               onPressed: () {
-                Navigator.of(context).pop();
+                //Navigator.of(context).pop();
+                _showMaterialDialogAceptar(context);
               },
               child: Column(
                 children: [
@@ -46,5 +49,53 @@ class BotonesAuditoriaWidget extends StatelessWidget {
         )
       ],
     );
+  }
+
+  _showMaterialDialogAceptar(context) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title:
+                  new Text("Se guardo correctamente la auditoria de gondola"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('Aceptar'),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MenuScreen()));
+                  },
+                )
+              ],
+            ));
+  }
+
+  _showMaterialDialogCancelar(context) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text(
+                  "¿Seguro desea cancelar la auditoria? Perderá los datos no guardados"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                FlatButton(
+                  child: Text('Si'),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MenuScreen()));
+                  },
+                ),
+              ],
+            ));
   }
 }

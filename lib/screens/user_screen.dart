@@ -110,7 +110,7 @@ class _UserScreenState extends State<UserScreen> {
                   pinned: true,
                   flexibleSpace: FlexibleSpaceBar(
                       centerTitle: true,
-                      title: Text("Collapsing Toolbar",
+                      title: Text("Perfil - Usuario generico",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,

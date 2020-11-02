@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'package:prueba3_git/screens/busquedamanual_screen.dart';
+import 'package:prueba3_git/screens/product_screen.dart';
 
 import '../style/theme.dart' as Style;
 
@@ -12,16 +13,18 @@ class BotonesBusquedaWidget extends StatefulWidget {
 }
 
 class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
+  String _scanBarcode = 'Desconocido';
+
   @override
   void initState() {
     super.initState();
   }
 
-  // startBarcodeScanStream() async {
-  //   FlutterBarcodeScanner.getBarcodeStreamReceiver(
-  //           "#ff6666", "Cancel", true, ScanMode.BARCODE)
-  //       .listen((barcode) => print(barcode));
-  // }
+  startBarcodeScanStream() async {
+    FlutterBarcodeScanner.getBarcodeStreamReceiver(
+            "#ff6666", "Cancel", true, ScanMode.BARCODE)
+        .listen((barcode) => print(barcode));
+  }
 
   Future<void> scanQR() async {
     String barcodeScanRes;
@@ -35,6 +38,10 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
     }
 
     if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
   }
 
   Future<void> scanBarcodeNormal() async {
@@ -43,10 +50,21 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
       print(barcodeScanRes);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProductScreen(),
+        ),
+      );
     } on PlatformException {
       barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
     }
     if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
   }
 
   @override
