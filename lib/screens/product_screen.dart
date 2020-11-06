@@ -1,32 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
-//import 'package:prueba3_git/blocs/get_photolist_bloc.dart';
-import 'package:prueba3_git/models/photo.dart';
-import 'package:prueba3_git/models/photo_response.dart';
-//import 'package:prueba3_git/models/photo_response.dart';
+import 'package:prueba3_git/blocs/get_product_bloc.dart';
+import 'package:prueba3_git/models/product.dart';
+import 'package:prueba3_git/models/product_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 class ProductScreen extends StatefulWidget {
-  ProductScreen({Key key}) : super(key: key);
-
   @override
   _ProductScreenState createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  List<Photo> lista;
-
   @override
   void initState() {
     super.initState();
-    photoListBloc..getPhotoLista();
+    productListBloc..getProductLista();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<PhotoResponse>(
-      stream: photoListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<PhotoResponse> snapshot) {
+    return StreamBuilder<ProductResponse>(
+      stream: productListBloc.subject.stream,
+      builder: (context, AsyncSnapshot<ProductResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
@@ -68,80 +62,183 @@ class _ProductScreenState extends State<ProductScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(PhotoResponse data) {
-    //List<Photo> albums = data.photos;
-    lista = data.photos;
-    if (lista.length == 0) {
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(
-                  "No More Movies",
-                  style: TextStyle(color: Colors.black45),
-                )
-              ],
-            )
-          ],
-        ),
-      );
-    } else
-      return MaterialApp(
-        home: Scaffold(
-          backgroundColor: Style.Colors.secondColor,
-          appBar: AppBar(
-            backgroundColor: Style.Colors.mainColor,
-            title: Text('Producto'),
-            centerTitle: true,
-          ),
-          body: Column(
-            children: [
-              Container(child: Image.network(lista[0].thumbnailUrl)),
-              Expanded(
-                child: ListView.builder(
-                    padding: EdgeInsets.all(25),
-                    itemCount: 3,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Ink(
-                        child: Column(
-                          children: [
-                            DatosItem(lista[index]),
+  Widget _buildHomeWidget(ProductResponse data) {
+    //List<Product> unProducto = data.products;
+    Product unProducto = data.products[0];
+    List<Product> productoSucursal = data.products;
 
-                            SizedBox(
-                              height: 20,
-                            )
-                            // SizedBox(height: 20)
-                          ],
+    return MaterialApp(
+        home: Scaffold(
+            backgroundColor: Style.Colors.secondColor,
+            appBar: AppBar(
+              backgroundColor: Style.Colors.mainColor,
+              title: Text('Producto'),
+              centerTitle: true,
+            ),
+            //     Expanded(
+            //       child: Align(
+            //         alignment: Alignment.bottomCenter,
+            //         child: RaisedButton(
+            //             color: Style.Colors.cancelColor,
+            //             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            //             onPressed: () {},
+            //             child: Text(
+            //               'Quitar de la lista',
+            //               style: TextStyle(color: Colors.white, fontSize: 20),
+            //             )),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+
+            body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 20.0),
+                    ExpansionTile(
+                      title: Text(
+                        "Datos principales",
+                        style: TextStyle(
+                            fontSize: 18.0, fontWeight: FontWeight.bold),
+                      ),
+                      children: <Widget>[
+                        ListTile(
+                          title: Text(
+                            'Codigo: ' + unProducto.idCodigo.toString(),
+                          ),
                         ),
-                      );
-                    }),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: RaisedButton(
-                      color: Style.Colors.cancelColor,
-                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                      onPressed: () {},
-                      child: Text(
-                        'Quitar de la lista',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      )),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+                        ListTile(
+                          title: Text('Descripcion: ' + unProducto.descripcion),
+                        ),
+                        ListTile(
+                          title: Text(
+                              'Unidad por bulto: ' + unProducto.unidadPorBulto),
+                        ),
+                        ListTile(
+                          title: Text('Costo: ${unProducto.costo}'),
+                        ),
+                        ListTile(
+                          title: Text(
+                              'Existencia unidades: ' + unProducto.existencia),
+                        ),
+                      ],
+                    ),
+                    ExpansionTile(
+                      title: Text(
+                        "Precios",
+                        style: TextStyle(
+                            fontSize: 18.0, fontWeight: FontWeight.bold),
+                      ),
+                      children: <Widget>[
+                        ListTile(
+                          title: Text(
+                            'Por presentacion: ' +
+                                unProducto.precioPresentacion,
+                          ),
+                        ),
+                        ListTile(
+                          title: Text('Por lista: ' + unProducto.precioLista),
+                        ),
+                      ],
+                    ),
+                    // ExpansionTile(
+                    //   title: Text(
+                    //     "Existencias",
+                    //     style: TextStyle(
+                    //         fontSize: 18.0, fontWeight: FontWeight.bold),
+                    //   ),
+                    //   children: <Widget>[
+                    //     DataTable(
+                    //       columnSpacing: 10,
+                    //       horizontalMargin: 10.0,
+
+                    //       //columnSpacing: 1.0,
+                    //       columns: const <DataColumn>[
+                    //         DataColumn(
+                    //           label: Text(
+                    //             'ID',
+                    //             style: TextStyle(fontStyle: FontStyle.italic),
+                    //           ),
+                    //         ),
+                    //         DataColumn(
+                    //           label: Text(
+                    //             'NOMBRE',
+                    //             style: TextStyle(fontStyle: FontStyle.italic),
+                    //           ),
+                    //         ),
+                    //         DataColumn(
+                    //           label: Text(
+                    //             'EMAIL',
+                    //             style: TextStyle(fontStyle: FontStyle.italic),
+                    //           ),
+                    //         ),
+                    //         DataColumn(
+                    //           label: Text(
+                    //             'DESCRIPCION',
+                    //             style: TextStyle(fontStyle: FontStyle.italic),
+                    //           ),
+                    //         )
+                    //       ],
+
+                    //       //Falta agregar las filas.
+
+                    //       // rows: [
+                    //       //   DataRow(
+                    //       //       cells: DataCell(
+                    //       //     Text(productoSucursal
+                    //       //         .existenciaDepositos.deposito),
+                    //       //   ))
+                    //       // ],
+                    //       // rows: productoSucursal.take(5).map(
+                    //       //       (productoSucursal) => DataRow(
+                    //       //         selected: productoSucursal
+                    //       //             .contains(productoSucursal),
+                    //       //         cells: [
+                    //       //           DataCell(
+                    //       //             Text(productoSucursal
+                    //       //                 .existenciaDepositos.deposito),
+                    //       //             onTap: () {
+                    //       //               // write your code..
+                    //       //               // MaterialPageRoute(
+                    //       //               //   builder: (context) => ProductScreen(unProducto),
+                    //       //               // );
+                    //       //             },
+                    //       //           ),
+                    //       //           DataCell(
+                    //       //             Text(
+                    //       //               productoSucursal
+                    //       //                   .existenciaDepositos.sucursal,
+                    //       //               //overflow: TextOverflow.ellipsis,
+                    //       //             ),
+                    //       //           ),
+                    //       //           DataCell(
+                    //       //             Text(
+                    //       //               productoSucursal.existenciaDepositos
+                    //       //                   .existenciaOtroLugar,
+                    //       //               //overflow: TextOverflow.ellipsis,
+                    //       //             ),
+                    //       //           ),
+                    //       //           DataCell(
+                    //       //             Text(
+                    //       //               productoSucursal
+                    //       //                   .existenciaDepositos.presentacion,
+                    //       //               //overflow: TextOverflow.ellipsis,
+                    //       //             ),
+                    //       //           )
+                    //       //         ],
+                    //       //       ),
+                    //       //     ),
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                ))));
   }
 }
 
 class FiltroWidget extends StatefulWidget {
-  final List<Photo> albums;
+  final List<Product> albums;
   FiltroWidget(this.albums);
 
   @override
@@ -149,7 +246,7 @@ class FiltroWidget extends StatefulWidget {
 }
 
 class _FiltroWidgetState extends State<FiltroWidget> {
-  final List<Photo> albums;
+  final List<Product> albums;
   _FiltroWidgetState(this.albums);
 
   @override
@@ -166,39 +263,5 @@ class _FiltroWidgetState extends State<FiltroWidget> {
             )
           ],
         ));
-  }
-}
-
-class Datos {
-  Datos(this.title, [this.children = const <Datos>[]]);
-
-  final String title;
-  final List<Datos> children;
-}
-
-class DatosItem extends StatelessWidget {
-  const DatosItem(this.datos);
-
-  final Photo datos;
-
-  Widget _buildTiles(Photo item) {
-    //if (root.children.isEmpty) return ListTile(title: Text(root.title));
-    return Ink(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Style.Colors.mainColor),
-      //color: Style.Colors.mainColor,
-      child: ExpansionTile(
-        backgroundColor: Style.Colors.secondColor,
-        key: PageStorageKey<Photo>(item),
-        title: Text(item.title),
-        children: [Text(item.id.toString()), Text(item.title)],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildTiles(datos);
   }
 }

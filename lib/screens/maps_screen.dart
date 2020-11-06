@@ -1,35 +1,44 @@
-// import 'dart:async';
-// import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:collection';
 
-// CameraPosition _initialPosition =
-//     CameraPosition(target: LatLng(26.8206, 30.8025));
-// Completer<GoogleMapController> _controller = Completer();
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-// void _onMapCreated(GoogleMapController controller) {
-//   _controller.complete(controller);
-// }
+class MapaScreen extends StatefulWidget {
+  @override
+  _MapaScreenState createState() => _MapaScreenState();
+}
 
-// class MapScreen extends StatefulWidget {
-//   @override
-//   _MapScreenState createState() => _MapScreenState();
-// }
+class _MapaScreenState extends State<MapaScreen> {
+  Set<Marker> _markers = HashSet<Marker>();
+  //GoogleMapController _mapController;
 
-// class _MapScreenState extends State<MapScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         appBar: AppBar(
-//           title: Text('Maps in Flutter'),
-//           centerTitle: true,
-//         ),
-//         body: Stack(
-//           children: <Widget>[
-//             GoogleMap(
-//               onMapCreated: _onMapCreated,
-//               initialCameraPosition: _initialPosition,
-//             ),
-//           ],
-//         ));
-//   }
-// }
+  void _onMapCreated(GoogleMapController controller) {
+    //_mapController = controller;
+
+    setState(() {
+      _markers.add(
+        Marker(
+            markerId: MarkerId("0"),
+            position: LatLng(-31.742194, -60.525945),
+            infoWindow:
+                InfoWindow(title: "Casa Central", snippet: "Deposito 1")),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Mapa'),
+        ),
+        body: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: LatLng(-31.7331, -60.53),
+            zoom: 12,
+          ),
+          markers: _markers,
+        ));
+  }
+}

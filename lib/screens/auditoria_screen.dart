@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
-import 'package:prueba3_git/models/todo.dart';
-import 'package:prueba3_git/models/todo_response.dart';
+import 'package:prueba3_git/blocs/get_auditoria_bloc.dart';
+import 'package:prueba3_git/models/auditoria.dart';
+import 'package:prueba3_git/models/auditoria_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:prueba3_git/widgets/auditoria_datatable_widget.dart';
 import 'package:prueba3_git/widgets/botones_auditoria_widget.dart';
 import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
 
@@ -13,19 +12,19 @@ class AuditoriaScreen extends StatefulWidget {
 }
 
 class _AuditoriaScreenState extends State<AuditoriaScreen> {
-  List<Todo> lista;
+  List<Auditoria> listaAuditorias;
 
   @override
   void initState() {
     super.initState();
-    todoListBloc..getTodoLista();
+    auditoriaListBloc..getAuditoriaLista();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<TodoResponse>(
-      stream: todoListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<TodoResponse> snapshot) {
+    return StreamBuilder<AuditoriaResponse>(
+      stream: auditoriaListBloc.subject.stream,
+      builder: (context, AsyncSnapshot<AuditoriaResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
@@ -67,10 +66,9 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(TodoResponse data) {
-    lista = data.todos;
-
-    if (lista.length == 0) {
+  Widget _buildHomeWidget(AuditoriaResponse data) {
+    List<Auditoria> auditorias = data.auditorias;
+    if (auditorias.length == 0) {
       return Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -102,7 +100,8 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
               SizedBox(height: 30),
               BotonesBusquedaWidget(),
               SizedBox(height: 30),
-              AuditoriaTablaWidget(),
+              //AuditoriaTablaWidget(),
+              tablaAuditoria(auditorias),
               SizedBox(height: 80),
               Container(
                 child: BotonesAuditoriaWidget(),
@@ -112,5 +111,53 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
           ),
         ),
       );
+  }
+
+  Widget tablaAuditoria(auditorias) {
+    return Container(
+      //width: MediaQuery.of(context).size.width,
+      child: DataTable(
+        columnSpacing: 10,
+        horizontalMargin: 10.0,
+
+        //columnSpacing: 1.0,
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'ID',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'NOMBRE',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ],
+        rows: auditorias
+            .map(
+              (auditoria) =>
+                  DataRow(selected: auditorias.contains(auditoria), cells: [
+                DataCell(
+                  Text(auditoria.idCodigo.toString()),
+                  onTap: () {
+                    // write your code..
+                    // MaterialPageRoute(
+                    //   builder: (context) => ProductScreen(unProducto),
+                    // );
+                  },
+                ),
+                DataCell(
+                  Text(
+                    auditoria.nombre,
+                    //overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ]),
+            )
+            .toList(),
+      ),
+    );
   }
 }

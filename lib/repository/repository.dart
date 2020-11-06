@@ -1,10 +1,14 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:prueba3_git/models/auditoria.dart';
+import 'package:prueba3_git/models/auditoria_response.dart';
 import 'package:prueba3_git/models/comment.dart';
 import 'package:prueba3_git/models/comment_response.dart';
 import 'package:prueba3_git/models/photo.dart';
 import 'package:prueba3_git/models/photo_response.dart';
+import 'package:prueba3_git/models/product.dart';
+import 'package:prueba3_git/models/product_response.dart';
 import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/models/user.dart';
@@ -16,8 +20,11 @@ class Repository {
   final Dio _dio = Dio();
   var getPhotoListUrl = '$mainUrl/photos';
   var getCommentListUrl = '$mainUrl/comments';
-  var getUserListUrl = '$mainUrl/users';
+  var getUserListUrl =
+      'https://run.mocky.io/v3/12aadbfe-5ddd-42b4-8976-273a67ec116a';
   var getTodoListUrl = '$mainUrl/todos';
+  var getProductListUrl =
+      'https://run.mocky.io/v3/74c0bca6-ef2c-46c4-b829-8700c0006f8e';
 
   Future<PhotoResponse> getPhotoList() async {
     try {
@@ -52,19 +59,6 @@ class Repository {
     }
   }
 
-  Future<UserResponse> getUserList() async {
-    try {
-      Response response = await _dio.get(getUserListUrl,
-          options: Options(responseType: ResponseType.json));
-      String x = json.encode(response.data);
-      UserResponse userResponse = new UserResponse(userFromJson(x), "");
-      return userResponse;
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return UserResponse.withError("$error");
-    }
-  }
-
   Future<TodoResponse> getTodoList() async {
     try {
       Response response = await _dio.get(getTodoListUrl,
@@ -75,6 +69,50 @@ class Repository {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return TodoResponse.withError("$error");
+    }
+  }
+
+  //Repo de producto PRUEBA MOCKY
+  Future<ProductResponse> getProductList() async {
+    try {
+      Response response = await _dio.get(getProductListUrl,
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      ProductResponse productResponse =
+          new ProductResponse(productFromJson(x), "");
+      return productResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return ProductResponse.withError("$error");
+    }
+  }
+
+  Future<UserResponse> getUserList() async {
+    try {
+      Response response = await _dio.get(
+          "https://run.mocky.io/v3/12aadbfe-5ddd-42b4-8976-273a67ec116a",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      UserResponse userResponse = new UserResponse(userFromJson(x), "");
+      return userResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return UserResponse.withError("$error");
+    }
+  }
+
+  Future<AuditoriaResponse> getAuditoriaList() async {
+    try {
+      Response response = await _dio.get(
+          "https://run.mocky.io/v3/c2e330da-9b24-4a2e-985f-e4979afff262",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      AuditoriaResponse auditoriaResponse =
+          new AuditoriaResponse(auditoriaFromJson(x), "");
+      return auditoriaResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return AuditoriaResponse.withError("$error");
     }
   }
 }

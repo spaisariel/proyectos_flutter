@@ -10,6 +10,7 @@ class AuditoriaTablaWidget extends StatefulWidget {
 }
 
 class _AuditoriaTablaWidgetState extends State<AuditoriaTablaWidget> {
+  //final Product unProducto;
   @override
   void initState() {
     super.initState();
@@ -126,6 +127,9 @@ class _AuditoriaTablaWidgetState extends State<AuditoriaTablaWidget> {
                     Text(comment.id.toString()),
                     onTap: () {
                       // write your code..
+                      // MaterialPageRoute(
+                      //   builder: (context) => ProductScreen(unProducto),
+                      // );
                     },
                   ),
                   DataCell(

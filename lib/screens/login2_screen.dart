@@ -48,7 +48,11 @@ class _Login2ScreenState extends State<Login2Screen> {
                   ComboBoxDepositoWidget(),
                 ],
               ),
-              SizedBox(height: 140),
+
+              SizedBox(height: 15),
+              selecionarComercio(),
+
+              SizedBox(height: 100),
 
               //Spacer(),
               ButtonTheme(
@@ -176,5 +180,28 @@ RoundedRectangleBorder botonRoundedRectangleBorder() {
   return RoundedRectangleBorder(
     borderRadius: new BorderRadius.circular(8.0),
     side: BorderSide(color: Style.Colors.mainColor),
+  );
+}
+
+Widget selecionarComercio() {
+  return StreamBuilder(
+    builder: (context, snapshot) {
+      return RaisedButton(
+          child:
+              Text('Buscar en el mapa', style: TextStyle(color: Colors.white)),
+          color: Style.Colors.mainColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(8.0),
+            side: BorderSide(color: Style.Colors.mainColor),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MapaScreen(),
+              ),
+            );
+          });
+    },
   );
 }

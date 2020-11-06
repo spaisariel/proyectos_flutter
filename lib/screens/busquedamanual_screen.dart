@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
+import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/todo.dart';
 import 'package:prueba3_git/models/todo_response.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
@@ -17,6 +18,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
   List<Todo> lista;
   List<bool> filtrosSeleccionados;
   Todo filtroSeleccionado;
+  Product unProducto;
 
   @override
   void initState() {

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
 import 'package:prueba3_git/screens/consulta_auditoria_screen.dart';
-import 'package:prueba3_git/screens/control_inventario_screen.dart';
+import 'package:prueba3_git/screens/product_screen.dart';
 import '../style/theme.dart' as Style;
 
+// ignore: must_be_immutable
 class BotonesPrincipalWidget extends StatelessWidget {
+  //SOLO A MODO DE PRUEBA, MAS ADELANTE SE BORRA ESTE CODIGO
+  Product unProducto;
+
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -41,7 +46,8 @@ class BotonesPrincipalWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ControlInventarioScreen(),
+                  //builder: (context) => ControlInventarioScreen(),
+                  builder: (context) => ProductScreen(),
                 ),
               );
             },

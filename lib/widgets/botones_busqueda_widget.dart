@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'package:prueba3_git/screens/busquedamanual_screen.dart';
-import 'package:prueba3_git/screens/product_screen.dart';
 
 import '../style/theme.dart' as Style;
 
@@ -13,6 +12,7 @@ class BotonesBusquedaWidget extends StatefulWidget {
 }
 
 class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
+  // ignore: unused_field
   String _scanBarcode = 'Desconocido';
 
   @override
@@ -51,12 +51,12 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
       print(barcodeScanRes);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProductScreen(),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ProductScreen(unProducto),
+      //   ),
+      // );
     } on PlatformException {
       barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
     }
