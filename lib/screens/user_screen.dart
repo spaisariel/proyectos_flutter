@@ -5,6 +5,7 @@ import 'package:prueba3_git/models/user_response.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
+import 'package:google_sign_in/google_sign_in.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -22,6 +23,9 @@ class _UserScreenState extends State<UserScreen> {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (c) => LoginScreen()), (r) => false);
   }
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  //String userName = _googleSignIn.currentUser.displayName;
 
   @override
   Widget build(BuildContext context) {

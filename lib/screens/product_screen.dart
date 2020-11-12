@@ -63,8 +63,8 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget _buildHomeWidget(ProductResponse data) {
-    //List<Product> unProducto = data.products;
     Product unProducto = data.products[0];
+    // ignore: unused_local_variable
     List<Product> productoSucursal = data.products;
 
     return MaterialApp(

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "382192111905",
+    "firebase_url": "https://pruebaauthgrandi.firebaseio.com",
+    "project_id": "pruebaauthgrandi",
+    "storage_bucket": "pruebaauthgrandi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382192111905:android:4b7625b3f6a46d9465ee60",
+        "android_client_info": {
+          "package_name": "com.example.prueba3_git"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382192111905-9cqv2uduai0huv9ev25g9t6heo3lk74u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prueba3_git",
+            "certificate_hash": "253a3f124f2dc9fec93ff2b77fffe5d2154597e7"
+          }
+        },
+        {
+          "client_id": "382192111905-usrjhdpovr4pa13u8q1rl47simjtaj21.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfVp7jHjRiIsVU63MH16HFOzwVmxt9Bos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382192111905-usrjhdpovr4pa13u8q1rl47simjtaj21.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

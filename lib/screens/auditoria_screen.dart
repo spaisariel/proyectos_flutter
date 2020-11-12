@@ -144,7 +144,9 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                   onTap: () {
                     // write your code..
                     // MaterialPageRoute(
-                    //   builder: (context) => ProductScreen(unProducto),
+                    //   Esto deberia llevar al detalle de una auditoria
+                    //   con informacion de la misma(Fecha, productos cargados
+                    //   etc)
                     // );
                   },
                 ),

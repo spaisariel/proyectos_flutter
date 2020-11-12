@@ -153,10 +153,6 @@ Widget continuarButton(
     color: Style.Colors.mainColor,
     shape: botonRoundedRectangleBorder(),
     child: Text('Continuar', style: TextStyle(color: Colors.white)),
-    // onPressed: () {
-    //   Navigator.push(
-    //       context, MaterialPageRoute(builder: (context) => MenuScreen()));
-    // },
     onPressed: () {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
           builder: (BuildContext context) => MenuScreen()));

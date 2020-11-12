@@ -1,3 +1,6 @@
+//NO SE USA ESTA PANTALLA, UTILIZAR SOLO PARA SACAR REFERENCIAS
+//DE COMO USAR LOS LISTVIEW CON TILES
+
 import 'package:flutter/material.dart';
 import '../style/theme.dart' as Style;
 
