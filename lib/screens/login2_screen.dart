@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/models/user.dart';
 import 'package:prueba3_git/screens/maps_screen.dart';
 import 'package:prueba3_git/screens/menu_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
+// ignore: must_be_immutable
 class Login2Screen extends StatefulWidget {
+  User unUsuario;
+  Login2Screen(this.unUsuario);
   @override
-  _Login2ScreenState createState() => _Login2ScreenState();
+  _Login2ScreenState createState() => _Login2ScreenState(this.unUsuario);
 }
 
 Color azulGrandi = new Color.fromARGB(255, 0, 141, 210);
 
 class _Login2ScreenState extends State<Login2Screen> {
+  User unUsuario;
+  _Login2ScreenState(this.unUsuario);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,9 +152,7 @@ class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
   }
 }
 
-Widget continuarButton(
-  context,
-) {
+Widget continuarButton(context) {
   return RaisedButton(
     color: Style.Colors.mainColor,
     shape: botonRoundedRectangleBorder(),
@@ -182,22 +186,42 @@ RoundedRectangleBorder botonRoundedRectangleBorder() {
 Widget selecionarComercio() {
   return StreamBuilder(
     builder: (context, snapshot) {
-      return RaisedButton(
-          child:
-              Text('Buscar en el mapa', style: TextStyle(color: Colors.white)),
-          color: Style.Colors.mainColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(8.0),
-            side: BorderSide(color: Style.Colors.mainColor),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => MapaScreen(),
-              ),
-            );
-          });
+      return ButtonTheme(
+        minWidth: 215.0,
+        height: 40.0,
+        child: RaisedButton(
+            child: Text('Buscar en el mapa',
+                style: TextStyle(color: Colors.white)),
+            color: Style.Colors.mainColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(8.0),
+              side: BorderSide(color: Style.Colors.mainColor),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MapaScreen(),
+                ),
+              );
+            }),
+      );
+      // return RaisedButton(
+      //     child:
+      //         Text('Buscar en el mapa', style: TextStyle(color: Colors.white)),
+      //     color: Style.Colors.mainColor,
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: new BorderRadius.circular(8.0),
+      //       side: BorderSide(color: Style.Colors.mainColor),
+      //     ),
+      //     onPressed: () {
+      //       Navigator.push(
+      //         context,
+      //         MaterialPageRoute(
+      //           builder: (context) => MapaScreen(),
+      //         ),
+      //       );
+      //     });
     },
   );
 }

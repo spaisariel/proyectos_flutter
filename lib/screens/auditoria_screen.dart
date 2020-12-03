@@ -113,12 +113,12 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
       );
   }
 
-  Widget tablaAuditoria(auditorias) {
+  Widget tablaAuditoria(List<Auditoria> auditorias) {
+    print(auditorias);
     return Container(
       //width: MediaQuery.of(context).size.width,
       child: DataTable(
-        columnSpacing: 10,
-        horizontalMargin: 10.0,
+        columnSpacing: 10, horizontalMargin: 10.0,
 
         //columnSpacing: 1.0,
         columns: const <DataColumn>[
@@ -137,26 +137,27 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
         ],
         rows: auditorias
             .map(
-              (auditoria) =>
-                  DataRow(selected: auditorias.contains(auditoria), cells: [
-                DataCell(
-                  Text(auditoria.idCodigo.toString()),
-                  onTap: () {
-                    // write your code..
-                    // MaterialPageRoute(
-                    //   Esto deberia llevar al detalle de una auditoria
-                    //   con informacion de la misma(Fecha, productos cargados
-                    //   etc)
-                    // );
-                  },
-                ),
-                DataCell(
-                  Text(
-                    auditoria.nombre,
-                    //overflow: TextOverflow.ellipsis,
+              (auditoria) => DataRow(
+                selected: auditorias.contains(auditoria),
+                cells: [
+                  DataCell(
+                    Text(auditoria.idCodigo.toString()),
+                    onTap: () {
+                      // write your code..
+                      // MaterialPageRoute(
+                      //   Esto deberia llevar al detalle de una auditoria
+                      //   con informacion de la misma(Fecha, productos cargados
+                      //   etc)
+                      // );
+                    },
                   ),
-                ),
-              ]),
+                  DataCell(
+                    Text(
+                      auditoria.nombre,
+                    ),
+                  ),
+                ],
+              ),
             )
             .toList(),
       ),

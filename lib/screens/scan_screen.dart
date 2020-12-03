@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
-import 'package:prueba3_git/models/todo.dart';
-import 'package:prueba3_git/models/todo_response.dart';
+import 'package:prueba3_git/blocs/get_product_bloc.dart';
+import 'package:prueba3_git/models/product.dart';
+import 'package:prueba3_git/models/product_response.dart';
 
 class BusquedaQRscreen extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class BusquedaQRscreen extends StatefulWidget {
 
 class _BusquedaQRscreenState extends State<BusquedaQRscreen> {
   String _scanBarcode = 'Unknown';
-  List<Todo> lista;
+  List<Product> lista;
 
   @override
   void initState() {
@@ -63,9 +63,9 @@ class _BusquedaQRscreenState extends State<BusquedaQRscreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<TodoResponse>(
-      stream: todoListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<TodoResponse> snapshot) {
+    return StreamBuilder<ProductResponse>(
+      stream: productListBloc.subject.stream,
+      builder: (context, AsyncSnapshot<ProductResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
@@ -107,8 +107,8 @@ class _BusquedaQRscreenState extends State<BusquedaQRscreen> {
     ));
   }
 
-  Widget _buildHomeWidget(TodoResponse data) {
-    lista = data.todos;
+  Widget _buildHomeWidget(ProductResponse data) {
+    lista = data.products;
 
     if (lista.length == 0) {
       return Container(

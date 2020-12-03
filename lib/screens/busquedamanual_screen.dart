@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
+import 'package:prueba3_git/blocs/get_product_bloc.dart';
 import 'package:prueba3_git/models/product.dart';
-import 'package:prueba3_git/models/todo.dart';
-import 'package:prueba3_git/models/todo_response.dart';
+import 'package:prueba3_git/models/product_response.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
@@ -15,22 +14,27 @@ class BusquedaManualScreen extends StatefulWidget {
 }
 
 class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
-  List<Todo> lista;
+  //List<Product> lista;
   List<bool> filtrosSeleccionados;
-  Todo filtroSeleccionado;
+  Product filtroSeleccionado;
   Product unProducto;
+  String idValue;
+  String hint = 'arandela';
+
+  //CONSULTAR A ARIEL SI HAY UNA FORMA MAS EFICIENTE DE HACER ESTO
+  TextEditingController hintController = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    todoListBloc..getTodoLista();
+    productListBloc..getProductLista(hint);
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<TodoResponse>(
-      stream: todoListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<TodoResponse> snapshot) {
+    return StreamBuilder<ProductResponse>(
+      stream: productListBloc.subject.stream,
+      builder: (context, AsyncSnapshot<ProductResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
@@ -72,10 +76,11 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(TodoResponse data) {
-    lista = data.todos;
+  Widget _buildHomeWidget(ProductResponse data) {
+    //lista = data.products;
+    List<Product> productos = data.products;
 
-    if (lista.length == 0) {
+    if (productos.length == 0) {
       return Container(
         width: MediaQuery.of(context).size.width,
         child: Column(
@@ -85,7 +90,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
             Column(
               children: <Widget>[
                 Text(
-                  "No More Movies",
+                  "No existen productos que coincidan con la busqueda",
                   style: TextStyle(color: Colors.black45),
                 )
               ],
@@ -104,39 +109,97 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            FiltroBusquedaWidget(lista),
+            FiltroBusquedaWidget(productos),
             SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                     width: MediaQuery.of(context).size.width * 0.7,
-                    child: TextField(
+                    child: TextFormField(
+                      controller: hintController,
                       decoration: InputDecoration(
                         hintText: 'Ingrese nombre o codigo',
                       ),
+                      onSaved: (String valor) {
+                        //hint = valor;
+                      },
                     )),
-                IconButton(icon: Icon(Icons.search), onPressed: null)
+                IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      setState(() {
+                        productListBloc..getProductLista(hintController.text);
+                      });
+                    })
               ],
             ),
-            SizedBox(height: 20),
-            ButtonTheme(
-                buttonColor: Style.Colors.mainColor,
-                child: RaisedButton(
-                    child: Text(
-                      'Buscar',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+            Container(
+              child: DataTable(
+                columnSpacing: 10,
+                horizontalMargin: 10.0,
+
+                //columnSpacing: 1.0,
+                columns: const <DataColumn>[
+                  DataColumn(
+                    label: Text(
+                      'ID',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductScreen(),
-                        ),
-                      );
-                    }))
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'NOMBRE',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+                rows: productos
+                    .take(5)
+                    .map(
+                      (producto) => DataRow(
+                          selected: productos.contains(producto),
+                          cells: [
+                            DataCell(
+                              Text(producto.id.toString()),
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductScreen(
+                                    producto.id.toString(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                producto.name,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ]),
+                    )
+                    .toList(),
+              ),
+            ),
+            SizedBox(height: 20),
+            // ButtonTheme(
+            //     buttonColor: Style.Colors.mainColor,
+            //     child: RaisedButton(
+            //         child: Text(
+            //           'Buscar',
+            //           style: TextStyle(color: Colors.white, fontSize: 18),
+            //         ),
+            //         shape: RoundedRectangleBorder(
+            //             borderRadius: BorderRadius.circular(20.0)),
+            //         onPressed: () {
+            //           Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //               builder: (context) => ProductScreen(),
+            //             ),
+            //           );
+            //         }))
           ],
         ),
       );

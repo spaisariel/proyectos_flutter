@@ -7,8 +7,10 @@ class ProductListBloc {
   final BehaviorSubject<ProductResponse> _subject =
       BehaviorSubject<ProductResponse>();
 
-  getProductLista() async {
-    ProductResponse response = await _repository.getProductList();
+  String hint;
+
+  getProductLista(String hint) async {
+    ProductResponse response = await _repository.getProductList(hint);
     _subject.sink.add(response);
   }
 

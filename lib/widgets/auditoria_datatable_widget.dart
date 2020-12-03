@@ -1,177 +1,180 @@
-import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_commentlist_bloc.dart';
-import 'package:prueba3_git/models/comment.dart';
-import 'package:prueba3_git/models/comment_response.dart';
-//import 'package:prueba3_git/style/theme.dart' as Style;
+//DESCOMENTAR CUANDO ESTÉN IMPLEMENTADOS SUS BLOCS, MODELS Y DEMAS
 
-class AuditoriaTablaWidget extends StatefulWidget {
-  @override
-  _AuditoriaTablaWidgetState createState() => _AuditoriaTablaWidgetState();
-}
+// import 'package:flutter/material.dart';
+// import 'package:prueba3_git/models/comment.dart';
+// import 'package:prueba3_git/models/comment_response.dart';
+// //import 'package:prueba3_git/style/theme.dart' as Style;
 
-class _AuditoriaTablaWidgetState extends State<AuditoriaTablaWidget> {
-  //final Product unProducto;
-  @override
-  void initState() {
-    super.initState();
-    commentListBloc..getCommentList();
-  }
+// class AuditoriaTablaWidget extends StatefulWidget {
+//   @override
+//   _AuditoriaTablaWidgetState createState() => _AuditoriaTablaWidgetState();
+// }
 
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<CommentResponse>(
-      stream: commentListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<CommentResponse> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
-            return _buildErrorWidget(snapshot.data.error);
-          }
-          return //_listview(snapshot.data);
-              _buildHomeWidget(snapshot.data);
-        } else if (snapshot.hasError) {
-          return _buildErrorWidget(snapshot.error);
-        } else {
-          return _buildLoadingWidget();
-        }
-      },
-    );
-  }
+// class _AuditoriaTablaWidgetState extends State<AuditoriaTablaWidget> {
+//   //final Product unProducto;
+//   @override
+//   void initState() {
+//     super.initState();
+//     commentListBloc..getCommentList();
+//   }
 
-  Widget _buildLoadingWidget() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 25.0,
-          width: 25.0,
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-            strokeWidth: 4.0,
-          ),
-        )
-      ],
-    ));
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return StreamBuilder<CommentResponse>(
+//       stream: commentListBloc.subject.stream,
+//       builder: (context, AsyncSnapshot<CommentResponse> snapshot) {
+//         if (snapshot.hasData) {
+//           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
+//             return _buildErrorWidget(snapshot.data.error);
+//           }
+//           return //_listview(snapshot.data);
+//               _buildHomeWidget(snapshot.data);
+//         } else if (snapshot.hasError) {
+//           return _buildErrorWidget(snapshot.error);
+//         } else {
+//           return _buildLoadingWidget();
+//         }
+//       },
+//     );
+//   }
 
-  Widget _buildErrorWidget(String error) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("Error occured: $error"),
-      ],
-    ));
-  }
+//   Widget _buildLoadingWidget() {
+//     return Center(
+//         child: Column(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         SizedBox(
+//           height: 25.0,
+//           width: 25.0,
+//           child: CircularProgressIndicator(
+//             valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+//             strokeWidth: 4.0,
+//           ),
+//         )
+//       ],
+//     ));
+//   }
 
-  Widget _buildHomeWidget(CommentResponse data) {
-    List<Comment> comments = data.comments;
-    if (comments.length == 0) {
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(
-                  "No More Movies",
-                  style: TextStyle(color: Colors.black45),
-                )
-              ],
-            )
-          ],
-        ),
-      );
-    } else
-      return Container(
-        //width: MediaQuery.of(context).size.width,
-        child: DataTable(
-          columnSpacing: 10,
-          horizontalMargin: 10.0,
+//   Widget _buildErrorWidget(String error) {
+//     return Center(
+//         child: Column(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         Text("Error occured: $error"),
+//       ],
+//     ));
+//   }
 
-          //columnSpacing: 1.0,
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Text(
-                'ID',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'NOMBRE',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'EMAIL',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'DESCRIPCION',
-                style: TextStyle(fontStyle: FontStyle.italic),
-              ),
-            ),
-          ],
-          rows: comments
-              .take(5)
-              .map(
-                (comment) =>
-                    DataRow(selected: comments.contains(comment), cells: [
-                  DataCell(
-                    Text(comment.id.toString()),
-                    onTap: () {
-                      // write your code..
-                      // MaterialPageRoute(
-                      //   builder: (context) => ProductScreen(unProducto),
-                      // );
-                    },
-                  ),
-                  DataCell(
-                    Text(
-                      comment.name,
-                      //overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  DataCell(
-                    Text(
-                      comment.email,
-                      //overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  DataCell(
-                    Text(
-                      comment.body,
-                      //overflow: TextOverflow.ellipsis,
-                    ),
-                  )
-                ]),
-              )
-              .toList(),
-        ),
-      );
-  }
-}
+//   Widget _buildHomeWidget(CommentResponse data) {
+//     List<Comment> comments = data.comments;
+//     if (comments.length == 0) {
+//       return Container(
+//         width: MediaQuery.of(context).size.width,
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: <Widget>[
+//             Column(
+//               children: <Widget>[
+//                 Text(
+//                   "No More Movies",
+//                   style: TextStyle(color: Colors.black45),
+//                 )
+//               ],
+//             )
+//           ],
+//         ),
+//       );
+//     } else
+//       return Container(
+//         //width: MediaQuery.of(context).size.width,
+//         child: DataTable(
+//           columnSpacing: 10,
+//           horizontalMargin: 10.0,
 
-class MyColor extends MaterialStateColor {
-  static const int _defaultColor = 0xFFFFFFFF;
-  static const int _pressedColor = 0xFF357ebd;
+//           //columnSpacing: 1.0,
+//           columns: const <DataColumn>[
+//             DataColumn(
+//               label: Text(
+//                 'ID',
+//                 style: TextStyle(fontStyle: FontStyle.italic),
+//               ),
+//             ),
+//             DataColumn(
+//               label: Text(
+//                 'NOMBRE',
+//                 style: TextStyle(fontStyle: FontStyle.italic),
+//               ),
+//             ),
+//             DataColumn(
+//               label: Text(
+//                 'EMAIL',
+//                 style: TextStyle(fontStyle: FontStyle.italic),
+//               ),
+//             ),
+//             DataColumn(
+//               label: Text(
+//                 'DESCRIPCION',
+//                 style: TextStyle(fontStyle: FontStyle.italic),
+//               ),
+//             ),
+//           ],
+//           rows: comments
+//               .take(5)
+//               .map(
+//                 (comment) =>
+//                     DataRow(selected: comments.contains(comment), cells: [
+//                   DataCell(
+//                     Text(comment.id.toString()),
+//                     onTap: () {
+//                       // write your code..
+//                       // MaterialPageRoute(
+//                       //   builder: (context) => ProductScreen(unProducto),
+//                       // );
+//                     },
+//                   ),
+//                   DataCell(
+//                     Text(
+//                       comment.name,
+//                       //overflow: TextOverflow.ellipsis,
+//                     ),
+//                   ),
+//                   DataCell(
+//                     Text(
+//                       comment.email,
+//                       //overflow: TextOverflow.ellipsis,
+//                     ),
+//                   ),
+//                   DataCell(
+//                     Text(
+//                       comment.body,
+//                       //overflow: TextOverflow.ellipsis,
+//                     ),
+//                   )
+//                 ]),
+//               )
+//               .toList(),
+//         ),
+//       );
+//   }
+// }
 
-  const MyColor() : super(_defaultColor);
+// class MyColor extends MaterialStateColor {
+//   static const int _defaultColor = 0xFFFFFFFF;
+//   static const int _pressedColor = 0xFF357ebd;
 
-  @override
-  Color resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.pressed)) {
-      return const Color(_pressedColor);
-    }
-    return const Color(_defaultColor);
-  }
-}
+//   const MyColor() : super(_defaultColor);
+
+//   @override
+//   Color resolve(Set<MaterialState> states) {
+//     if (states.contains(MaterialState.pressed)) {
+//       return const Color(_pressedColor);
+//     }
+//     return const Color(_defaultColor);
+//   }
+// }
+
+////////////////////////////////////////////////////////////////////
 
 /*
 Widget _myListView(CommentResponse data,BuildContext context) {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
-import 'package:prueba3_git/screens/consulta_auditoria_screen.dart';
-import 'package:prueba3_git/screens/product_screen.dart';
 import '../style/theme.dart' as Style;
 
 // ignore: must_be_immutable
@@ -43,13 +41,13 @@ class BotonesPrincipalWidget extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  //builder: (context) => ControlInventarioScreen(),
-                  builder: (context) => ProductScreen(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     //builder: (context) => ControlInventarioScreen(),
+              //     builder: (context) => ProductScreen(),
+              //   ),
+              // );
             },
             icon: Icon(
               Icons.assignment_turned_in,
@@ -67,12 +65,12 @@ class BotonesPrincipalWidget extends StatelessWidget {
         child: RaisedButton.icon(
             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ConsultaAuditoriaScreen(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => ConsultaAuditoriaScreen(),
+              //   ),
+              // );
             },
             icon: Icon(Icons.assignment,
                 size: 40, color: Style.Colors.secondColor),

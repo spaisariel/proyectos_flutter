@@ -1,18 +1,49 @@
+import 'dart:convert';
+
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/mixins/validacionMixin.dart';
+import 'package:prueba3_git/models/user.dart';
+import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/menu_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
+  final String title;
+
+  const LoginScreen({Key key, this.title}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
+  final formkey = GlobalKey<FormState>();
+
   bool _isLoggedIn = false;
+  String nombre = '';
+  String password = '';
+  User unUsuario;
+  bool boolPassword = true;
+  String idDevice;
+  bool boolCargando = false;
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+
+  void getIdDevice() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    idDevice = androidInfo.androidId;
+  }
+
+  String base64password(String password) {
+    String texto = password;
+    List encodedTexto = utf8.encode(texto);
+    String base64Str = base64.encode(encodedTexto);
+    return base64Str;
+  }
 
   _login() async {
     try {
@@ -33,11 +64,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget build(BuildContext context) {
+    getIdDevice();
     return Scaffold(
       backgroundColor: Style.Colors.secondColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
         child: Center(
+          key: formkey,
           child: Container(
             child: _isLoggedIn
                 ? Column(
@@ -82,20 +115,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 15),
                       selecionarComercio(),
                       SizedBox(height: 25),
-                      RaisedButton(
-                        child: Text('Continuar',
-                            style: TextStyle(color: Colors.white)),
-                        color: Style.Colors.mainColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(8.0),
-                          side: BorderSide(color: Style.Colors.mainColor),
+                      ButtonTheme(
+                        minWidth: 215.0,
+                        height: 40.0,
+                        child: RaisedButton(
+                          child: Text('Continuar',
+                              style: TextStyle(color: Colors.white)),
+                          color: Style.Colors.mainColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(8.0),
+                            side: BorderSide(color: Style.Colors.mainColor),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(
+                                new MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        MenuScreen()));
+                          },
                         ),
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                              new MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      MenuScreen()));
-                        },
                       ),
                       RaisedButton.icon(
                           color: Style.Colors.mainColor,
@@ -138,12 +175,70 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: 25,
                       ),
-                      emailField(),
-                      passwordField(),
+                      //emailField(),
+                      FractionallySizedBox(
+                        widthFactor: 0.6,
+                        child: TextFormField(
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            hintText: 'ejemplo@ejemplo.com',
+                            labelText: 'Direccion de correo',
+                          ),
+                          onSaved: (String valor) {
+                            nombre = valor;
+                          },
+                        ),
+                      ),
+                      //passwordField(),
+                      FractionallySizedBox(
+                        widthFactor: 0.6,
+                        child: TextFormField(
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            hintText: 'Contraseña',
+                            labelText: 'Contraseña',
+                          ),
+                          onSaved: (String valor) {
+                            password = base64password(valor);
+                          },
+                        ),
+                      ),
                       SizedBox(
                         height: 50,
                       ),
-                      botonLogin(),
+                      //botonLogin(),
+                      ButtonTheme(
+                        minWidth: 215.0,
+                        height: 40.0,
+                        child: RaisedButton(
+                            child: Text('Ingresar',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17)),
+                            color: Style.Colors.mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(8.0),
+                              side: BorderSide(color: Style.Colors.mainColor),
+                            ),
+                            onPressed: () async {
+                              setState(() {
+                                boolCargando = true;
+                              });
+
+                              if (formkey.currentState.validate()) {
+                                formkey.currentState.save();
+
+                                unUsuario = await postLogin(
+                                    context, nombre, password, idDevice);
+
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          Login2Screen(unUsuario),
+                                    ));
+                              }
+                            }),
+                      ),
                       RaisedButton.icon(
                           color: Style.Colors.mainColor,
                           shape:
@@ -166,60 +261,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-}
-
-Widget emailField() {
-  return StreamBuilder(
-    builder: (context, snapshot) {
-      return FractionallySizedBox(
-        widthFactor: 0.4,
-        child: TextField(
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            hintText: 'ejemplo@ejemplo.com',
-            labelText: 'Direccion de correo',
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget passwordField() {
-  return StreamBuilder(
-    builder: (context, snapshot) {
-      return FractionallySizedBox(
-        widthFactor: 0.4,
-        child: TextField(
-          obscureText: true,
-          decoration: InputDecoration(
-            hintText: 'Contraseña',
-            labelText: 'Contraseña',
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget botonLogin() {
-  return StreamBuilder(
-    builder: (context, snapshot) {
-      return RaisedButton(
-          child: Text('Ingresar', style: TextStyle(color: Colors.white)),
-          color: Style.Colors.mainColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(8.0),
-            side: BorderSide(color: Style.Colors.mainColor),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Login2Screen(),
-              ),
-            );
-          });
-    },
-  );
 }

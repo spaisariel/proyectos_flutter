@@ -5,7 +5,6 @@ import 'package:prueba3_git/models/user_response.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:google_sign_in/google_sign_in.dart';
 
 class UserScreen extends StatefulWidget {
   @override
@@ -16,16 +15,13 @@ class _UserScreenState extends State<UserScreen> {
   @override
   void initState() {
     super.initState();
-    userListBloc..getUserLista();
+    userListBloc..getUser();
   }
 
   void _logout() {
     Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (c) => LoginScreen()), (r) => false);
   }
-
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
-  //String userName = _googleSignIn.currentUser.displayName;
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +70,7 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   Widget _buildHomeWidget(UserResponse data) {
-    User unUsuario = data.users[0];
+    User unUsuario = data.unUsuario;
 
     return Scaffold(
       body: DefaultTabController(
@@ -89,7 +85,7 @@ class _UserScreenState extends State<UserScreen> {
                 flexibleSpace: FlexibleSpaceBar(
                     centerTitle: true,
                     title: Text(
-                        "Perfil - ${unUsuario.nombre} ${unUsuario.apellido}",
+                        "Perfil - ${unUsuario.userInfo.firstName} ${unUsuario.userInfo.lastName}",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16.0,
@@ -110,7 +106,7 @@ class _UserScreenState extends State<UserScreen> {
                     children: [
                       Text("E-Mail",
                           style: TextStyle(color: Style.Colors.secondColor)),
-                      Text(unUsuario.mail,
+                      Text(unUsuario.userInfo.email,
                           style: TextStyle(color: Style.Colors.titleColor)),
                     ],
                   ),
@@ -127,7 +123,7 @@ class _UserScreenState extends State<UserScreen> {
                     children: [
                       Text("Telefono",
                           style: TextStyle(color: Style.Colors.secondColor)),
-                      Text(unUsuario.telefono,
+                      Text(unUsuario.userInfo.phone,
                           style: TextStyle(color: Style.Colors.titleColor)),
                     ],
                   ),
@@ -142,7 +138,7 @@ class _UserScreenState extends State<UserScreen> {
                     children: [
                       Text("Dirección",
                           style: TextStyle(color: Style.Colors.secondColor)),
-                      Text(unUsuario.direccion,
+                      Text(unUsuario.userInfo.addresses,
                           style: TextStyle(color: Style.Colors.titleColor)),
                     ],
                   ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_todolist_bloc.dart';
-import 'package:prueba3_git/models/todo.dart';
-import 'package:prueba3_git/models/todo_response.dart';
+import 'package:prueba3_git/blocs/get_product_bloc.dart';
+import 'package:prueba3_git/models/product.dart';
+import 'package:prueba3_git/models/product_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:prueba3_git/widgets/auditoria_datatable_widget.dart';
+//import 'package:prueba3_git/widgets/auditoria_datatable_widget.dart';
 import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
 import 'package:prueba3_git/widgets/botones_controlinventario_widget.dart';
 
@@ -14,19 +14,20 @@ class ControlInventarioScreen extends StatefulWidget {
 }
 
 class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
-  List<Todo> lista;
+  List<Product> lista;
+  String hint = 'elast';
 
   @override
   void initState() {
     super.initState();
-    todoListBloc..getTodoLista();
+    productListBloc..getProductLista(hint);
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<TodoResponse>(
-      stream: todoListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<TodoResponse> snapshot) {
+    return StreamBuilder<ProductResponse>(
+      stream: productListBloc.subject.stream,
+      builder: (context, AsyncSnapshot<ProductResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
@@ -68,8 +69,8 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(TodoResponse data) {
-    lista = data.todos;
+  Widget _buildHomeWidget(ProductResponse data) {
+    lista = data.products;
 
     if (lista.length == 0) {
       return Container(
@@ -103,7 +104,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
               SizedBox(height: 30),
               BotonesBusquedaWidget(),
               SizedBox(height: 30),
-              AuditoriaTablaWidget(),
+              //AuditoriaTablaWidget(),
               SizedBox(height: 80),
               Container(
                 child: BotonesControlInventarioWidget(),
