@@ -138,12 +138,12 @@ class _BusquedaQRscreenState extends State<BusquedaQRscreen> {
                     direction: Axis.vertical,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      RaisedButton(
+                      ElevatedButton(
                           onPressed: () => scanBarcodeNormal(),
                           child: Text("Codigo de barras")),
-                      RaisedButton(
+                      ElevatedButton(
                           onPressed: () => scanQR(), child: Text("QR")),
-                      RaisedButton(
+                      ElevatedButton(
                           onPressed: () => startBarcodeScanStream(),
                           child: Text("Stream codigo barras")),
                       Text('Scan result : $_scanBarcode\n',

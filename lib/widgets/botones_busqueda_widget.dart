@@ -76,8 +76,10 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
           buttonColor: Style.Colors.mainColor,
           height: MediaQuery.of(context).size.height * 0.1,
           minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: RaisedButton.icon(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -105,8 +107,10 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
           buttonColor: Style.Colors.mainColor,
           height: MediaQuery.of(context).size.height * 0.1,
           minWidth: MediaQuery.of(context).size.width * 0.4,
-          child: RaisedButton.icon(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          child: ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              ),
               onPressed: () {
                 _showMaterialDialog(context);
               },
@@ -136,19 +140,23 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  RaisedButton(
-                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                      color: Style.Colors.mainColor,
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Style.Colors.mainColor,
+                        shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                      ),
                       onPressed: () => scanBarcodeNormal(),
                       child: Text("Codigo de barras",
                           style: TextStyle(color: Colors.white, fontSize: 20))),
-                  RaisedButton(
-                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                      color: Style.Colors.mainColor,
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Style.Colors.mainColor,
+                        shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                      ),
                       onPressed: () => scanQR(),
                       child: Text("QR",
                           style: TextStyle(color: Colors.white, fontSize: 20))),
-                  // RaisedButton(
+                  // ElevatedButton(
                   //     onPressed: () => startBarcodeScanStream(),
                   //     child: Text("Stream codigo barras")),
                   // Text('Scan result : $_scanBarcode\n',
@@ -156,7 +164,7 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                 ],
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('Cancelar'),
                   onPressed: () {
                     Navigator.of(context).pop();

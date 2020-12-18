@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/menu_screen.dart';
+import 'package:prueba3_git/main.dart';
+import 'package:prueba3_git/models/user.dart';
 import '../style/theme.dart' as Style;
 
+// ignore: must_be_immutable
 class BotonesAuditoriaWidget extends StatelessWidget {
+  User unUsuario;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -12,11 +15,13 @@ class BotonesAuditoriaWidget extends StatelessWidget {
           buttonColor: Style.Colors.cancelColor2,
           height: MediaQuery.of(context).size.height * 0.07,
           minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: RaisedButton(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              ),
               onPressed: () {
                 //Navigator.of(context).pop();
-                _showMaterialDialogCancelar(context);
+                _showMaterialDialogCancelar(context, unUsuario);
               },
               child: Column(
                 children: [
@@ -32,11 +37,13 @@ class BotonesAuditoriaWidget extends StatelessWidget {
           buttonColor: Style.Colors.acceptColor2,
           height: MediaQuery.of(context).size.height * 0.07,
           minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: RaisedButton(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              ),
               onPressed: () {
                 //Navigator.of(context).pop();
-                _showMaterialDialogAceptar(context);
+                _showMaterialDialogAceptar(context, unUsuario);
               },
               child: Column(
                 children: [
@@ -51,7 +58,7 @@ class BotonesAuditoriaWidget extends StatelessWidget {
     );
   }
 
-  _showMaterialDialogAceptar(context) {
+  _showMaterialDialogAceptar(context, unUsuario) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -61,18 +68,20 @@ class BotonesAuditoriaWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('Aceptar'),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MenuScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaginaInicial(unUsuario)));
                   },
                 )
               ],
             ));
   }
 
-  _showMaterialDialogCancelar(context) {
+  _showMaterialDialogCancelar(context, unUsuario) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -82,7 +91,7 @@ class BotonesAuditoriaWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('No'),
                   onPressed: () {
                     Navigator.pop(context);
@@ -91,8 +100,10 @@ class BotonesAuditoriaWidget extends StatelessWidget {
                 FlatButton(
                   child: Text('Si'),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MenuScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaginaInicial(unUsuario)));
                   },
                 ),
               ],

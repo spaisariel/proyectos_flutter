@@ -7,11 +7,16 @@ import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 class UserScreen extends StatefulWidget {
+  final User usuario;
+  UserScreen(this.usuario);
+
   @override
-  _UserScreenState createState() => _UserScreenState();
+  _UserScreenState createState() => _UserScreenState(this.usuario);
 }
 
 class _UserScreenState extends State<UserScreen> {
+  final User unUsuario;
+  _UserScreenState(this.unUsuario);
   @override
   void initState() {
     super.initState();
@@ -152,9 +157,11 @@ class _UserScreenState extends State<UserScreen> {
               buttonColor: Style.Colors.mainColor,
               height: MediaQuery.of(context).size.height * 0.1,
               minWidth: MediaQuery.of(context).size.width * 0.8,
-              child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                  ),
                   onPressed: () {
                     _showMaterialDialog(context);
                   },
@@ -168,10 +175,12 @@ class _UserScreenState extends State<UserScreen> {
               buttonColor: Style.Colors.mainColor,
               height: MediaQuery.of(context).size.height * 0.1,
               minWidth: MediaQuery.of(context).size.width * 0.8,
-              child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  color: Style.Colors.cancelColor2,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Style.Colors.cancelColor2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                  ),
                   onPressed: () {
                     _logout();
                   },
@@ -216,7 +225,7 @@ _showMaterialDialog(context) {
               ],
             ),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Aceptar'),
                 onPressed: () {
                   Navigator.of(context).pop();

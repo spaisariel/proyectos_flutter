@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/main.dart';
 import 'package:prueba3_git/models/user.dart';
 import 'package:prueba3_git/screens/maps_screen.dart';
-import 'package:prueba3_git/screens/menu_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 // ignore: must_be_immutable
@@ -63,9 +63,9 @@ class _Login2ScreenState extends State<Login2Screen> {
               //Spacer(),
               ButtonTheme(
                 minWidth: 200.0,
-                child: continuarButton(context),
+                child: continuarButton(context, unUsuario),
               ),
-              omitirButton(context),
+              omitirButton(context, unUsuario),
             ],
           ),
         ),
@@ -152,26 +152,30 @@ class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
   }
 }
 
-Widget continuarButton(context) {
-  return RaisedButton(
-    color: Style.Colors.mainColor,
-    shape: botonRoundedRectangleBorder(),
+Widget continuarButton(context, unUsuario) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      primary: Style.Colors.mainColor,
+      shape: botonRoundedRectangleBorder(),
+    ),
     child: Text('Continuar', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => MenuScreen()));
+          builder: (BuildContext context) => PaginaInicial(unUsuario)));
     },
   );
 }
 
-Widget omitirButton(context) {
-  return RaisedButton(
-    color: Style.Colors.mainColor,
-    shape: botonRoundedRectangleBorder(),
+Widget omitirButton(context, unUsuario) {
+  return ElevatedButton(
+    style: ElevatedButton.styleFrom(
+      primary: Style.Colors.mainColor,
+      shape: botonRoundedRectangleBorder(),
+    ),
     child: Text('Omitir', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => MenuScreen()));
+          builder: (BuildContext context) => PaginaInicial(unUsuario)));
     },
   );
 }
@@ -189,13 +193,15 @@ Widget selecionarComercio() {
       return ButtonTheme(
         minWidth: 215.0,
         height: 40.0,
-        child: RaisedButton(
+        child: ElevatedButton(
             child: Text('Buscar en el mapa',
                 style: TextStyle(color: Colors.white)),
-            color: Style.Colors.mainColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(8.0),
-              side: BorderSide(color: Style.Colors.mainColor),
+            style: ElevatedButton.styleFrom(
+              primary: Style.Colors.mainColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(8.0),
+                side: BorderSide(color: Style.Colors.mainColor),
+              ),
             ),
             onPressed: () {
               Navigator.push(
@@ -206,7 +212,7 @@ Widget selecionarComercio() {
               );
             }),
       );
-      // return RaisedButton(
+      // return ElevatedButton(
       //     child:
       //         Text('Buscar en el mapa', style: TextStyle(color: Colors.white)),
       //     color: Style.Colors.mainColor,

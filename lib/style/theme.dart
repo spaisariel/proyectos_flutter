@@ -42,8 +42,10 @@ class ButtonThemes {
       buttonColor: Colors.mainColor,
       height: MediaQuery.of(context).size.height * 0.1,
       minWidth: MediaQuery.of(context).size.width * 0.8,
-      child: RaisedButton.icon(
-          shape: Shapes.botonGrandeRoundedRectangleBorder(),
+      child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            shape: Shapes.botonGrandeRoundedRectangleBorder(),
+          ),
           onPressed: () {},
           icon: Icon(
             Icons.assignment_turned_in,
@@ -61,10 +63,10 @@ class ButtonThemes {
   ) {
     return ButtonTheme(
       buttonColor: Colors.mainColor,
-      //height: MediaQuery.of(context).size.height * 0.1,
-      //minWidth: MediaQuery.of(context).size.width * 0.8,
-      child: RaisedButton(
-          shape: Shapes.botonGrandeRoundedRectangleBorder(),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: Shapes.botonGrandeRoundedRectangleBorder(),
+          ),
           onPressed: () {},
           child: Text(title,
               style: TextStyle(color: Colors.blanco, fontSize: 10))),

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/screens/menu_screen.dart';
+import 'package:prueba3_git/main.dart';
+import 'package:prueba3_git/models/user.dart';
 
 import '../style/theme.dart' as Style;
 
+// ignore: must_be_immutable
 class BotonesControlInventarioWidget extends StatelessWidget {
+  User unUsuario;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -13,8 +16,10 @@ class BotonesControlInventarioWidget extends StatelessWidget {
           buttonColor: Style.Colors.cancelColor2,
           height: MediaQuery.of(context).size.height * 0.07,
           minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: RaisedButton(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              ),
               onPressed: () {
                 //Navigator.of(context).pop();
                 _showMaterialDialogCancelar(context);
@@ -33,8 +38,10 @@ class BotonesControlInventarioWidget extends StatelessWidget {
           buttonColor: Style.Colors.acceptColor2,
           height: MediaQuery.of(context).size.height * 0.07,
           minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: RaisedButton(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              ),
               onPressed: () {
                 //Navigator.of(context).pop();
                 _showMaterialDialogAceptar(context);
@@ -62,11 +69,13 @@ class BotonesControlInventarioWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('Aceptar'),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MenuScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaginaInicial(unUsuario)));
                   },
                 )
               ],
@@ -83,17 +92,19 @@ class BotonesControlInventarioWidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
               ),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text('No'),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
-                FlatButton(
+                TextButton(
                   child: Text('Si'),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MenuScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaginaInicial(unUsuario)));
                   },
                 ),
               ],

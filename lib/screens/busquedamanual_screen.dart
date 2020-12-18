@@ -185,7 +185,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
             SizedBox(height: 20),
             // ButtonTheme(
             //     buttonColor: Style.Colors.mainColor,
-            //     child: RaisedButton(
+            //     child: ElevatedButton(
             //         child: Text(
             //           'Buscar',
             //           style: TextStyle(color: Colors.white, fontSize: 18),

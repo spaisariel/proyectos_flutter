@@ -40,9 +40,11 @@ class _DetalleAuditoriaScreenState extends State<DetalleAuditoriaScreen> {
             child: Expanded(
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: RaisedButton(
-                    color: Style.Colors.cancelColor,
-                    shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Style.Colors.cancelColor,
+                        shape:
+                            Style.Shapes.botonGrandeRoundedRectangleBorder()),
                     onPressed: () {},
                     child: Text(
                       'Quitar de la lista',

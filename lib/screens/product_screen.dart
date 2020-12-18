@@ -82,7 +82,7 @@ class _ProductScreenState extends State<ProductScreen> {
             //     Expanded(
             //       child: Align(
             //         alignment: Alignment.bottomCenter,
-            //         child: RaisedButton(
+            //         child: ElevatedButton(
             //             color: Style.Colors.cancelColor,
             //             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
             //             onPressed: () {},
@@ -287,7 +287,7 @@ class _ProductScreenState extends State<ProductScreen> {
 //         child: Row(
 //           mainAxisAlignment: MainAxisAlignment.end,
 //           children: [
-//             FlatButton(
+//             TextButton(
 //               child: Text('Filtro'),
 //               onPressed: () {},
 //             )

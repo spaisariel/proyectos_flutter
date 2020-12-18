@@ -13,6 +13,7 @@ class AuditoriaScreen extends StatefulWidget {
 
 class _AuditoriaScreenState extends State<AuditoriaScreen> {
   List<Auditoria> listaAuditorias;
+  Auditoria unaAudutoria;
 
   @override
   void initState() {
@@ -141,7 +142,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                 selected: auditorias.contains(auditoria),
                 cells: [
                   DataCell(
-                    Text(auditoria.idCodigo.toString()),
+                    Text(auditoria.id.toString()),
                     onTap: () {
                       // write your code..
                       // MaterialPageRoute(
@@ -153,7 +154,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                   ),
                   DataCell(
                     Text(
-                      auditoria.nombre,
+                      auditoria.branchOfficeId.toString(),
                     ),
                   ),
                 ],
