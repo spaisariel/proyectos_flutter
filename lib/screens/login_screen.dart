@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/main.dart';
@@ -78,8 +77,12 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                     children: <Widget>[
                       Text(
                         'Bienvenido!',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 22),
+                        // style: TextStyle(
+                        //     fontWeight: FontWeight.bold, fontSize: 22),
+                        //style: TextStyle(fontWeight: FontWeight.bold)
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
                         _googleSignIn.currentUser.displayName,
@@ -118,16 +121,21 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                       ButtonTheme(
                         minWidth: 215.0,
                         height: 40.0,
-                        child: ElevatedButton(
+                        child: RaisedButton(
                           child: Text('Continuar',
                               style: TextStyle(color: Colors.white)),
-                          style: ElevatedButton.styleFrom(
-                            primary: Style.Colors.mainColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
-                              side: BorderSide(color: Style.Colors.mainColor),
-                            ),
+                          color: Style.Colors.mainColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(8.0),
+                            side: BorderSide(color: Style.Colors.mainColor),
                           ),
+                          // style: ElevatedButton.styleFrom(
+                          //   primary: Style.Colors.mainColor,
+                          //   shape: RoundedRectangleBorder(
+                          //     borderRadius: new BorderRadius.circular(8.0),
+                          //     side: BorderSide(color: Style.Colors.mainColor),
+                          //   ),
+                          // ),
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 new MaterialPageRoute(
@@ -136,12 +144,15 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                           },
                         ),
                       ),
-                      ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            primary: Style.Colors.mainColor,
-                            shape: Style.Shapes
-                                .botonGrandeRoundedRectangleBorder(),
-                          ),
+                      RaisedButton.icon(
+                          color: Style.Colors.mainColor,
+                          shape:
+                              Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                          // style: ElevatedButton.styleFrom(
+                          //   primary: Style.Colors.mainColor,
+                          //   shape: Style.Shapes
+                          //       .botonGrandeRoundedRectangleBorder(),
+                          // ),
                           onPressed: () {
                             _logout();
                           },
@@ -213,17 +224,22 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                       ButtonTheme(
                         minWidth: 215.0,
                         height: 40.0,
-                        child: ElevatedButton(
+                        child: RaisedButton(
                             child: Text('Ingresar',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 17)),
-                            style: ElevatedButton.styleFrom(
-                                primary: Style.Colors.mainColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(8.0),
-                                  side:
-                                      BorderSide(color: Style.Colors.mainColor),
-                                )),
+                            color: Style.Colors.mainColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(8.0),
+                              side: BorderSide(color: Style.Colors.mainColor),
+                            ),
+                            // style: ElevatedButton.styleFrom(
+                            //     primary: Style.Colors.mainColor,
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: new BorderRadius.circular(8.0),
+                            //       side:
+                            //           BorderSide(color: Style.Colors.mainColor),
+                            //     )),
                             onPressed: () async {
                               setState(() {
                                 boolCargando = true;
@@ -245,12 +261,15 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                               //}
                             }),
                       ),
-                      ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            primary: Style.Colors.mainColor,
-                            shape: Style.Shapes
-                                .botonGrandeRoundedRectangleBorder(),
-                          ),
+                      RaisedButton.icon(
+                          color: Style.Colors.mainColor,
+                          shape:
+                              Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                          // style: ElevatedButton.styleFrom(
+                          //   primary: Style.Colors.mainColor,
+                          //   shape: Style.Shapes
+                          //       .botonGrandeRoundedRectangleBorder(),
+                          // ),
                           onPressed: () {
                             _login();
                           },

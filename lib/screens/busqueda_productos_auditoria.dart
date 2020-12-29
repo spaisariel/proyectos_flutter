@@ -2,24 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_product_bloc.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_response.dart';
+import 'package:prueba3_git/screens/auditoria_fake_screen.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
 
-class BusquedaManualScreen extends StatefulWidget {
-  BusquedaManualScreen({Key key}) : super(key: key);
+class BusquedaProductosAuditoriaScreen extends StatefulWidget {
+  BusquedaProductosAuditoriaScreen({Key key}) : super(key: key);
 
   @override
-  _BusquedaManualScreenState createState() => _BusquedaManualScreenState();
+  _BusquedaProductosAuditoriaScreenState createState() =>
+      _BusquedaProductosAuditoriaScreenState();
 }
 
-class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
-  //List<Product> lista;
+class _BusquedaProductosAuditoriaScreenState
+    extends State<BusquedaProductosAuditoriaScreen> {
   List<bool> filtrosSeleccionados;
   Product filtroSeleccionado;
   Product unProducto;
   String idValue;
-  String hint = 'arandela';
+  String hint = '';
+  List<Product> selectedProducts;
 
   TextEditingController hintController = new TextEditingController();
 
@@ -27,6 +30,30 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
   void initState() {
     super.initState();
     productListBloc..getProductLista(hint);
+    selectedProducts = [];
+  }
+
+  onSelectedRow(bool selected, Product unProducto) async {
+    setState(() {
+      if (selected) {
+        selectedProducts.add(unProducto);
+      } else {
+        selectedProducts.remove(unProducto);
+      }
+    });
+  }
+
+  //VER BIEN FUNCIONAMIENTO DE ESTE METODO
+  deleteSelected() async {
+    setState(() {
+      if (selectedProducts.isNotEmpty) {
+        List<Product> temp = [];
+        temp.addAll(selectedProducts);
+        for (Product p in temp) {
+          selectedProducts.remove(p);
+        }
+      }
+    });
   }
 
   @override
@@ -76,7 +103,6 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
   }
 
   Widget _buildHomeWidget(ProductResponse data) {
-    //lista = data.products;
     List<Product> productos = data.products;
 
     if (productos.length == 0) {
@@ -137,7 +163,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
               child: DataTable(
                 columnSpacing: 10,
                 horizontalMargin: 10.0,
-
+                showCheckboxColumn: true,
                 //columnSpacing: 1.0,
                 columns: const <DataColumn>[
                   DataColumn(
@@ -157,7 +183,11 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                     .take(5)
                     .map(
                       (producto) => DataRow(
-                          selected: productos.contains(producto),
+                          selected: selectedProducts.contains(producto),
+                          onSelectChanged: (b) {
+                            //print('OnSelected');
+                            onSelectedRow(b, producto);
+                          },
                           cells: [
                             DataCell(
                               Text(producto.id.toString()),
@@ -182,6 +212,34 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
               ),
             ),
             SizedBox(height: 20),
+
+            //CORREGIR ESTILO, TAMAÑO Y/O COLOR DEL BOTON DE ABAJO
+            ButtonTheme(
+              buttonColor: Style.Colors.mainColor,
+              height: MediaQuery.of(context).size.height * 0.1,
+              minWidth: MediaQuery.of(context).size.width * 0.8,
+              child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                  ),
+                  onPressed: () {
+                    //Navigator.of(context).pop(idProductos);
+                    //Navigator.pop(context, idProductos);
+                    //AuditoriaFakeScreen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AuditoriaFakeScreen(),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.assignment,
+                      size: 40, color: Style.Colors.secondColor),
+                  label: Text(
+                    'Agregar a auditoria',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  )),
+            )
           ],
         ),
       );

@@ -23,7 +23,7 @@ class _StockScreenState extends State<StockScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            BotonesBusquedaWidget(),
+            BotonesBusquedaWidget(false),
             SizedBox(height: 20),
             BotonesPrincipalWidget(),
           ],

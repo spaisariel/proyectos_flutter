@@ -157,11 +157,13 @@ class _UserScreenState extends State<UserScreen> {
               buttonColor: Style.Colors.mainColor,
               height: MediaQuery.of(context).size.height * 0.1,
               minWidth: MediaQuery.of(context).size.width * 0.8,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                  ),
+              child: RaisedButton(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  // style: ElevatedButton.styleFrom(
+                  //   shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(20.0)),
+                  // ),
                   onPressed: () {
                     _showMaterialDialog(context);
                   },
@@ -175,12 +177,15 @@ class _UserScreenState extends State<UserScreen> {
               buttonColor: Style.Colors.mainColor,
               height: MediaQuery.of(context).size.height * 0.1,
               minWidth: MediaQuery.of(context).size.width * 0.8,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Style.Colors.cancelColor2,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                  ),
+              child: RaisedButton(
+                  color: Style.Colors.cancelColor2,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0)),
+                  // style: ElevatedButton.styleFrom(
+                  //   primary: Style.Colors.cancelColor2,
+                  //   shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(20.0)),
+                  // ),
                   onPressed: () {
                     _logout();
                   },

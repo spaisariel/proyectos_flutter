@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_auditoria_bloc.dart';
 import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/auditoria_response.dart';
-import 'package:prueba3_git/screens/auditoria_detalle_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
-class ConsultaAuditoriaScreen extends StatefulWidget {
+class AuditoriaDetalleScreen extends StatefulWidget {
+  final String idValue;
+  AuditoriaDetalleScreen(this.idValue);
   @override
-  _ConsultaAuditoriaScreenState createState() =>
-      _ConsultaAuditoriaScreenState();
+  _AuditoriaDetalleScreenState createState() =>
+      _AuditoriaDetalleScreenState(this.idValue);
 }
 
-class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
+class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
+  final String idValue;
+  _AuditoriaDetalleScreenState(this.idValue);
   List<Auditoria> listaAuditorias;
   Auditoria unaAudutoria;
 
@@ -92,7 +95,7 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text('Auditoria'),
+          title: Text('Detalle de auditoria'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -102,6 +105,10 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
                   child: tablaAuditoria(auditorias),
                   alignment: Alignment.center),
               SizedBox(height: 80),
+              Container(
+                child: tablaItemsAuditoria(auditorias),
+                alignment: Alignment.center,
+              )
             ],
           ),
         ),
@@ -142,21 +149,16 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
           ),
         ],
         rows: auditorias
-            .take(5)
+            //A modo de demostracion, mas adelante se tendrá un endpoint que
+            //devuelva una sola auditoria segun el ID proporcionado
+            .take(1)
             .map(
               (auditoria) => DataRow(
                 selected: auditorias.contains(auditoria),
                 cells: [
                   DataCell(
                     Text(auditoria.id.toString()),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AuditoriaDetalleScreen(
-                          auditoria.id.toString(),
-                        ),
-                      ),
-                    ),
+                    onTap: () {},
                   ),
                   DataCell(
                     Text(
@@ -171,6 +173,63 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
                   DataCell(
                     Text(
                       auditoria.observations,
+                    ),
+                  ),
+                ],
+              ),
+            )
+            .toList(),
+      ),
+    );
+  }
+
+  Widget tablaItemsAuditoria(List<Auditoria> auditorias) {
+    return Container(
+      //width: MediaQuery.of(context).size.width,
+      child: DataTable(
+        columnSpacing: 10, horizontalMargin: 10.0,
+
+        //columnSpacing: 1.0,
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'ID',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Observaciones',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Cantidad',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ],
+        rows: auditorias
+            //A modo de demostracion, mas adelante se tendrá un endpoint que
+            //devuelva una sola auditoria segun el ID proporcionado
+            .take(3)
+            .map(
+              (auditoria) => DataRow(
+                selected: auditorias.contains(auditoria),
+                cells: [
+                  DataCell(
+                    Text(auditoria.items[1].id.toString()),
+                    onTap: () {},
+                  ),
+                  DataCell(
+                    Text(
+                      auditoria.items[1].observations,
+                    ),
+                  ),
+                  DataCell(
+                    Text(
+                      auditoria.items[1].quantity.toString(),
                     ),
                   ),
                 ],

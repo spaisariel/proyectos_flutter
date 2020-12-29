@@ -1,34 +1,3 @@
-// import 'dart:convert';
-
-// List<Auditoria> auditoriaFromJson(String str) =>
-//     List<Auditoria>.from(json.decode(str).map((x) => Auditoria.fromJson(x)));
-
-// String auditoriaToJson(List<Auditoria> data) =>
-//     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
-// //En un futuro el modelo de auditoria deberia de tener la clase de productos tambien.
-// //Esta se realizo con fines demostrativos
-
-// class Auditoria {
-//   Auditoria({
-//     this.idCodigo,
-//     this.nombre,
-//   });
-
-//   int idCodigo;
-//   String nombre;
-
-//   factory Auditoria.fromJson(Map<String, dynamic> json) => Auditoria(
-//         idCodigo: json["idCodigo"],
-//         nombre: json["nombre"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "idCodigo": idCodigo,
-//         "nombre": nombre,
-//       };
-// }
-
 import 'dart:convert';
 
 List<Auditoria> auditoriaFromJson(String str) =>
@@ -50,14 +19,14 @@ class Auditoria {
   int branchOfficeId;
   int depositId;
   String observations;
-  Items items;
+  List<Item> items;
 
   factory Auditoria.fromJson(Map<String, dynamic> json) => Auditoria(
         id: json["Id"],
         branchOfficeId: json["BranchOfficeId"],
         depositId: json["DepositId"],
         observations: json["Observations"],
-        items: Items.fromJson(json["Items"]),
+        items: List<Item>.from(json["Items"].map((x) => Item.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -65,12 +34,12 @@ class Auditoria {
         "BranchOfficeId": branchOfficeId,
         "DepositId": depositId,
         "Observations": observations,
-        "Items": items.toJson(),
+        "Items": List<dynamic>.from(items.map((x) => x.toJson())),
       };
 }
 
-class Items {
-  Items({
+class Item {
+  Item({
     this.id,
     this.productId,
     this.observations,
@@ -84,7 +53,7 @@ class Items {
   int quantity;
   String presentationId;
 
-  factory Items.fromJson(Map<String, dynamic> json) => Items(
+  factory Item.fromJson(Map<String, dynamic> json) => Item(
         id: json["Id"],
         productId: json["ProductId"],
         observations: json["Observations"],

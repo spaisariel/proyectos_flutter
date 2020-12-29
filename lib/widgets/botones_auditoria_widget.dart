@@ -15,10 +15,11 @@ class BotonesAuditoriaWidget extends StatelessWidget {
           buttonColor: Style.Colors.cancelColor2,
           height: MediaQuery.of(context).size.height * 0.07,
           minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              ),
+          child: RaisedButton(
+              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // style: ElevatedButton.styleFrom(
+              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // ),
               onPressed: () {
                 //Navigator.of(context).pop();
                 _showMaterialDialogCancelar(context, unUsuario);
@@ -37,10 +38,11 @@ class BotonesAuditoriaWidget extends StatelessWidget {
           buttonColor: Style.Colors.acceptColor2,
           height: MediaQuery.of(context).size.height * 0.07,
           minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              ),
+          child: RaisedButton(
+              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // style: ElevatedButton.styleFrom(
+              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // ),
               onPressed: () {
                 //Navigator.of(context).pop();
                 _showMaterialDialogAceptar(context, unUsuario);

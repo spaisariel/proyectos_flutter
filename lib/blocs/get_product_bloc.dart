@@ -14,6 +14,11 @@ class ProductListBloc {
     _subject.sink.add(response);
   }
 
+  getProductListaFake() async {
+    ProductResponse response = await _repository.getProductosFake();
+    _subject.sink.add(response);
+  }
+
   dispose() {
     _subject.close();
   }

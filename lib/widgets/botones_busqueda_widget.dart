@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:prueba3_git/screens/busqueda_productos_auditoria.dart';
 
 import 'package:prueba3_git/screens/busquedamanual_screen.dart';
 
 import '../style/theme.dart' as Style;
 
 class BotonesBusquedaWidget extends StatefulWidget {
+  final bool llamada;
+  BotonesBusquedaWidget(this.llamada);
   @override
-  _BotonesBusquedaWidgetState createState() => _BotonesBusquedaWidgetState();
+  _BotonesBusquedaWidgetState createState() =>
+      _BotonesBusquedaWidgetState(this.llamada);
 }
 
 class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
+  final bool llamada;
+  _BotonesBusquedaWidgetState(this.llamada);
   // ignore: unused_field
   String _scanBarcode = 'Desconocido';
+  List<String> idProductos = new List<String>();
 
   @override
   void initState() {
@@ -76,17 +83,33 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
           buttonColor: Style.Colors.mainColor,
           height: MediaQuery.of(context).size.height * 0.1,
           minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BusquedaManualScreen(),
-                  ),
-                );
+          child: RaisedButton.icon(
+              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // style: ElevatedButton.styleFrom(
+              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // ),
+              onPressed: () async {
+                if (llamada) {
+                  idProductos = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (
+                        context,
+                      ) =>
+                          BusquedaProductosAuditoriaScreen(),
+                    ),
+                  );
+                } else {
+                  idProductos = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (
+                        context,
+                      ) =>
+                          BusquedaManualScreen(),
+                    ),
+                  );
+                }
               },
               icon: Icon(
                 Icons.edit,
@@ -107,10 +130,11 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
           buttonColor: Style.Colors.mainColor,
           height: MediaQuery.of(context).size.height * 0.1,
           minWidth: MediaQuery.of(context).size.width * 0.4,
-          child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              ),
+          child: RaisedButton.icon(
+              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // style: ElevatedButton.styleFrom(
+              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // ),
               onPressed: () {
                 _showMaterialDialog(context);
               },
@@ -140,23 +164,27 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Style.Colors.mainColor,
-                        shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                      ),
+                  RaisedButton(
+                      color: Style.Colors.mainColor,
+                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                      // style: ElevatedButton.styleFrom(
+                      //   primary: Style.Colors.mainColor,
+                      //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                      // ),
                       onPressed: () => scanBarcodeNormal(),
                       child: Text("Codigo de barras",
                           style: TextStyle(color: Colors.white, fontSize: 20))),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Style.Colors.mainColor,
-                        shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                      ),
+                  RaisedButton(
+                      color: Style.Colors.mainColor,
+                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                      // style: ElevatedButton.styleFrom(
+                      //   primary: Style.Colors.mainColor,
+                      //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                      // ),
                       onPressed: () => scanQR(),
                       child: Text("QR",
                           style: TextStyle(color: Colors.white, fontSize: 20))),
-                  // ElevatedButton(
+                  // RaisedButton(
                   //     onPressed: () => startBarcodeScanStream(),
                   //     child: Text("Stream codigo barras")),
                   // Text('Scan result : $_scanBarcode\n',

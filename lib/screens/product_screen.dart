@@ -82,7 +82,7 @@ class _ProductScreenState extends State<ProductScreen> {
             //     Expanded(
             //       child: Align(
             //         alignment: Alignment.bottomCenter,
-            //         child: ElevatedButton(
+            //         child: RaisedButton(
             //             color: Style.Colors.cancelColor,
             //             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
             //             onPressed: () {},
@@ -210,55 +210,6 @@ class _ProductScreenState extends State<ProductScreen> {
                               ],
                             )
                           ]),
-
-                      //Falta agregar las filas.
-
-                      // rows: [
-                      //   DataRow(
-                      //       cells: DataCell(
-                      //     Text(productoSucursal
-                      //         .existenciaDepositos.deposito),
-                      //   ))
-                      // ],
-                      // rows: productoSucursal.take(5).map(
-                      //       (productoSucursal) => DataRow(
-                      //         selected: productoSucursal
-                      //             .contains(productoSucursal),
-                      //         cells: [
-                      //           DataCell(
-                      //             Text(productoSucursal
-                      //                 .existenciaDepositos.deposito),
-                      //             onTap: () {
-                      //               // write your code..
-                      //               // MaterialPageRoute(
-                      //               //   builder: (context) => ProductScreen(unProducto),
-                      //               // );
-                      //             },
-                      //           ),
-                      //           DataCell(
-                      //             Text(
-                      //               productoSucursal
-                      //                   .existenciaDepositos.sucursal,
-                      //               //overflow: TextOverflow.ellipsis,
-                      //             ),
-                      //           ),
-                      //           DataCell(
-                      //             Text(
-                      //               productoSucursal.existenciaDepositos
-                      //                   .existenciaOtroLugar,
-                      //               //overflow: TextOverflow.ellipsis,
-                      //             ),
-                      //           ),
-                      //           DataCell(
-                      //             Text(
-                      //               productoSucursal
-                      //                   .existenciaDepositos.presentacion,
-                      //               //overflow: TextOverflow.ellipsis,
-                      //             ),
-                      //           )
-                      //         ],
-                      //       ),
-                      //     ),
                     ],
                   ),
                 ],
@@ -266,32 +217,3 @@ class _ProductScreenState extends State<ProductScreen> {
             )));
   }
 }
-
-// class FiltroWidget extends StatefulWidget {
-//   final List<Product> albums;
-//   FiltroWidget(this.albums);
-
-//   @override
-//   _FiltroWidgetState createState() => _FiltroWidgetState(this.albums);
-// }
-
-// class _FiltroWidgetState extends State<FiltroWidget> {
-//   final List<Product> albums;
-//   _FiltroWidgetState(this.albums);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         height: 30,
-//         color: Style.Colors.secondColor,
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.end,
-//           children: [
-//             TextButton(
-//               child: Text('Filtro'),
-//               onPressed: () {},
-//             )
-//           ],
-//         ));
-//   }
-// }

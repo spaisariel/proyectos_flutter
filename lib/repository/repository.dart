@@ -123,10 +123,11 @@ class Repository {
     }
   }
 
+  //Devuelve una lista de todas las auditorias
   Future<AuditoriaResponse> getAuditoriaList() async {
     try {
       Response response = await _dio.get(
-          "https://run.mocky.io/v3/c2e330da-9b24-4a2e-985f-e4979afff262",
+          "https://run.mocky.io/v3/06fc7f65-bcf6-4e39-a91a-347e16e87e82",
           options: Options(responseType: ResponseType.json));
       String x = json.encode(response.data);
       AuditoriaResponse auditoriaResponse =
@@ -138,6 +139,7 @@ class Repository {
     }
   }
 
+  //Devuelve un producto en especifico con el ID proporcionado
   Future<ProductInfoResponse> getProduct(idValue) async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
@@ -157,6 +159,7 @@ class Repository {
     }
   }
 
+  //Devuelve una lista de productos filtrados depende lo que especifique el usuario
   Future<ProductResponse> getProductList(hint) async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
@@ -174,35 +177,51 @@ class Repository {
     }
   }
 
+  //https://run.mocky.io/v3/9ad1f7f6-f2e1-43d8-a3b8-f507f5d0cf1b
+  Future<ProductResponse> getProductosFake() async {
+    try {
+      Response response = await _dio.get(
+          "https://run.mocky.io/v3/9ad1f7f6-f2e1-43d8-a3b8-f507f5d0cf1b",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      ProductResponse productResponse =
+          new ProductResponse(productFromJson(x), "");
+      return productResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return ProductResponse.withError("$error");
+    }
+  }
+
   //////////////////////////////////////////////////////////////////////////////
   ///////////////METODOS POST PARA SUBIDA DE DE DATOS //////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  void postNuevaAuditoria(context) {
-    String token =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNpcyIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL3N1YnNjcmlwdG9yIjoibGFwbGF5YWNhcGFjaXRhY2lvbiIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL2lkdXN1YXJpbyI6IjIiLCJyb2xlIjoiMTExIiwiaHR0cDovL3NjaGVtYXMuZ3lhLmNvbS9pZGVudGl0eS9jbGFpbXMvY29kaWdvc3VjdXJzYWwiOiIxIiwibmJmIjoxNjA3OTc5MDM1LCJleHAiOjE2MDkyNzUwMzUsImlhdCI6MTYwNzk3OTAzNSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0OTIyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDkyMjAifQ.BCPuDem_1Pg2PcGxyqI1-FVD61v8wGRNywIo-46ffHU";
-    //String token = usuario.token;
-    List<Auditoria> detalleAuditorias;
-    String webServiceUrl = 'Audit/NewAuditStock';
+  // void postNuevaAuditoria(context) {
+  //   String token =
+  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNpcyIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL3N1YnNjcmlwdG9yIjoibGFwbGF5YWNhcGFjaXRhY2lvbiIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL2lkdXN1YXJpbyI6IjIiLCJyb2xlIjoiMTExIiwiaHR0cDovL3NjaGVtYXMuZ3lhLmNvbS9pZGVudGl0eS9jbGFpbXMvY29kaWdvc3VjdXJzYWwiOiIxIiwibmJmIjoxNjA3OTc5MDM1LCJleHAiOjE2MDkyNzUwMzUsImlhdCI6MTYwNzk3OTAzNSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0OTIyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDkyMjAifQ.BCPuDem_1Pg2PcGxyqI1-FVD61v8wGRNywIo-46ffHU";
+  //   //String token = usuario.token;
+  //   List<Auditoria> detalleAuditorias;
+  //   String webServiceUrl = 'Audit/NewAuditStock';
 
-    Auditoria unaAuditoria;
-    unaAuditoria.branchOfficeId = 1;
-    unaAuditoria.depositId = 1;
-    unaAuditoria.observations = "Auditoria prueba";
-    unaAuditoria.items.productId = "58";
-    unaAuditoria.items.quantity = 10;
-    unaAuditoria.items.presentationId = "Unidad";
+  //   Auditoria unaAuditoria;
+  //   unaAuditoria.branchOfficeId = 1;
+  //   unaAuditoria.depositId = 1;
+  //   unaAuditoria.observations = "Auditoria prueba";
+  //   unaAuditoria.items.productId = "58";
+  //   unaAuditoria.items.quantity = 10;
+  //   unaAuditoria.items.presentationId = "Unidad";
 
-    detalleAuditorias.add(unaAuditoria);
+  //   detalleAuditorias.add(unaAuditoria);
 
-    Map<String, String> header = {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Authorization': 'Bearer $token',
-    };
+  //   Map<String, String> header = {
+  //     'Content-Type': 'application/json; charset=utf-8',
+  //     'Authorization': 'Bearer $token',
+  //   };
 
-    http.post(urlBase + webServiceUrl,
-        headers: header, body: auditoriaToJson(detalleAuditorias));
+  //   http.post(urlBase + webServiceUrl,
+  //       headers: header, body: auditoriaToJson(detalleAuditorias));
 
-    print(auditoriaToJson(detalleAuditorias));
-  }
+  //   print(auditoriaToJson(detalleAuditorias));
+  // }
 }

@@ -102,7 +102,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
           child: Column(
             children: [
               SizedBox(height: 30),
-              BotonesBusquedaWidget(),
+              BotonesBusquedaWidget(false),
               SizedBox(height: 30),
               //AuditoriaTablaWidget(),
               SizedBox(height: 80),

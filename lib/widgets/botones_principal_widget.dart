@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
+import 'package:prueba3_git/screens/consulta_auditoria_screen.dart';
+import 'package:prueba3_git/screens/control_inventario_screen.dart';
 import '../style/theme.dart' as Style;
 
 // ignore: must_be_immutable
@@ -16,10 +18,11 @@ class BotonesPrincipalWidget extends StatelessWidget {
         buttonColor: Style.Colors.mainColor,
         height: MediaQuery.of(context).size.height * 0.1,
         minWidth: MediaQuery.of(context).size.width * 0.8,
-        child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            ),
+        child: RaisedButton.icon(
+            shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            // style: RaisedButton.styleFrom(
+            //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            // ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -40,19 +43,21 @@ class BotonesPrincipalWidget extends StatelessWidget {
         buttonColor: Style.Colors.mainColor,
         height: MediaQuery.of(context).size.height * 0.1,
         minWidth: MediaQuery.of(context).size.width * 0.8,
-        child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
-            ),
+        child: RaisedButton.icon(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            // style: ElevatedButton.styleFrom(
+            //   shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(20.0)),
+            // ),
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     //builder: (context) => ControlInventarioScreen(),
-              //     builder: (context) => ProductScreen(),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ControlInventarioScreen(),
+                  //builder: (context) => ProductScreen(),
+                ),
+              );
             },
             icon: Icon(
               Icons.assignment_turned_in,
@@ -67,12 +72,18 @@ class BotonesPrincipalWidget extends StatelessWidget {
         buttonColor: Style.Colors.mainColor,
         height: MediaQuery.of(context).size.height * 0.1,
         minWidth: MediaQuery.of(context).size.width * 0.8,
-        child: ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            ),
+        child: RaisedButton.icon(
+            shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            // style: ElevatedButton.styleFrom(
+            //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            // ),
             onPressed: () {
-              unRepositorio.postNuevaAuditoria(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConsultaAuditoriaScreen(),
+                ),
+              );
             },
             icon: Icon(Icons.assignment,
                 size: 40, color: Style.Colors.secondColor),

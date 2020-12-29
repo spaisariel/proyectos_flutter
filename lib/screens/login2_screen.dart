@@ -153,11 +153,13 @@ class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
 }
 
 Widget continuarButton(context, unUsuario) {
-  return ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      primary: Style.Colors.mainColor,
-      shape: botonRoundedRectangleBorder(),
-    ),
+  return RaisedButton(
+    color: Style.Colors.mainColor,
+    shape: botonRoundedRectangleBorder(),
+    // style: ElevatedButton.styleFrom(
+    //   primary: Style.Colors.mainColor,
+    //   shape: botonRoundedRectangleBorder(),
+    // ),
     child: Text('Continuar', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -167,11 +169,13 @@ Widget continuarButton(context, unUsuario) {
 }
 
 Widget omitirButton(context, unUsuario) {
-  return ElevatedButton(
-    style: ElevatedButton.styleFrom(
-      primary: Style.Colors.mainColor,
-      shape: botonRoundedRectangleBorder(),
-    ),
+  return RaisedButton(
+    color: Style.Colors.mainColor,
+    shape: botonRoundedRectangleBorder(),
+    // style: ElevatedButton.styleFrom(
+    //   primary: Style.Colors.mainColor,
+    //   shape: botonRoundedRectangleBorder(),
+    // ),
     child: Text('Omitir', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
@@ -193,16 +197,21 @@ Widget selecionarComercio() {
       return ButtonTheme(
         minWidth: 215.0,
         height: 40.0,
-        child: ElevatedButton(
+        child: RaisedButton(
             child: Text('Buscar en el mapa',
                 style: TextStyle(color: Colors.white)),
-            style: ElevatedButton.styleFrom(
-              primary: Style.Colors.mainColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(8.0),
-                side: BorderSide(color: Style.Colors.mainColor),
-              ),
+            color: Style.Colors.mainColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: new BorderRadius.circular(8.0),
+              side: BorderSide(color: Style.Colors.mainColor),
             ),
+            // style: ElevatedButton.styleFrom(
+            //   primary: Style.Colors.mainColor,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: new BorderRadius.circular(8.0),
+            //     side: BorderSide(color: Style.Colors.mainColor),
+            //   ),
+            // ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -212,7 +221,7 @@ Widget selecionarComercio() {
               );
             }),
       );
-      // return ElevatedButton(
+      // return RaisedButton(
       //     child:
       //         Text('Buscar en el mapa', style: TextStyle(color: Colors.white)),
       //     color: Style.Colors.mainColor,
