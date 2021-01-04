@@ -5,13 +5,13 @@ import 'package:prueba3_git/models/auditoria_response.dart';
 import 'package:prueba3_git/screens/auditoria_detalle_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
-class ConsultaAuditoriaScreen extends StatefulWidget {
+class ConsultaInventarioScreen extends StatefulWidget {
   @override
-  _ConsultaAuditoriaScreenState createState() =>
-      _ConsultaAuditoriaScreenState();
+  _ConsultaInventarioScreenState createState() =>
+      _ConsultaInventarioScreenState();
 }
 
-class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
+class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
   List<Auditoria> listaAuditorias;
   Auditoria unaAudutoria;
 
@@ -79,7 +79,7 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
             Column(
               children: <Widget>[
                 Text(
-                  "No se encuentran auditorias anteriores",
+                  "No se encuentran consultas de inventario",
                   style: TextStyle(color: Colors.black45),
                 )
               ],
@@ -92,7 +92,7 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text('Auditorias realizadas'),
+          title: Text('Consultas de inventario realizadas'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(

@@ -64,7 +64,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
         backgroundColor: Style.Colors.mainColor,
       ),
       backgroundColor: Style.Colors.secondColor,
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

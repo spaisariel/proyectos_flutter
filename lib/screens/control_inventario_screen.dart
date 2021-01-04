@@ -102,7 +102,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
           child: Column(
             children: [
               SizedBox(height: 30),
-              BotonesBusquedaWidget(false),
+              BotonesBusquedaWidget(true),
               SizedBox(height: 30),
               //AuditoriaTablaWidget(),
               SizedBox(height: 80),
@@ -114,5 +114,42 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
           ),
         ),
       );
+  }
+
+  Widget tablaProductos(List<Product> productos) {
+    return Container(
+      child: DataTable(
+        columnSpacing: 10, horizontalMargin: 10.0,
+
+        //columnSpacing: 1.0,
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'ID',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'NOMBRE',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+        ],
+        rows: productos
+            .map(
+              (producto) => DataRow(
+                selected: productos.contains(producto),
+                cells: [
+                  DataCell(
+                    Text(producto.id.toString()),
+                    onTap: () {},
+                  ),
+                ],
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 }

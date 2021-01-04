@@ -7,16 +7,16 @@ import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
 
-class BusquedaProductosAuditoriaScreen extends StatefulWidget {
-  BusquedaProductosAuditoriaScreen({Key key}) : super(key: key);
+class BusquedaProductosControlScreen extends StatefulWidget {
+  BusquedaProductosControlScreen({Key key}) : super(key: key);
 
   @override
-  _BusquedaProductosAuditoriaScreenState createState() =>
-      _BusquedaProductosAuditoriaScreenState();
+  _BusquedaProductosControlScreenState createState() =>
+      _BusquedaProductosControlScreenState();
 }
 
-class _BusquedaProductosAuditoriaScreenState
-    extends State<BusquedaProductosAuditoriaScreen> {
+class _BusquedaProductosControlScreenState
+    extends State<BusquedaProductosControlScreen> {
   List<bool> filtrosSeleccionados;
   Product filtroSeleccionado;
   Product unProducto;
@@ -236,7 +236,7 @@ class _BusquedaProductosAuditoriaScreenState
                   icon: Icon(Icons.assignment,
                       size: 40, color: Style.Colors.secondColor),
                   label: Text(
-                    'Agregar a control de inventario',
+                    'Agregar a auditoria',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   )),
             )

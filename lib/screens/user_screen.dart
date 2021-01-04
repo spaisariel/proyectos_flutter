@@ -78,31 +78,30 @@ class _UserScreenState extends State<UserScreen> {
     User unUsuario = data.unUsuario;
 
     return Scaffold(
-      body: DefaultTabController(
-        length: 2,
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 200.0,
-                floating: false,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    title: Text(
-                        "Perfil - ${unUsuario.userInfo.firstName} ${unUsuario.userInfo.lastName}",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
-                        )),
-                    background: Image.network(
-                      "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
-                      fit: BoxFit.cover,
-                    )),
-              ),
-            ];
-          },
-          body: Column(children: [
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: 200.0,
+              floating: false,
+              pinned: true,
+              flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  title: Text(
+                      "Perfil - ${unUsuario.userInfo.firstName} ${unUsuario.userInfo.lastName}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      )),
+                  background: Image.network(
+                    "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
+                    fit: BoxFit.cover,
+                  )),
+            ),
+          ];
+        },
+        body: SingleChildScrollView(
+          child: Column(children: [
             ListTile(
               title: Row(
                 children: [

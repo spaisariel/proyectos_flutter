@@ -3,6 +3,7 @@ import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
 import 'package:prueba3_git/screens/consulta_auditoria_screen.dart';
+import 'package:prueba3_git/screens/consulta_inventario_screen.dart';
 import 'package:prueba3_git/screens/control_inventario_screen.dart';
 import '../style/theme.dart' as Style;
 
@@ -88,7 +89,32 @@ class BotonesPrincipalWidget extends StatelessWidget {
             icon: Icon(Icons.assignment,
                 size: 40, color: Style.Colors.secondColor),
             label: Text(
-              'Consulta de auditorias',
+              'Auditorias realizadas',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            )),
+      ),
+      SizedBox(height: 20),
+      ButtonTheme(
+        buttonColor: Style.Colors.mainColor,
+        height: MediaQuery.of(context).size.height * 0.1,
+        minWidth: MediaQuery.of(context).size.width * 0.8,
+        child: RaisedButton.icon(
+            shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            // style: ElevatedButton.styleFrom(
+            //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            // ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConsultaInventarioScreen(),
+                ),
+              );
+            },
+            icon: Icon(Icons.receipt_long,
+                size: 40, color: Style.Colors.secondColor),
+            label: Text(
+              'Consultas de inventario',
               style: TextStyle(color: Colors.white, fontSize: 20),
             )),
       )

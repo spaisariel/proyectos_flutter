@@ -241,6 +241,13 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                             //           BorderSide(color: Style.Colors.mainColor),
                             //     )),
                             onPressed: () async {
+                              //Cuando se arregle el login de google o descargue el repo hay que borrar el navigator de acá
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        PaginaInicial(unUsuario),
+                                  ));
                               setState(() {
                                 boolCargando = true;
                               });
@@ -252,12 +259,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                               unUsuario = await postLogin(
                                   context, 'sis', 'c29wb3J0ZQ==', idDevice);
 
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        Login2Screen(unUsuario),
-                                  ));
                               //}
                             }),
                       ),

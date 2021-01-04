@@ -19,14 +19,16 @@ class _StockScreenState extends State<StockScreen> {
             backgroundColor: Style.Colors.mainColor,
             leading: new WillPopScope(
                 onWillPop: () async => false, child: Text(''))),
-        body: Column(
+        body: SingleChildScrollView(
+            child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: 20),
             BotonesBusquedaWidget(false),
             SizedBox(height: 20),
             BotonesPrincipalWidget(),
           ],
-        ));
+        )));
   }
 }
