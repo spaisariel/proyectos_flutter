@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/main.dart';
 import 'package:prueba3_git/models/user.dart';
+import 'package:prueba3_git/repository/repository.dart';
 
 import '../style/theme.dart' as Style;
 
@@ -74,6 +75,7 @@ class BotonesControlInventarioWidget extends StatelessWidget {
                 TextButton(
                   child: Text('Aceptar'),
                   onPressed: () {
+                    Repository().postNuevaAuditoriaStock(context);
                     Navigator.push(
                         context,
                         MaterialPageRoute(

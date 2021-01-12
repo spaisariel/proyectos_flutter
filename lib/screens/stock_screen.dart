@@ -25,7 +25,7 @@ class _StockScreenState extends State<StockScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20),
-            BotonesBusquedaWidget(false),
+            BotonesBusquedaWidget("comun"),
             SizedBox(height: 20),
             BotonesPrincipalWidget(),
           ],

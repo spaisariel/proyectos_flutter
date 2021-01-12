@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_product_bloc.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_response.dart';
-import 'package:prueba3_git/screens/auditoria_fake_screen.dart';
+import 'package:prueba3_git/screens/auditoria_screen.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
@@ -25,6 +25,7 @@ class _BusquedaProductosAuditoriaScreenState
   List<Product> selectedProducts;
 
   TextEditingController hintController = new TextEditingController();
+  TextEditingController _textFieldController = TextEditingController();
 
   @override
   void initState() {
@@ -104,6 +105,7 @@ class _BusquedaProductosAuditoriaScreenState
 
   Widget _buildHomeWidget(ProductResponse data) {
     List<Product> productos = data.products;
+    //List<Item> itemsAuditoria = new List()
 
     if (productos.length == 0) {
       return Container(
@@ -131,117 +133,157 @@ class _BusquedaProductosAuditoriaScreenState
           title: Text('Busqueda manual'),
           centerTitle: true,
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            FiltroBusquedaWidget(productos),
-            SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: TextFormField(
-                      controller: hintController,
-                      decoration: InputDecoration(
-                        hintText: 'Ingrese nombre o codigo',
-                      ),
-                      onSaved: (String valor) {
-                        //hint = valor;
-                      },
-                    )),
-                IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        productListBloc..getProductLista(hintController.text);
-                      });
-                    })
-              ],
-            ),
-            Container(
-              child: DataTable(
-                columnSpacing: 10,
-                horizontalMargin: 10.0,
-                showCheckboxColumn: true,
-                //columnSpacing: 1.0,
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'ID',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'NOMBRE',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              FiltroBusquedaWidget(productos),
+              SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      child: TextFormField(
+                        controller: hintController,
+                        decoration: InputDecoration(
+                          hintText: 'Ingrese nombre o codigo',
+                        ),
+                        onSaved: (String valor) {
+                          //hint = valor;
+                        },
+                      )),
+                  IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        setState(() {
+                          productListBloc..getProductLista(hintController.text);
+                        });
+                      })
                 ],
-                rows: productos
-                    .take(5)
-                    .map(
-                      (producto) => DataRow(
-                          selected: selectedProducts.contains(producto),
-                          onSelectChanged: (b) {
-                            //print('OnSelected');
-                            onSelectedRow(b, producto);
-                          },
-                          cells: [
-                            DataCell(
-                              Text(producto.id.toString()),
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProductScreen(
-                                    producto.id.toString(),
+              ),
+              Container(
+                child: DataTable(
+                  columnSpacing: 10,
+                  horizontalMargin: 10.0,
+                  showCheckboxColumn: true,
+
+                  //columnSpacing: 1.0,
+                  columns: const <DataColumn>[
+                    DataColumn(
+                      label: Text(
+                        'ID',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                    DataColumn(
+                      label: Text(
+                        'NOMBRE',
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                  ],
+                  rows: productos
+                      .map(
+                        (producto) => DataRow(
+                            selected: selectedProducts.contains(producto),
+                            onSelectChanged: (b) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    _buildPopUpObservation(context),
+                              );
+                              onSelectedRow(b, producto);
+                            },
+                            cells: [
+                              DataCell(
+                                Text(producto.id.toString()),
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductScreen(
+                                      producto.id.toString(),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            DataCell(
-                              Text(
-                                producto.name,
-                                overflow: TextOverflow.ellipsis,
+                              DataCell(
+                                Text(
+                                  producto.name,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
-                          ]),
-                    )
-                    .toList(),
+                            ]),
+                      )
+                      .toList(),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-
-            //CORREGIR ESTILO, TAMAÑO Y/O COLOR DEL BOTON DE ABAJO
-            ButtonTheme(
-              buttonColor: Style.Colors.mainColor,
-              height: MediaQuery.of(context).size.height * 0.1,
-              minWidth: MediaQuery.of(context).size.width * 0.8,
-              child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                  ),
-                  onPressed: () {
-                    //Navigator.of(context).pop(idProductos);
-                    //Navigator.pop(context, idProductos);
-                    //AuditoriaFakeScreen
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AuditoriaFakeScreen(),
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.assignment,
-                      size: 40, color: Style.Colors.secondColor),
-                  label: Text(
-                    'Agregar a control de inventario',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  )),
-            )
-          ],
+              SizedBox(height: 20),
+              ButtonTheme(
+                buttonColor: Style.Colors.mainColor,
+                height: MediaQuery.of(context).size.height * 0.1,
+                minWidth: MediaQuery.of(context).size.width * 0.8,
+                child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              AuditoriaScreen(/*_saved*/ selectedProducts),
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.assignment,
+                        size: 40, color: Style.Colors.secondColor),
+                    label: Text(
+                      'Agregar a auditoria',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    )),
+              )
+            ],
+          ),
         ),
       );
+  }
+
+  Widget _buildPopUpObservation(BuildContext context) {
+    String valueText;
+    String codeDialog;
+
+    return new AlertDialog(
+      title: const Text('Ingrese una observación'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextField(
+            onChanged: (value) {
+              setState(() {
+                valueText = value;
+              });
+            },
+            controller: _textFieldController,
+            decoration: InputDecoration(
+                border: InputBorder.none, hintText: 'Observación'),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        FlatButton(
+          color: Colors.green,
+          textColor: Colors.white,
+          child: Text('Aceptar'),
+          onPressed: () {
+            setState(() {
+              codeDialog = valueText;
+              Navigator.pop(context);
+            });
+          },
+        )
+      ],
+    );
   }
 }

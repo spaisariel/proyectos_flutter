@@ -103,7 +103,7 @@ class Repository {
 
   //Despues sacar el token de acá
   String token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNpcyIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL3N1YnNjcmlwdG9yIjoibGFwbGF5YWNhcGFjaXRhY2lvbiIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL2lkdXN1YXJpbyI6IjIiLCJyb2xlIjoiMTExIiwiaHR0cDovL3NjaGVtYXMuZ3lhLmNvbS9pZGVudGl0eS9jbGFpbXMvY29kaWdvc3VjdXJzYWwiOiIxIiwibmJmIjoxNjA4MTQ0NTc3LCJleHAiOjE2MDk0NDA1NzcsImlhdCI6MTYwODE0NDU3NywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0OTIyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDkyMjAifQ.D-gqLpm4YhdisvMX62cJJ0pzoVzOBhhk13qe5CP65is';
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNpcyIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL3N1YnNjcmlwdG9yIjoibGFwbGF5YWNhcGFjaXRhY2lvbiIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL2lkdXN1YXJpbyI6IjIiLCJyb2xlIjoiMTExIiwiaHR0cDovL3NjaGVtYXMuZ3lhLmNvbS9pZGVudGl0eS9jbGFpbXMvY29kaWdvc3VjdXJzYWwiOiIxIiwibmJmIjoxNjA5OTU2MzU4LCJleHAiOjE2MTEyNTIzNTgsImlhdCI6MTYwOTk1NjM1OCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0OTIyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDkyMjAifQ.HK_e5YLdhBrEqwt3F07EmehtiAc84aauW30EBA7PQjE';
 
   //////////////////////////////////////////////////////////////////////////////
   ///////////////METODOS GET PARA OBTENCION DE DATOS ///////////////////////////
@@ -197,31 +197,87 @@ class Repository {
   ///////////////METODOS POST PARA SUBIDA DE DE DATOS //////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  // void postNuevaAuditoria(context) {
-  //   String token =
-  //       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InNpcyIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL3N1YnNjcmlwdG9yIjoibGFwbGF5YWNhcGFjaXRhY2lvbiIsImh0dHA6Ly9zY2hlbWFzLmd5YS5jb20vaWRlbnRpdHkvY2xhaW1zL2lkdXN1YXJpbyI6IjIiLCJyb2xlIjoiMTExIiwiaHR0cDovL3NjaGVtYXMuZ3lhLmNvbS9pZGVudGl0eS9jbGFpbXMvY29kaWdvc3VjdXJzYWwiOiIxIiwibmJmIjoxNjA3OTc5MDM1LCJleHAiOjE2MDkyNzUwMzUsImlhdCI6MTYwNzk3OTAzNSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0OTIyMCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NDkyMjAifQ.BCPuDem_1Pg2PcGxyqI1-FVD61v8wGRNywIo-46ffHU";
-  //   //String token = usuario.token;
-  //   List<Auditoria> detalleAuditorias;
-  //   String webServiceUrl = 'Audit/NewAuditStock';
+  void postNuevaAuditoria(listaProductos) {
+    String webServiceUrl = 'Audit/NewAuditStock';
 
-  //   Auditoria unaAuditoria;
-  //   unaAuditoria.branchOfficeId = 1;
-  //   unaAuditoria.depositId = 1;
-  //   unaAuditoria.observations = "Auditoria prueba";
-  //   unaAuditoria.items.productId = "58";
-  //   unaAuditoria.items.quantity = 10;
-  //   unaAuditoria.items.presentationId = "Unidad";
+    Auditoria unaAuditoria = new Auditoria();
+    unaAuditoria.branchOfficeId = 1;
+    unaAuditoria.depositId = 2;
+    unaAuditoria.observations = "Prueba";
 
-  //   detalleAuditorias.add(unaAuditoria);
+    int index = 0;
+    while (index < listaProductos.length) {
+      Item unItem = new Item();
+      unItem.productId = listaProductos[index].id;
+      unItem.presentationId = listaProductos[index].prices[0].presentation;
+      if (unaAuditoria.items == null) {
+        unaAuditoria.items = new List<Item>();
+      }
+      if (unItem.reasons == null) {
+        unItem.reasons = new List<Reason>();
+      }
+      unaAuditoria.items.add(unItem);
+      index++;
+    }
 
-  //   Map<String, String> header = {
-  //     'Content-Type': 'application/json; charset=utf-8',
-  //     'Authorization': 'Bearer $token',
-  //   };
+    Map<String, String> header = {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Authorization': 'Bearer $token',
+    };
 
-  //   http.post(urlBase + webServiceUrl,
-  //       headers: header, body: auditoriaToJson(detalleAuditorias));
+    http.post(urlBase + webServiceUrl,
+        headers: header, body: auditoriaToJson(unaAuditoria));
 
-  //   print(auditoriaToJson(detalleAuditorias));
-  // }
+    print(auditoriaToJson(unaAuditoria));
+  }
+
+  void postNuevaAuditoriaStock(listaProductos) {
+    String webServiceUrl = 'Audit/NewAuditStockRack';
+
+    Auditoria unaAuditoria = new Auditoria();
+    unaAuditoria.branchOfficeId = 1;
+    unaAuditoria.depositId = 2;
+    unaAuditoria.observations = "Prueba";
+
+    int index = 0;
+    while (index < listaProductos.length) {
+      Item unItem = new Item();
+      unItem.productId = listaProductos[index].id;
+      unItem.presentationId = listaProductos[index].prices[0].presentation;
+      if (unaAuditoria.items == null) {
+        unaAuditoria.items = new List<Item>();
+      }
+      if (unItem.reasons == null) {
+        unItem.reasons = new List<Reason>();
+      }
+      unaAuditoria.items.add(unItem);
+      index++;
+    }
+
+    Map<String, String> header = {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Authorization': 'Bearer $token',
+    };
+
+    http.post(urlBase + webServiceUrl,
+        headers: header, body: auditoriaToJson(unaAuditoria));
+
+    print(auditoriaToJson(unaAuditoria));
+  }
+
+  //Devuelve una lista de todas las consultas de stock
+  Future<AuditoriaResponse> getAuditoriaStock() async {
+    try {
+      Response response = await _dio.get(urlBase + "Audit/NewAuditStock",
+          //"https://run.mocky.io/v3/06fc7f65-bcf6-4e39-a91a-347e16e87e82",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      AuditoriaResponse auditoriaResponse =
+          new AuditoriaResponse(auditoriaFromJson(x), "");
+      return auditoriaResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return AuditoriaResponse.withError("$error");
+    }
+  }
 }

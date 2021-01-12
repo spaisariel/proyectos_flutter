@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_product_bloc.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_response.dart';
-import 'package:prueba3_git/screens/auditoria_fake_screen.dart';
+import 'package:prueba3_git/screens/control_inventario_screen.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
@@ -180,12 +180,10 @@ class _BusquedaProductosControlScreenState
                   ),
                 ],
                 rows: productos
-                    .take(5)
                     .map(
                       (producto) => DataRow(
                           selected: selectedProducts.contains(producto),
                           onSelectChanged: (b) {
-                            //print('OnSelected');
                             onSelectedRow(b, producto);
                           },
                           cells: [
@@ -212,8 +210,6 @@ class _BusquedaProductosControlScreenState
               ),
             ),
             SizedBox(height: 20),
-
-            //CORREGIR ESTILO, TAMAÑO Y/O COLOR DEL BOTON DE ABAJO
             ButtonTheme(
               buttonColor: Style.Colors.mainColor,
               height: MediaQuery.of(context).size.height * 0.1,
@@ -223,20 +219,18 @@ class _BusquedaProductosControlScreenState
                     shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
                   ),
                   onPressed: () {
-                    //Navigator.of(context).pop(idProductos);
-                    //Navigator.pop(context, idProductos);
-                    //AuditoriaFakeScreen
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AuditoriaFakeScreen(),
+                        builder: (context) =>
+                            ControlInventarioScreen(selectedProducts),
                       ),
                     );
                   },
                   icon: Icon(Icons.assignment,
                       size: 40, color: Style.Colors.secondColor),
                   label: Text(
-                    'Agregar a auditoria',
+                    'Agregar a control',
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   )),
             )

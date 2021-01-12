@@ -1,119 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_product_bloc.dart';
+import 'package:prueba3_git/main.dart';
 import 'package:prueba3_git/models/product.dart';
-import 'package:prueba3_git/models/product_response.dart';
+import 'package:prueba3_git/models/user.dart';
+import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-//import 'package:prueba3_git/widgets/auditoria_datatable_widget.dart';
 import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
-import 'package:prueba3_git/widgets/botones_controlinventario_widget.dart';
 
+// ignore: must_be_immutable
 class ControlInventarioScreen extends StatefulWidget {
+  List<Product> listaProductos;
+  ControlInventarioScreen(this.listaProductos);
   @override
   _ControlInventarioScreenState createState() =>
-      _ControlInventarioScreenState();
+      _ControlInventarioScreenState(this.listaProductos);
 }
 
 class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
-  List<Product> lista;
-  String hint = 'elast';
-
+  List<Product> listaProductos;
+  _ControlInventarioScreenState(this.listaProductos);
   @override
   void initState() {
     super.initState();
-    productListBloc..getProductLista(hint);
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ProductResponse>(
-      stream: productListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<ProductResponse> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
-            return _buildErrorWidget(snapshot.data.error);
-          }
-          return _buildHomeWidget(snapshot.data);
-        } else if (snapshot.hasError) {
-          return _buildErrorWidget(snapshot.error);
-        } else {
-          return _buildLoadingWidget();
-        }
-      },
-    );
-  }
-
-  Widget _buildLoadingWidget() {
-    return Center(
+    return Scaffold(
+      backgroundColor: Style.Colors.secondColor,
+      appBar: AppBar(
+        backgroundColor: Style.Colors.mainColor,
+        title: Text('Control de inventario'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 25.0,
-          width: 25.0,
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-            strokeWidth: 4.0,
-          ),
-        )
-      ],
-    ));
-  }
-
-  Widget _buildErrorWidget(String error) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("Error occured: $error"),
-      ],
-    ));
-  }
-
-  Widget _buildHomeWidget(ProductResponse data) {
-    lista = data.products;
-
-    if (lista.length == 0) {
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(
-                  "No More Movies",
-                  style: TextStyle(color: Colors.black45),
-                )
-              ],
-            )
+          children: [
+            SizedBox(height: 30),
+            BotonesBusquedaWidget("inventario"),
+            SizedBox(height: 30),
+            tablaProductos(listaProductos),
+            SizedBox(height: 80),
+            Container(
+              child: botonesBusquedaWidget(context),
+              alignment: Alignment.bottomCenter,
+            ),
           ],
         ),
-      );
-    } else
-      return Scaffold(
-        backgroundColor: Style.Colors.secondColor,
-        appBar: AppBar(
-          backgroundColor: Style.Colors.mainColor,
-          title: Text('Control de inventario'),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: 30),
-              BotonesBusquedaWidget(true),
-              SizedBox(height: 30),
-              //AuditoriaTablaWidget(),
-              SizedBox(height: 80),
-              Container(
-                child: BotonesControlInventarioWidget(),
-                alignment: Alignment.bottomCenter,
-              ),
-            ],
-          ),
-        ),
-      );
+      ),
+    );
   }
 
   Widget tablaProductos(List<Product> productos) {
@@ -145,11 +79,123 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                     Text(producto.id.toString()),
                     onTap: () {},
                   ),
+                  DataCell(
+                    Text(producto.name),
+                    onTap: () {},
+                  ),
                 ],
               ),
             )
             .toList(),
       ),
     );
+  }
+
+  Widget botonesBusquedaWidget(BuildContext context) {
+    User unUsuario;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        ButtonTheme(
+          buttonColor: Style.Colors.cancelColor2,
+          height: MediaQuery.of(context).size.height * 0.07,
+          minWidth: MediaQuery.of(context).size.width * 0.3,
+          child: RaisedButton(
+              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // style: ElevatedButton.styleFrom(
+              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // ),
+              onPressed: () {
+                //Navigator.of(context).pop();
+                _showMaterialDialogCancelar(context, unUsuario);
+              },
+              child: Column(
+                children: [
+                  Text('Cancelar',
+                      style: TextStyle(color: Colors.white, fontSize: 15)),
+                  Text('control',
+                      style: TextStyle(color: Colors.white, fontSize: 15))
+                ],
+              )),
+        ),
+        SizedBox(width: 20),
+        ButtonTheme(
+          buttonColor: Style.Colors.acceptColor2,
+          height: MediaQuery.of(context).size.height * 0.07,
+          minWidth: MediaQuery.of(context).size.width * 0.3,
+          child: RaisedButton(
+              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // style: ElevatedButton.styleFrom(
+              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              // ),
+              onPressed: () {
+                //Navigator.of(context).pop();
+                _showMaterialDialogAceptar(context, unUsuario);
+              },
+              child: Column(
+                children: [
+                  Text('Aceptar',
+                      style: TextStyle(color: Colors.white, fontSize: 15)),
+                  Text('control',
+                      style: TextStyle(color: Colors.white, fontSize: 15))
+                ],
+              )),
+        )
+      ],
+    );
+  }
+
+  _showMaterialDialogAceptar(context, unUsuario) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title:
+                  new Text("Se guardo correctamente el control de inventario"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Aceptar'),
+                  onPressed: () {
+                    //CAMBIAR ACÁ
+                    Repository().postNuevaAuditoriaStock(listaProductos);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaginaInicial(unUsuario)));
+                  },
+                )
+              ],
+            ));
+  }
+
+  _showMaterialDialogCancelar(context, unUsuario) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text(
+                  "¿Seguro desea cancelar el control? Perderá los datos no guardados"),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                FlatButton(
+                  child: Text('Si'),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PaginaInicial(unUsuario)));
+                  },
+                ),
+              ],
+            ));
   }
 }

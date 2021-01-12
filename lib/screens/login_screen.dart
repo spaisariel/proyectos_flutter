@@ -31,6 +31,32 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
+  // _googleSignIn.signIn().then((result){
+  //         result.authentication.then((googleKey){
+  //             print(googleKey.accessToken);
+  //             print(googleKey.idToken);
+  //             print(_googleSignIn.currentUser.displayName);
+  //         }).catchError((err){
+  //           print('inner error');
+  //         });
+  //     }).catchError((err){
+  //         print('error occured');
+  //     });
+
+  void getGoogleToken() async {
+    _googleSignIn.signIn().then((result) {
+      result.authentication.then((googleKey) {
+        print(googleKey.accessToken);
+        print(googleKey.idToken);
+        print(_googleSignIn.currentUser.displayName);
+      }).catchError((err) {
+        print('inner error');
+      });
+    }).catchError((err) {
+      print('error occured');
+    });
+  }
+
   void getIdDevice() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -64,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
 
   Widget build(BuildContext context) {
     getIdDevice();
+    getGoogleToken();
     return Scaffold(
       backgroundColor: Style.Colors.secondColor,
       body: SingleChildScrollView(
@@ -136,6 +163,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                           //     side: BorderSide(color: Style.Colors.mainColor),
                           //   ),
                           // ),
+
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 new MaterialPageRoute(
@@ -220,7 +248,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                       SizedBox(
                         height: 50,
                       ),
-                      //botonLogin(),
                       ButtonTheme(
                         minWidth: 215.0,
                         height: 40.0,
@@ -241,7 +268,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                             //           BorderSide(color: Style.Colors.mainColor),
                             //     )),
                             onPressed: () async {
-                              //Cuando se arregle el login de google o descargue el repo hay que borrar el navigator de acá
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

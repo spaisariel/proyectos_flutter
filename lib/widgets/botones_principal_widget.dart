@@ -14,6 +14,7 @@ class BotonesPrincipalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Product> listaProductos = [];
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       ButtonTheme(
         buttonColor: Style.Colors.mainColor,
@@ -28,7 +29,7 @@ class BotonesPrincipalWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AuditoriaScreen(),
+                  builder: (context) => AuditoriaScreen(listaProductos),
                 ),
               );
             },
@@ -55,7 +56,7 @@ class BotonesPrincipalWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ControlInventarioScreen(),
+                  builder: (context) => ControlInventarioScreen(listaProductos),
                   //builder: (context) => ProductScreen(),
                 ),
               );

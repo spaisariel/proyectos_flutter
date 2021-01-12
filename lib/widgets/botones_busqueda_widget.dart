@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:prueba3_git/screens/busqueda_productos_auditoria.dart';
+import 'package:prueba3_git/screens/busqueda_productos_control.dart';
 
 import 'package:prueba3_git/screens/busquedamanual_screen.dart';
 
 import '../style/theme.dart' as Style;
 
 class BotonesBusquedaWidget extends StatefulWidget {
-  final bool llamada;
+  final String llamada;
   BotonesBusquedaWidget(this.llamada);
   @override
   _BotonesBusquedaWidgetState createState() =>
@@ -16,7 +17,7 @@ class BotonesBusquedaWidget extends StatefulWidget {
 }
 
 class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
-  final bool llamada;
+  final String llamada;
   _BotonesBusquedaWidgetState(this.llamada);
   // ignore: unused_field
   String _scanBarcode = 'Desconocido';
@@ -35,7 +36,6 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
 
   Future<void> scanQR() async {
     String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.QR);
@@ -89,7 +89,7 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
               //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
               // ),
               onPressed: () async {
-                if (llamada) {
+                if (llamada == "auditoria") {
                   idProductos = await Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -97,6 +97,16 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                         context,
                       ) =>
                           BusquedaProductosAuditoriaScreen(),
+                    ),
+                  );
+                } else if (llamada == "inventario") {
+                  idProductos = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (
+                        context,
+                      ) =>
+                          BusquedaProductosControlScreen(),
                     ),
                   );
                 } else {

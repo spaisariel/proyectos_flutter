@@ -78,7 +78,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 Icon(Icons.arrow_upward_rounded)
               ],
             ),
-            //Text('$_counter', style: Theme.of(context).textTheme.bodyText1),
             Container(
               child: chartWidget,
               color: Style.Colors.blanco,
