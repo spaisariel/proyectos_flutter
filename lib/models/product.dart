@@ -10,6 +10,7 @@ class Product {
   Product({
     this.prices,
     this.id,
+    this.internalCode,
     this.name,
     this.subcategorieId,
     this.subcategorieName,
@@ -28,10 +29,12 @@ class Product {
     this.order,
     this.containsVariations,
     this.store,
+    this.observation,
   });
 
   List<Price> prices;
   String id;
+  String internalCode;
   String name;
   String subcategorieId;
   String subcategorieName;
@@ -50,10 +53,12 @@ class Product {
   int order;
   bool containsVariations;
   dynamic store;
+  String observation;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
         prices: List<Price>.from(json["Prices"].map((x) => Price.fromJson(x))),
         id: json["Id"],
+        internalCode: json["InternalCode"],
         name: json["Name"],
         subcategorieId: json["SubcategorieId"],
         subcategorieName: json["SubcategorieName"],
@@ -72,11 +77,13 @@ class Product {
         order: json["Order"],
         containsVariations: json["ContainsVariations"],
         store: json["Store"],
+        observation: json["Observation"],
       );
 
   Map<String, dynamic> toJson() => {
         "Prices": List<dynamic>.from(prices.map((x) => x.toJson())),
         "Id": id,
+        "InternalCode": internalCode,
         "Name": name,
         "SubcategorieId": subcategorieId,
         "SubcategorieName": subcategorieName,
@@ -95,6 +102,7 @@ class Product {
         "Order": order,
         "ContainsVariations": containsVariations,
         "Store": store,
+        "Observation": observation,
       };
 }
 

@@ -29,19 +29,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
   String idDevice;
   bool boolCargando = false;
 
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  final controladorUsuario = TextEditingController();
+  final controladorContrasenia = TextEditingController();
 
-  // _googleSignIn.signIn().then((result){
-  //         result.authentication.then((googleKey){
-  //             print(googleKey.accessToken);
-  //             print(googleKey.idToken);
-  //             print(_googleSignIn.currentUser.displayName);
-  //         }).catchError((err){
-  //           print('inner error');
-  //         });
-  //     }).catchError((err){
-  //         print('error occured');
-  //     });
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   void getGoogleToken() async {
     _googleSignIn.signIn().then((result) {
@@ -226,9 +217,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                             hintText: 'ejemplo@ejemplo.com',
                             labelText: 'Direccion de correo',
                           ),
-                          onSaved: (String valor) {
-                            nombre = valor;
-                          },
+                          controller: controladorUsuario,
+                          // onSaved: (String valor) {
+                          //   nombre = valor;
+                          // },
                         ),
                       ),
                       //passwordField(),
@@ -240,9 +232,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                             hintText: 'Contraseña',
                             labelText: 'Contraseña',
                           ),
-                          onSaved: (String valor) {
-                            password = base64password(valor);
-                          },
+                          controller: controladorContrasenia,
+                          // onSaved: (String valor) {
+                          //   password = base64password(valor);
+                          // },
                         ),
                       ),
                       SizedBox(
@@ -268,6 +261,11 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                             //           BorderSide(color: Style.Colors.mainColor),
                             //     )),
                             onPressed: () async {
+                              password =
+                                  base64password(controladorContrasenia.text);
+                              unUsuario = await postLogin(context,
+                                  controladorUsuario.text, password, idDevice);
+
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -277,15 +275,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                               setState(() {
                                 boolCargando = true;
                               });
-                              //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                              /*if (formkey.currentState.validate()) {
-                                formkey.currentState.save();*/
-
-                              unUsuario = await postLogin(
-                                  context, 'sis', 'c29wb3J0ZQ==', idDevice);
-
-                              //}
                             }),
                       ),
                       RaisedButton.icon(
@@ -297,8 +286,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                           //   shape: Style.Shapes
                           //       .botonGrandeRoundedRectangleBorder(),
                           // ),
-                          onPressed: () {
+                          onPressed: () async {
                             _login();
+                            unUsuario = await postLoginConGoogle(context,
+                                _googleSignIn.currentUser.email, idDevice);
                           },
                           icon: Image.asset('lib/assets/g logo.png',
                               height: 20,

@@ -6,14 +6,20 @@ import 'package:prueba3_git/style/theme.dart' as Style;
 
 class ProductScreen extends StatefulWidget {
   final String idValue;
-  ProductScreen(this.idValue);
+  final String name;
+  final String image;
+  ProductScreen(this.idValue, this.name, this.image);
   @override
-  _ProductScreenState createState() => _ProductScreenState(this.idValue);
+  _ProductScreenState createState() =>
+      _ProductScreenState(this.idValue, this.name, this.image);
 }
 
 class _ProductScreenState extends State<ProductScreen> {
   final String idValue;
-  _ProductScreenState(this.idValue);
+  final String name;
+  final String image;
+  _ProductScreenState(this.idValue, this.name, this.image);
+
   @override
   void initState() {
     super.initState();
@@ -68,39 +74,46 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Widget _buildHomeWidget(ProductInfoResponse data) {
     ProductInfo unProducto = data.products[0];
-    // // ignore: unused_local_variable
-    // List<ProductInfo> productoSucursal = data.products;
+    List<Stock> stockProducto = data.products[0].stocks;
+
+    String descripcionProducto;
+    if (descripcionProducto == null) {
+      descripcionProducto = 'No tiene';
+    } else {
+      descripcionProducto = unProducto.descripcion;
+    }
+
+    String codigoProveedorHabitual;
+    if (codigoProveedorHabitual == null) {
+      codigoProveedorHabitual = 'No tiene';
+    } else {
+      codigoProveedorHabitual = unProducto.codigoProveedorHabitual;
+    }
+
+    String codigoPresentacionVenta;
+    if (codigoPresentacionVenta == null) {
+      codigoPresentacionVenta = 'No tiene';
+    } else {
+      codigoPresentacionVenta = unProducto.codigoPresentacionVenta;
+    }
 
     return MaterialApp(
         home: Scaffold(
             backgroundColor: Style.Colors.secondColor,
             appBar: AppBar(
               backgroundColor: Style.Colors.mainColor,
-              title: Text('Producto'),
+              title: Text(name),
               centerTitle: true,
             ),
-            //     Expanded(
-            //       child: Align(
-            //         alignment: Alignment.bottomCenter,
-            //         child: RaisedButton(
-            //             color: Style.Colors.cancelColor,
-            //             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            //             onPressed: () {},
-            //             child: Text(
-            //               'Quitar de la lista',
-            //               style: TextStyle(color: Colors.white, fontSize: 20),
-            //             )),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-
-            body: Padding(
+            body: SingleChildScrollView(
+                child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 20.0),
+                  Image.network(image),
                   ExpansionTile(
+                    initiallyExpanded: true,
                     title: Text(
                       "Datos principales",
                       style: TextStyle(
@@ -109,19 +122,21 @@ class _ProductScreenState extends State<ProductScreen> {
                     children: <Widget>[
                       ListTile(
                         title: Text(
-                          'Codigo: ' + unProducto.id.toString(),
+                          'Codigo articulo: ' + unProducto.id.toString(),
                         ),
                       ),
-                      //Este item produce un "Invalid Argument(s). Los tipos estan bien asi que supongo que se "enoja" porque recibe null.
-                      // ListTile(
-                      //   title: Text('Descripcion: ' + unProducto.descripcion),
-                      // ),
-                      // ListTile(
-                      //   title: Text('Unidad por bulto: ' +
-                      //       unProducto.unitsPerPackage.toString()),
-                      // ),
                       ListTile(
-                        title: Text('Costo: ${unProducto.costo}'),
+                        title: Text(
+                          'Codigo articulo: ' + unProducto.internalCode,
+                        ),
+                      ),
+                      ListTile(
+                        title: Text(
+                            'Codigo del proveedor: ' + codigoProveedorHabitual),
+                      ),
+                      ListTile(
+                        title: Text('Presentacion para venta: ' +
+                            codigoPresentacionVenta),
                       ),
                       ListTile(
                         title: Text('Existencia unidades: ' +
@@ -156,64 +171,60 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                     children: <Widget>[
                       DataTable(
-                          columnSpacing: 10,
-                          horizontalMargin: 10.0,
-                          columns: const <DataColumn>[
-                            DataColumn(
-                              label: Text(
-                                'Deposito',
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                              ),
+                        columnSpacing: 10,
+                        horizontalMargin: 10.0,
+                        columns: const <DataColumn>[
+                          DataColumn(
+                            label: Text(
+                              'Deposito',
+                              style: TextStyle(fontStyle: FontStyle.italic),
                             ),
-                            DataColumn(
-                              label: Text(
-                                'Sucursal',
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Sucursal',
+                              style: TextStyle(fontStyle: FontStyle.italic),
                             ),
-                            DataColumn(
-                              label: Text(
-                                'Existencias',
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Presentacion',
+                              style: TextStyle(fontStyle: FontStyle.italic),
                             ),
-                            DataColumn(
-                              label: Text(
-                                'Presentacion',
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                              ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Existencias',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          )
+                        ],
+                        rows: stockProducto
+                            .map(
+                              (producto) => DataRow(cells: [
+                                DataCell(
+                                  Text(producto.depositName),
+                                ),
+                                DataCell(
+                                  Text(
+                                    producto.branchOfficeName,
+                                    //overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(producto.presentationName),
+                                ),
+                                DataCell(
+                                  Text(producto.quantity.toString()),
+                                ),
+                              ]),
                             )
-                          ],
-                          rows: [
-                            DataRow(
-                              cells: [
-                                DataCell(Text('De. Vieytas')),
-                                DataCell(Text('Vieytas')),
-                                DataCell(Text('14')),
-                                DataCell(Text('1 litro'))
-                              ],
-                            ),
-                            DataRow(
-                              cells: [
-                                DataCell(Text('De. Vieytas')),
-                                DataCell(Text('Vieytas')),
-                                DataCell(Text('14')),
-                                DataCell(Text('1 litro'))
-                              ],
-                            ),
-                            DataRow(
-                              cells: [
-                                DataCell(Text('De. Vieytas')),
-                                DataCell(Text('Vieytas')),
-                                DataCell(Text('14')),
-                                DataCell(Text('1 litro'))
-                              ],
-                            )
-                          ]),
+                            .toList(),
+                      )
                     ],
                   ),
                 ],
               ),
-            )));
+            ))));
   }
 }

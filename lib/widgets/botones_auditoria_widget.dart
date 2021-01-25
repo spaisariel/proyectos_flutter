@@ -21,7 +21,6 @@ class BotonesAuditoriaWidget extends StatelessWidget {
               //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
               // ),
               onPressed: () {
-                //Navigator.of(context).pop();
                 _showMaterialDialogCancelar(context, unUsuario);
               },
               child: Column(

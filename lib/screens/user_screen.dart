@@ -17,6 +17,7 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   final User unUsuario;
   _UserScreenState(this.unUsuario);
+
   @override
   void initState() {
     super.initState();
@@ -76,6 +77,16 @@ class _UserScreenState extends State<UserScreen> {
 
   Widget _buildHomeWidget(UserResponse data) {
     User unUsuario = data.unUsuario;
+    String email = "No aplica";
+    String direccion = "No aplica";
+
+    if (unUsuario.userInfo.email != null) {
+      email = unUsuario.userInfo.email;
+    }
+
+    if (unUsuario.userInfo.addresses != null) {
+      direccion = unUsuario.userInfo.addresses;
+    }
 
     return Scaffold(
       body: NestedScrollView(
@@ -110,7 +121,7 @@ class _UserScreenState extends State<UserScreen> {
                     children: [
                       Text("E-Mail",
                           style: TextStyle(color: Style.Colors.secondColor)),
-                      Text(unUsuario.userInfo.email,
+                      Text(email,
                           style: TextStyle(color: Style.Colors.titleColor)),
                     ],
                   ),
@@ -142,7 +153,7 @@ class _UserScreenState extends State<UserScreen> {
                     children: [
                       Text("Dirección",
                           style: TextStyle(color: Style.Colors.secondColor)),
-                      Text(unUsuario.userInfo.addresses,
+                      Text(direccion,
                           style: TextStyle(color: Style.Colors.titleColor)),
                     ],
                   ),

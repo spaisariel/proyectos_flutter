@@ -22,6 +22,7 @@ class _BusquedaProductosAuditoriaScreenState
   Product unProducto;
   String idValue;
   String hint = '';
+  String codeDialog = '';
   List<Product> selectedProducts;
 
   TextEditingController hintController = new TextEditingController();
@@ -36,9 +37,15 @@ class _BusquedaProductosAuditoriaScreenState
 
   onSelectedRow(bool selected, Product unProducto) async {
     setState(() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) => _buildPopUpObservation(context),
+      );
       if (selected) {
+        unProducto.observation = codeDialog;
         selectedProducts.add(unProducto);
       } else {
+        unProducto.observation = '';
         selectedProducts.remove(unProducto);
       }
     });
@@ -105,153 +112,134 @@ class _BusquedaProductosAuditoriaScreenState
 
   Widget _buildHomeWidget(ProductResponse data) {
     List<Product> productos = data.products;
-    //List<Item> itemsAuditoria = new List()
 
-    if (productos.length == 0) {
-      return Container(
-        width: MediaQuery.of(context).size.width,
+    return Scaffold(
+      backgroundColor: Style.Colors.blanco,
+      appBar: AppBar(
+        backgroundColor: Style.Colors.mainColor,
+        title: Text('Busqueda manual'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(
-                  "No existen productos que coincidan con la busqueda",
-                  style: TextStyle(color: Colors.black45),
-                )
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            FiltroBusquedaWidget(productos),
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: TextFormField(
+                      controller: hintController,
+                      decoration: InputDecoration(
+                        hintText: 'Ingrese nombre o codigo',
+                      ),
+                      onSaved: (String valor) {
+                        //hint = valor;
+                      },
+                    )),
+                IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      setState(() {
+                        productListBloc..getProductLista(hintController.text);
+                      });
+                    })
               ],
-            )
-          ],
-        ),
-      );
-    } else
-      return Scaffold(
-        backgroundColor: Style.Colors.blanco,
-        appBar: AppBar(
-          backgroundColor: Style.Colors.mainColor,
-          title: Text('Busqueda manual'),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              FiltroBusquedaWidget(productos),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      child: TextFormField(
-                        controller: hintController,
-                        decoration: InputDecoration(
-                          hintText: 'Ingrese nombre o codigo',
-                        ),
-                        onSaved: (String valor) {
-                          //hint = valor;
-                        },
-                      )),
-                  IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        setState(() {
-                          productListBloc..getProductLista(hintController.text);
-                        });
-                      })
-                ],
-              ),
-              Container(
-                child: DataTable(
-                  columnSpacing: 10,
-                  horizontalMargin: 10.0,
-                  showCheckboxColumn: true,
+            ),
+            Container(
+              child: DataTable(
+                columnSpacing: 10,
+                horizontalMargin: 10.0,
+                showCheckboxColumn: true,
 
-                  //columnSpacing: 1.0,
-                  columns: const <DataColumn>[
-                    DataColumn(
-                      label: Text(
-                        'ID',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+                //columnSpacing: 1.0,
+                columns: const <DataColumn>[
+                  DataColumn(
+                    label: Text(
+                      'ID',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'NOMBRE',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'NOMBRE',
+                      style: TextStyle(fontStyle: FontStyle.italic),
                     ),
-                  ],
-                  rows: productos
-                      .map(
-                        (producto) => DataRow(
-                            selected: selectedProducts.contains(producto),
-                            onSelectChanged: (b) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    _buildPopUpObservation(context),
-                              );
-                              onSelectedRow(b, producto);
-                            },
-                            cells: [
-                              DataCell(
-                                Text(producto.id.toString()),
-                                onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductScreen(
-                                      producto.id.toString(),
-                                    ),
+                  ),
+                ],
+                rows: productos
+                    .map(
+                      (producto) => DataRow(
+                          selected: selectedProducts.contains(producto),
+                          onSelectChanged: (b) {
+                            // showDialog(
+                            //   context: context,
+                            //   builder: (BuildContext context) =>
+                            //       _buildPopUpObservation(context),
+                            // );
+                            onSelectedRow(b, producto);
+                          },
+                          cells: [
+                            DataCell(
+                              Text(producto.id.toString()),
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProductScreen(
+                                    producto.id.toString(),
+                                    producto.name,
+                                    producto.image,
                                   ),
                                 ),
                               ),
-                              DataCell(
-                                Text(
-                                  producto.name,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
+                            ),
+                            DataCell(
+                              Text(
+                                producto.name,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                            ]),
-                      )
-                      .toList(),
-                ),
+                            ),
+                          ]),
+                    )
+                    .toList(),
               ),
-              SizedBox(height: 20),
-              ButtonTheme(
-                buttonColor: Style.Colors.mainColor,
-                height: MediaQuery.of(context).size.height * 0.1,
-                minWidth: MediaQuery.of(context).size.width * 0.8,
-                child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AuditoriaScreen(/*_saved*/ selectedProducts),
-                        ),
-                      );
-                    },
-                    icon: Icon(Icons.assignment,
-                        size: 40, color: Style.Colors.secondColor),
-                    label: Text(
-                      'Agregar a auditoria',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    )),
-              )
-            ],
-          ),
+            ),
+            SizedBox(height: 20),
+            ButtonTheme(
+              buttonColor: Style.Colors.mainColor,
+              height: MediaQuery.of(context).size.height * 0.1,
+              minWidth: MediaQuery.of(context).size.width * 0.8,
+              child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AuditoriaScreen(/*_saved*/ selectedProducts),
+                      ),
+                    );
+                  },
+                  icon: Icon(Icons.assignment,
+                      size: 40, color: Style.Colors.secondColor),
+                  label: Text(
+                    'Agregar a auditoria',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  )),
+            )
+          ],
         ),
-      );
+      ),
+    );
   }
 
   Widget _buildPopUpObservation(BuildContext context) {
     String valueText;
-    String codeDialog;
 
     return new AlertDialog(
       title: const Text('Ingrese una observación'),

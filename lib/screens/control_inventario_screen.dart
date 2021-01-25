@@ -18,6 +18,11 @@ class ControlInventarioScreen extends StatefulWidget {
 class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
   List<Product> listaProductos;
   _ControlInventarioScreenState(this.listaProductos);
+
+  String codeDialog = '';
+
+  TextEditingController _textFieldController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -129,8 +134,11 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
               //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
               // ),
               onPressed: () {
-                //Navigator.of(context).pop();
-                _showMaterialDialogAceptar(context, unUsuario);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      _buildPopUpObservation(context, unUsuario),
+                );
               },
               child: Column(
                 children: [
@@ -159,7 +167,8 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                   child: Text('Aceptar'),
                   onPressed: () {
                     //CAMBIAR ACÁ
-                    Repository().postNuevaAuditoriaStock(listaProductos);
+                    Repository()
+                        .postNuevaAuditoriaStock(listaProductos, codeDialog);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -197,5 +206,43 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                 ),
               ],
             ));
+  }
+
+  Widget _buildPopUpObservation(BuildContext context, unUsuario) {
+    String valueText;
+
+    return new AlertDialog(
+      title: const Text('Ingrese una observación'),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextField(
+            onChanged: (value) {
+              setState(() {
+                valueText = value;
+              });
+            },
+            controller: _textFieldController,
+            decoration: InputDecoration(
+                border: InputBorder.none, hintText: 'Observación'),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        FlatButton(
+          color: Colors.green,
+          textColor: Colors.white,
+          child: Text('Aceptar'),
+          onPressed: () {
+            setState(() {
+              codeDialog = valueText;
+              //Navigator.pop(context);
+              _showMaterialDialogAceptar(context, unUsuario);
+            });
+          },
+        )
+      ],
+    );
   }
 }
