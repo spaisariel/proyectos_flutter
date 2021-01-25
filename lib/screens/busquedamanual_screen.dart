@@ -21,6 +21,9 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
   String idValue;
   String hint = 'arandela';
 
+  int perPage = 10;
+  int present = 0;
+
   TextEditingController hintController = new TextEditingController();
 
   @override
@@ -76,28 +79,8 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
   }
 
   Widget _buildHomeWidget(ProductResponse data) {
-    //lista = data.products;
     List<Product> productos = data.products;
 
-    // if (productos.length == 0) {
-    //   return Container(
-    //     width: MediaQuery.of(context).size.width,
-    //     child: Column(
-    //       mainAxisAlignment: MainAxisAlignment.center,
-    //       crossAxisAlignment: CrossAxisAlignment.center,
-    //       children: <Widget>[
-    //         Column(
-    //           children: <Widget>[
-    //             Text(
-    //               "No existen productos que coincidan con la busqueda",
-    //               style: TextStyle(color: Colors.black45),
-    //             )
-    //           ],
-    //         )
-    //       ],
-    //     ),
-    //   );
-    // } else
     return Scaffold(
       backgroundColor: Style.Colors.blanco,
       appBar: AppBar(
@@ -105,122 +88,115 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
         title: Text('Busqueda manual'),
         centerTitle: true,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          FiltroBusquedaWidget(productos),
-          SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: TextFormField(
-                    controller: hintController,
-                    decoration: InputDecoration(
-                      hintText: 'Ingrese nombre o codigo',
-                    ),
-                    onSaved: (String valor) {
-                      //hint = valor;
-                    },
-                  )),
-              IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    setState(() {
-                      productListBloc..getProductLista(hintController.text);
-                    });
-                  })
-            ],
-          ),
-          Container(
-            child: DataTable(
-              columnSpacing: 10,
-              horizontalMargin: 10.0,
-
-              //columnSpacing: 1.0,
-              columns: /*const <DataColumn>*/ [
-                DataColumn(
-                  label: Text(
-                    'CODIGO',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-                //Revisar que devuelve el producto, necesito la presentacion del mismo
-                // DataColumn(
-                //   label: Text(
-                //     'PRESENTACION',
-                //     style: TextStyle(fontStyle: FontStyle.italic),
-                //   ),
-                // ),
-                DataColumn(
-                  label: Text(
-                    'DESCRIPCION',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'FOTO',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-              ],
-              rows: productos
-                  //.take(5)
-                  .map(
-                    (producto) =>
-                        DataRow(selected: productos.contains(producto), cells: [
-                      DataCell(
-                        Container(
-                          width: 40,
-                          child: Text(
-                            producto.id.toString(),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductScreen(
-                                  producto.id.toString(),
-                                  producto.name,
-                                  producto.image),
-                            )),
-                        // Text(producto.id.toString()),
-                        // onTap: () => Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => ProductScreen(
-                        //       producto.id.toString(),
-                        //     ),
-                        //   ),
-                        // ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            FiltroBusquedaWidget(productos),
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    child: TextFormField(
+                      controller: hintController,
+                      decoration: InputDecoration(
+                        hintText: 'Ingrese nombre o codigo',
                       ),
-                      DataCell(Expanded(
-                        child: Container(
-                          width: 260,
-                          child: Text(
-                            producto.name,
-                            overflow: TextOverflow.clip,
-                          ),
-                        ),
-                      )),
-                      //Revisar que devuelve el producto, necesito la presentacion del mismo
-                      // DataCell(
-                      //   Text(
-                      //     producto.name,
-                      //     overflow: TextOverflow.ellipsis,
-                      //   ),
-                      // ),
-                      DataCell(Image.network(producto.image)),
-                    ]),
-                  )
-                  .toList(),
+                      onSaved: (String valor) {
+                        //hint = valor;
+                      },
+                    )),
+                IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      setState(() {
+                        productListBloc..getProductLista(hintController.text);
+                      });
+                    })
+              ],
             ),
-          ),
-          SizedBox(height: 20),
-        ],
+            Container(
+              child: DataTable(
+                columnSpacing: 10,
+                horizontalMargin: 10.0,
+
+                //columnSpacing: 1.0,
+                columns: /*const <DataColumn>*/ [
+                  DataColumn(
+                    label: Text(
+                      'CODIGO',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  //Revisar que devuelve el producto, necesito la presentacion del mismo
+                  // DataColumn(
+                  //   label: Text(
+                  //     'PRESENTACION',
+                  //     style: TextStyle(fontStyle: FontStyle.italic),
+                  //   ),
+                  // ),
+                  DataColumn(
+                    label: Text(
+                      'DESCRIPCION',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'FOTO',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+                rows: productos
+                    .map(
+                      (producto) => DataRow(
+                          selected: productos.contains(producto),
+                          cells: [
+                            DataCell(
+                              Container(
+                                width: 40,
+                                child: Text(
+                                  producto.id.toString(),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductScreen(
+                                        producto.id.toString(),
+                                        producto.name,
+                                        producto.image),
+                                  )),
+                            ),
+                            DataCell(
+                              Container(
+                                width: 260,
+                                child: Text(
+                                  producto.name,
+                                  overflow: TextOverflow.clip,
+                                ),
+                              ),
+                            ),
+                            //Revisar que devuelve el producto, necesito la presentacion del mismo
+                            // DataCell(
+                            //   Text(
+                            //     producto.name,
+                            //     overflow: TextOverflow.ellipsis,
+                            //   ),
+                            // ),
+                            DataCell(Image.network(producto.image)),
+                          ]),
+                    )
+                    .toList(),
+              ),
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }

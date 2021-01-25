@@ -17,7 +17,7 @@ class ProductInfo {
     this.descripcion,
     this.unidadPorBulto,
     this.costo,
-    this.existenciaUnidades,
+    //this.existenciaUnidades,
     this.precioPorPresentacion,
     this.precioPorLista,
     this.stocks,
@@ -32,7 +32,7 @@ class ProductInfo {
   String descripcion;
   int unidadPorBulto;
   double costo;
-  int existenciaUnidades;
+  //int existenciaUnidades;
   double precioPorPresentacion;
   double precioPorLista;
   List<Stock> stocks;
@@ -47,7 +47,7 @@ class ProductInfo {
         descripcion: json["Descripcion"],
         unidadPorBulto: json["UnidadPorBulto"],
         costo: json["Costo"],
-        existenciaUnidades: json["ExistenciaUnidades"],
+        //existenciaUnidades: json["ExistenciaUnidades"],
         precioPorPresentacion: json["precioPorPresentacion"],
         precioPorLista: json["precioPorLista"],
         stocks: List<Stock>.from(json["Stocks"].map((x) => Stock.fromJson(x))),
@@ -63,7 +63,7 @@ class ProductInfo {
         "Descripcion": descripcion,
         "UnidadPorBulto": unidadPorBulto,
         "Costo": costo,
-        "ExistenciaUnidades": existenciaUnidades,
+        //"ExistenciaUnidades": existenciaUnidades,
         "precioPorPresentacion": precioPorPresentacion,
         "precioPorLista": precioPorLista,
         "Stocks": List<dynamic>.from(stocks.map((x) => x.toJson())),

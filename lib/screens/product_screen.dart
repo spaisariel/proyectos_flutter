@@ -106,8 +106,6 @@ class _ProductScreenState extends State<ProductScreen> {
               centerTitle: true,
             ),
             body: SingleChildScrollView(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Column(
                 children: <Widget>[
                   SizedBox(height: 20.0),
@@ -138,10 +136,10 @@ class _ProductScreenState extends State<ProductScreen> {
                         title: Text('Presentacion para venta: ' +
                             codigoPresentacionVenta),
                       ),
-                      ListTile(
-                        title: Text('Existencia unidades: ' +
-                            unProducto.existenciaUnidades.toString()),
-                      ),
+                      // ListTile(
+                      //   title: Text('Existencia unidades: ' +
+                      //       unProducto.existenciaUnidades.toString()),
+                      // ),
                     ],
                   ),
                   ExpansionTile(
@@ -225,6 +223,6 @@ class _ProductScreenState extends State<ProductScreen> {
                   ),
                 ],
               ),
-            ))));
+            )));
   }
 }
