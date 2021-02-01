@@ -14,22 +14,32 @@ class BusquedaManualScreen extends StatefulWidget {
 }
 
 class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
-  //List<Product> lista;
+  ScrollController _scrollController = ScrollController();
+
   List<bool> filtrosSeleccionados;
+  int cantProductos;
   Product filtroSeleccionado;
   Product unProducto;
   String idValue;
-  String hint = 'arandela';
-
-  int perPage = 10;
-  int present = 0;
+  String hint = '';
+  String begin = '0';
+  String end = '15';
 
   TextEditingController hintController = new TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    productListBloc..getProductLista(hint);
+    productListBloc..getProductLista(hint, begin, end);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        end = (cantProductos + 30).toString();
+        setState(() {
+          productListBloc..getProductLista(hintController.text, begin, end);
+        });
+      }
+    });
   }
 
   @override
@@ -80,6 +90,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
 
   Widget _buildHomeWidget(ProductResponse data) {
     List<Product> productos = data.products;
+    cantProductos = data.products.length;
 
     return Scaffold(
       backgroundColor: Style.Colors.blanco,
@@ -89,6 +100,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -112,7 +124,8 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                     icon: Icon(Icons.search),
                     onPressed: () {
                       setState(() {
-                        productListBloc..getProductLista(hintController.text);
+                        productListBloc
+                          ..getProductLista(hintController.text, begin, end);
                       });
                     })
               ],
@@ -194,7 +207,6 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                     .toList(),
               ),
             ),
-            SizedBox(height: 20),
           ],
         ),
       ),

@@ -22,6 +22,8 @@ class _BusquedaProductosControlScreenState
   Product unProducto;
   String idValue;
   String hint = '';
+  String begin;
+  String end;
   String codeDialog = '';
   List<Product> selectedProducts;
 
@@ -31,7 +33,7 @@ class _BusquedaProductosControlScreenState
   @override
   void initState() {
     super.initState();
-    productListBloc..getProductLista(hint);
+    productListBloc..getProductLista(hint, begin, end);
     selectedProducts = [];
   }
 
@@ -163,7 +165,8 @@ class _BusquedaProductosControlScreenState
                       icon: Icon(Icons.search),
                       onPressed: () {
                         setState(() {
-                          productListBloc..getProductLista(hintController.text);
+                          productListBloc
+                            ..getProductLista(hintController.text, begin, end);
                         });
                       })
                 ],

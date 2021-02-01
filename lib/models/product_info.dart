@@ -17,10 +17,10 @@ class ProductInfo {
     this.descripcion,
     this.unidadPorBulto,
     this.costo,
-    //this.existenciaUnidades,
     this.precioPorPresentacion,
     this.precioPorLista,
     this.stocks,
+    this.precios,
   });
 
   String id;
@@ -32,10 +32,10 @@ class ProductInfo {
   String descripcion;
   int unidadPorBulto;
   double costo;
-  //int existenciaUnidades;
   double precioPorPresentacion;
   double precioPorLista;
   List<Stock> stocks;
+  List<Price> precios;
 
   factory ProductInfo.fromJson(Map<String, dynamic> json) => ProductInfo(
         id: json["Id"],
@@ -47,10 +47,10 @@ class ProductInfo {
         descripcion: json["Descripcion"],
         unidadPorBulto: json["UnidadPorBulto"],
         costo: json["Costo"],
-        //existenciaUnidades: json["ExistenciaUnidades"],
         precioPorPresentacion: json["precioPorPresentacion"],
         precioPorLista: json["precioPorLista"],
         stocks: List<Stock>.from(json["Stocks"].map((x) => Stock.fromJson(x))),
+        precios: List<Price>.from(json["Prices"].map((x) => Price.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -63,10 +63,10 @@ class ProductInfo {
         "Descripcion": descripcion,
         "UnidadPorBulto": unidadPorBulto,
         "Costo": costo,
-        //"ExistenciaUnidades": existenciaUnidades,
         "precioPorPresentacion": precioPorPresentacion,
         "precioPorLista": precioPorLista,
         "Stocks": List<dynamic>.from(stocks.map((x) => x.toJson())),
+        "Prices": List<dynamic>.from(precios.map((x) => x.toJson())),
       };
 }
 
@@ -107,5 +107,33 @@ class Stock {
         "PresentationId": presentationId,
         "PresentationName": presentationName,
         "Quantity": quantity,
+      };
+}
+
+class Price {
+  Price({
+    this.price,
+    this.priceName,
+    this.presentation,
+    this.isSale,
+  });
+
+  double price;
+  String priceName;
+  String presentation;
+  bool isSale;
+
+  factory Price.fromJson(Map<String, dynamic> json) => Price(
+        price: json["Price"].toDouble(),
+        priceName: json["PriceName"],
+        presentation: json["Presentation"],
+        isSale: json["isSale"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "Price": price,
+        "PriceName": priceName,
+        "Presentation": presentation,
+        "isSale": isSale,
       };
 }

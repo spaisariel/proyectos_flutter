@@ -8,14 +8,12 @@ class ProductListBloc {
       BehaviorSubject<ProductResponse>();
 
   String hint;
+  String begin;
+  String end;
 
-  getProductLista(String hint) async {
-    ProductResponse response = await _repository.getProductList(hint);
-    _subject.sink.add(response);
-  }
-
-  getProductListaFake() async {
-    ProductResponse response = await _repository.getProductosFake();
+  getProductLista(String hint, begin, end) async {
+    ProductResponse response =
+        await _repository.getProductList(hint, begin, end);
     _subject.sink.add(response);
   }
 

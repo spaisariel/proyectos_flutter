@@ -18,8 +18,8 @@ class Auditoria {
   });
 
   int id;
-  int branchOfficeId;
-  int depositId;
+  String branchOfficeId;
+  String depositId;
   String observations;
   List<Item> items = new List<Item>();
 
@@ -53,7 +53,7 @@ class Item {
   int id;
   String productId;
   String observations;
-  int quantity;
+  double quantity;
   String presentationId;
   List<Reason> reasons = new List<Reason>();
 

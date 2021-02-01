@@ -8,7 +8,6 @@ String productToJson(List<Product> data) =>
 
 class Product {
   Product({
-    this.prices,
     this.id,
     this.internalCode,
     this.name,
@@ -32,7 +31,6 @@ class Product {
     this.observation,
   });
 
-  List<Price> prices;
   String id;
   String internalCode;
   String name;
@@ -56,7 +54,6 @@ class Product {
   String observation;
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
-        prices: List<Price>.from(json["Prices"].map((x) => Price.fromJson(x))),
         id: json["Id"],
         internalCode: json["InternalCode"],
         name: json["Name"],
@@ -81,7 +78,6 @@ class Product {
       );
 
   Map<String, dynamic> toJson() => {
-        "Prices": List<dynamic>.from(prices.map((x) => x.toJson())),
         "Id": id,
         "InternalCode": internalCode,
         "Name": name,
@@ -106,30 +102,30 @@ class Product {
       };
 }
 
-class Price {
-  Price({
-    this.price,
-    this.priceName,
-    this.presentation,
-    this.isSale,
-  });
+// class Price {
+//   Price({
+//     this.price,
+//     this.priceName,
+//     this.presentation,
+//     this.isSale,
+//   });
 
-  double price;
-  String priceName;
-  String presentation;
-  bool isSale;
+//   double price;
+//   String priceName;
+//   String presentation;
+//   bool isSale;
 
-  factory Price.fromJson(Map<String, dynamic> json) => Price(
-        price: json["Price"].toDouble(),
-        priceName: json["PriceName"],
-        presentation: json["Presentation"],
-        isSale: json["isSale"],
-      );
+//   factory Price.fromJson(Map<String, dynamic> json) => Price(
+//         price: json["Price"].toDouble(),
+//         priceName: json["PriceName"],
+//         presentation: json["Presentation"],
+//         isSale: json["isSale"],
+//       );
 
-  Map<String, dynamic> toJson() => {
-        "Price": price,
-        "PriceName": priceName,
-        "Presentation": presentation,
-        "isSale": isSale,
-      };
-}
+//   Map<String, dynamic> toJson() => {
+//         "Price": price,
+//         "PriceName": priceName,
+//         "Presentation": presentation,
+//         "isSale": isSale,
+//       };
+// }

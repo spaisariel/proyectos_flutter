@@ -112,8 +112,9 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
               //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
               // ),
               onPressed: () {
-                //Navigator.of(context).pop();
+                Navigator.of(context).pop();
                 _showMaterialDialogCancelar(context, unUsuario);
+                //Repository().getAuditoriaList();
               },
               child: Column(
                 children: [

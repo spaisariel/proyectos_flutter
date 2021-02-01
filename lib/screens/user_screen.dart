@@ -128,8 +128,6 @@ class _UserScreenState extends State<UserScreen> {
                 ],
               ),
             ),
-
-            //SOLO A MODO DE PRUEBA, EN UN FUTURO QUEDARIA UN SOLO LIST TILE
             ListTile(
               title: Row(
                 children: [
@@ -160,9 +158,7 @@ class _UserScreenState extends State<UserScreen> {
                 ],
               ),
             ),
-
             SizedBox(height: 50),
-
             ButtonTheme(
               buttonColor: Style.Colors.mainColor,
               height: MediaQuery.of(context).size.height * 0.1,
@@ -180,9 +176,7 @@ class _UserScreenState extends State<UserScreen> {
                   child: Text('Cambiar de sucursal o deposito',
                       style: TextStyle(color: Colors.white, fontSize: 20))),
             ),
-
             SizedBox(height: 25),
-
             ButtonTheme(
               buttonColor: Style.Colors.mainColor,
               height: MediaQuery.of(context).size.height * 0.1,

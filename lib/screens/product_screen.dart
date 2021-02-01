@@ -75,34 +75,40 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget _buildHomeWidget(ProductInfoResponse data) {
     ProductInfo unProducto = data.products[0];
     List<Stock> stockProducto = data.products[0].stocks;
+    List<Price> listaPrecios = data.products[0].precios;
 
-    String descripcionProducto;
+    String descripcionProducto = unProducto.descripcion;
     if (descripcionProducto == null) {
       descripcionProducto = 'No tiene';
-    } else {
-      descripcionProducto = unProducto.descripcion;
     }
 
-    String codigoProveedorHabitual;
+    String codigoProveedorHabitual = unProducto.codigoProveedorHabitual;
     if (codigoProveedorHabitual == null) {
       codigoProveedorHabitual = 'No tiene';
-    } else {
-      codigoProveedorHabitual = unProducto.codigoProveedorHabitual;
     }
 
-    String codigoPresentacionVenta;
+    String codigoPresentacionVenta = unProducto.codigoPresentacionVenta;
     if (codigoPresentacionVenta == null) {
       codigoPresentacionVenta = 'No tiene';
-    } else {
-      codigoPresentacionVenta = unProducto.codigoPresentacionVenta;
     }
+
+    // bool isSale = listaPrecios[0].isSale;
+    // String enOferta;
+    // if (isSale == true) {
+    //   enOferta = 'Si';
+    // } else {
+    //   enOferta = 'No';
+    // }
 
     return MaterialApp(
         home: Scaffold(
             backgroundColor: Style.Colors.secondColor,
             appBar: AppBar(
               backgroundColor: Style.Colors.mainColor,
-              title: Text(name),
+              title: Text(
+                name,
+                overflow: TextOverflow.visible,
+              ),
               centerTitle: true,
             ),
             body: SingleChildScrollView(
@@ -125,7 +131,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       ),
                       ListTile(
                         title: Text(
-                          'Codigo articulo: ' + unProducto.internalCode,
+                          'Codigo interno: ' + unProducto.internalCode,
                         ),
                       ),
                       ListTile(
@@ -136,10 +142,6 @@ class _ProductScreenState extends State<ProductScreen> {
                         title: Text('Presentacion para venta: ' +
                             codigoPresentacionVenta),
                       ),
-                      // ListTile(
-                      //   title: Text('Existencia unidades: ' +
-                      //       unProducto.existenciaUnidades.toString()),
-                      // ),
                     ],
                   ),
                   ExpansionTile(
@@ -149,16 +151,56 @@ class _ProductScreenState extends State<ProductScreen> {
                           fontSize: 18.0, fontWeight: FontWeight.bold),
                     ),
                     children: <Widget>[
-                      ListTile(
-                        title: Text(
-                          'Por presentacion: ' +
-                              unProducto.precioPorPresentacion.toString(),
-                        ),
-                      ),
-                      ListTile(
-                        title: Text('Por lista: ' +
-                            unProducto.precioPorLista.toString()),
-                      ),
+                      DataTable(
+                        columnSpacing: 10,
+                        horizontalMargin: 10.0,
+                        columns: const <DataColumn>[
+                          DataColumn(
+                            label: Text(
+                              'Nombre',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Precio',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'Presentacion',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
+                              'En oferta',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          )
+                        ],
+                        rows: listaPrecios
+                            .map(
+                              (precios) => DataRow(cells: [
+                                DataCell(
+                                  Text(precios.priceName),
+                                ),
+                                DataCell(
+                                  Text(
+                                    precios.price.toString(),
+                                  ),
+                                ),
+                                DataCell(
+                                  Text(precios.presentation),
+                                ),
+                                DataCell(
+                                  Text(precios.isSale.toString()),
+                                ),
+                              ]),
+                            )
+                            .toList(),
+                      )
                     ],
                   ),
                   ExpansionTile(
@@ -206,7 +248,6 @@ class _ProductScreenState extends State<ProductScreen> {
                                 DataCell(
                                   Text(
                                     producto.branchOfficeName,
-                                    //overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                                 DataCell(

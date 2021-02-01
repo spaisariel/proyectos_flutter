@@ -153,9 +153,10 @@ class Repository {
 
   //Devuelve una lista de todas las auditorias
   Future<AuditoriaResponse> getAuditoriaList() async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
     try {
-      Response response = await _dio.get(
-          "https://run.mocky.io/v3/06fc7f65-bcf6-4e39-a91a-347e16e87e82",
+      Response response = await _dio.get(urlBase + "audit/GetAllAuditsRack",
           options: Options(responseType: ResponseType.json));
       String x = json.encode(response.data);
       AuditoriaResponse auditoriaResponse =
@@ -188,29 +189,18 @@ class Repository {
   }
 
   //Devuelve una lista de productos filtrados depende lo que especifique el usuario
-  Future<ProductResponse> getProductList(hint) async {
+  Future<ProductResponse> getProductList(hint, begin, end) async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
 
     try {
-      Response response = await _dio
-          .get(urlBase + "products/GetList?text=" + hint + "&begin=0&end=30");
-      String x = json.encode(response.data);
-      ProductResponse productResponse =
-          new ProductResponse(productFromJson(x), "");
-      return productResponse;
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return ProductResponse.withError("$error");
-    }
-  }
-
-  //https://run.mocky.io/v3/9ad1f7f6-f2e1-43d8-a3b8-f507f5d0cf1b
-  Future<ProductResponse> getProductosFake() async {
-    try {
-      Response response = await _dio.get(
-          "https://run.mocky.io/v3/9ad1f7f6-f2e1-43d8-a3b8-f507f5d0cf1b",
-          options: Options(responseType: ResponseType.json));
+      Response response = await _dio.get(urlBase +
+          "products/GetList?text=" +
+          hint +
+          "&begin=" +
+          begin +
+          "&end=" +
+          end);
       String x = json.encode(response.data);
       ProductResponse productResponse =
           new ProductResponse(productFromJson(x), "");
@@ -229,8 +219,8 @@ class Repository {
     String webServiceUrl = 'Audit/NewAuditStock';
 
     Auditoria unaAuditoria = new Auditoria();
-    unaAuditoria.branchOfficeId = 1;
-    unaAuditoria.depositId = 2;
+    unaAuditoria.branchOfficeId = '1';
+    unaAuditoria.depositId = '2';
     unaAuditoria.observations = codeDialog;
 
     int index = 0;
@@ -263,8 +253,8 @@ class Repository {
     String webServiceUrl = 'Audit/NewAuditStockRack';
 
     Auditoria unaAuditoria = new Auditoria();
-    unaAuditoria.branchOfficeId = 1;
-    unaAuditoria.depositId = 2;
+    unaAuditoria.branchOfficeId = '1';
+    unaAuditoria.depositId = '2';
     unaAuditoria.observations = codeDialog;
 
     int index = 0;
