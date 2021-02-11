@@ -9,15 +9,21 @@ import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
 // ignore: must_be_immutable
 class ControlInventarioScreen extends StatefulWidget {
   List<Product> listaProductos;
-  ControlInventarioScreen(this.listaProductos);
+  String idSucursal;
+  String idDeposito;
+  ControlInventarioScreen(
+      this.listaProductos, this.idSucursal, this.idDeposito);
   @override
-  _ControlInventarioScreenState createState() =>
-      _ControlInventarioScreenState(this.listaProductos);
+  _ControlInventarioScreenState createState() => _ControlInventarioScreenState(
+      this.listaProductos, this.idSucursal, this.idDeposito);
 }
 
 class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
   List<Product> listaProductos;
-  _ControlInventarioScreenState(this.listaProductos);
+  String idSucursal;
+  String idDeposito;
+  _ControlInventarioScreenState(
+      this.listaProductos, this.idSucursal, this.idDeposito);
 
   String codeDialog = '';
 
@@ -172,7 +178,8 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PaginaInicial(unUsuario)));
+                            builder: (context) => PaginaInicial(
+                                unUsuario, idSucursal, idDeposito)));
                   },
                 )
               ],
@@ -201,7 +208,8 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PaginaInicial(unUsuario)));
+                            builder: (context) => PaginaInicial(
+                                unUsuario, idSucursal, idDeposito)));
                   },
                 ),
               ],

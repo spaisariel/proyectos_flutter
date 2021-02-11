@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_user_bloc.dart';
 import 'package:prueba3_git/models/user.dart';
 import 'package:prueba3_git/models/user_response.dart';
-import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
@@ -35,10 +34,7 @@ class _UserScreenState extends State<UserScreen> {
       stream: userListBloc.subject.stream,
       builder: (context, AsyncSnapshot<UserResponse> snapshot) {
         if (snapshot.hasData) {
-          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
-            return _buildErrorWidget(snapshot.data.error);
-          }
-          return _buildHomeWidget(snapshot.data);
+          return _buildHomeWidget(unUsuario);
         } else if (snapshot.hasError) {
           return _buildErrorWidget(snapshot.error);
         } else {
@@ -75,8 +71,8 @@ class _UserScreenState extends State<UserScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(UserResponse data) {
-    User unUsuario = data.unUsuario;
+  Widget _buildHomeWidget(unUser) {
+    User unUsuario = unUser;
     String email = "No aplica";
     String direccion = "No aplica";
 
@@ -218,7 +214,7 @@ _showMaterialDialog(context) {
                       'Sucursal ',
                       style: TextStyle(fontSize: 20),
                     ),
-                    ComboBoxSucursalWidget()
+                    //ComboBoxSucursalWidget()
                   ],
                 ),
                 Row(
@@ -228,7 +224,7 @@ _showMaterialDialog(context) {
                       'Deposito ',
                       style: TextStyle(fontSize: 20),
                     ),
-                    ComboBoxDepositoWidget(),
+                    //ComboBoxDepositoWidget(),
                   ],
                 )
               ],

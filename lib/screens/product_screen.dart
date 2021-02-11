@@ -73,9 +73,9 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget _buildHomeWidget(ProductInfoResponse data) {
-    ProductInfo unProducto = data.products[0];
-    List<Stock> stockProducto = data.products[0].stocks;
-    List<Price> listaPrecios = data.products[0].precios;
+    ProductInfo unProducto = data.product;
+    List<Stock> stockProducto = data.product.stocks;
+    List<Price> listaPrecios = data.product.prices;
 
     String descripcionProducto = unProducto.descripcion;
     if (descripcionProducto == null) {
@@ -91,14 +91,6 @@ class _ProductScreenState extends State<ProductScreen> {
     if (codigoPresentacionVenta == null) {
       codigoPresentacionVenta = 'No tiene';
     }
-
-    // bool isSale = listaPrecios[0].isSale;
-    // String enOferta;
-    // if (isSale == true) {
-    //   enOferta = 'Si';
-    // } else {
-    //   enOferta = 'No';
-    // }
 
     return MaterialApp(
         home: Scaffold(
@@ -124,6 +116,11 @@ class _ProductScreenState extends State<ProductScreen> {
                           fontSize: 18.0, fontWeight: FontWeight.bold),
                     ),
                     children: <Widget>[
+                      ListTile(
+                        title: Text(
+                          'Nombre: ' + name,
+                        ),
+                      ),
                       ListTile(
                         title: Text(
                           'Codigo articulo: ' + unProducto.id.toString(),
@@ -157,6 +154,12 @@ class _ProductScreenState extends State<ProductScreen> {
                         columns: const <DataColumn>[
                           DataColumn(
                             label: Text(
+                              'Presentación',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
                               'Nombre',
                               style: TextStyle(fontStyle: FontStyle.italic),
                             ),
@@ -169,13 +172,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
                           DataColumn(
                             label: Text(
-                              'Presentacion',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'En oferta',
+                              'poner moneda',
                               style: TextStyle(fontStyle: FontStyle.italic),
                             ),
                           )
@@ -184,15 +181,15 @@ class _ProductScreenState extends State<ProductScreen> {
                             .map(
                               (precios) => DataRow(cells: [
                                 DataCell(
-                                  Text(precios.priceName),
+                                  Text(precios.presentation),
                                 ),
                                 DataCell(
                                   Text(
-                                    precios.price.toString(),
+                                    precios.priceName,
                                   ),
                                 ),
                                 DataCell(
-                                  Text(precios.presentation),
+                                  Text(precios.price.toString()),
                                 ),
                                 DataCell(
                                   Text(precios.isSale.toString()),
@@ -216,6 +213,12 @@ class _ProductScreenState extends State<ProductScreen> {
                         columns: const <DataColumn>[
                           DataColumn(
                             label: Text(
+                              'Presentacion',
+                              style: TextStyle(fontStyle: FontStyle.italic),
+                            ),
+                          ),
+                          DataColumn(
+                            label: Text(
                               'Deposito',
                               style: TextStyle(fontStyle: FontStyle.italic),
                             ),
@@ -223,12 +226,6 @@ class _ProductScreenState extends State<ProductScreen> {
                           DataColumn(
                             label: Text(
                               'Sucursal',
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                          ),
-                          DataColumn(
-                            label: Text(
-                              'Presentacion',
                               style: TextStyle(fontStyle: FontStyle.italic),
                             ),
                           ),
@@ -243,15 +240,15 @@ class _ProductScreenState extends State<ProductScreen> {
                             .map(
                               (producto) => DataRow(cells: [
                                 DataCell(
-                                  Text(producto.depositName),
+                                  Text(producto.presentationName),
                                 ),
                                 DataCell(
                                   Text(
-                                    producto.branchOfficeName,
+                                    producto.depositName,
                                   ),
                                 ),
                                 DataCell(
-                                  Text(producto.presentationName),
+                                  Text(producto.branchOfficeName),
                                 ),
                                 DataCell(
                                   Text(producto.quantity.toString()),

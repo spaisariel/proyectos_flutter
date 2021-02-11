@@ -85,9 +85,6 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
           minWidth: MediaQuery.of(context).size.width * 0.3,
           child: RaisedButton.icon(
               shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              // style: ElevatedButton.styleFrom(
-              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              // ),
               onPressed: () async {
                 if (llamada == "auditoria") {
                   idProductos = await Navigator.push(

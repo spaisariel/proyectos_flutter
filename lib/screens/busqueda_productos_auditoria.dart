@@ -223,8 +223,9 @@ class _BusquedaProductosAuditoriaScreenState
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            AuditoriaScreen(/*_saved*/ selectedProducts),
+                        builder: (context) => AuditoriaScreen(selectedProducts,
+                            '', ''), //SACAR ESOS STRING DE AHI Y REEMPLAZARLOS
+                        //CON LO QUE CORRESPONDA (IDSUCURSAL E IDDEPOSITO)
                       ),
                     );
                   },

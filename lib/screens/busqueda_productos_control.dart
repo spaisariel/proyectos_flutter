@@ -237,7 +237,7 @@ class _BusquedaProductosControlScreenState
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              ControlInventarioScreen(selectedProducts),
+                              ControlInventarioScreen(selectedProducts, '', ''),
                         ),
                       );
                     },

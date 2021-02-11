@@ -75,7 +75,8 @@ class BotonesAuditoriaWidget extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PaginaInicial(unUsuario)));
+                            builder: (context) => PaginaInicial(unUsuario, '',
+                                ''))); //REVISAR SI NO HACE FALTA QUE ENSTÉN LOS VALORES
                   },
                 )
               ],
@@ -104,7 +105,8 @@ class BotonesAuditoriaWidget extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PaginaInicial(unUsuario)));
+                            builder: (context) => PaginaInicial(unUsuario, '',
+                                ''))); //REVISAR SI NO HACE FALTA QUE ENSTÉN LOS VALORES
                   },
                 ),
               ],

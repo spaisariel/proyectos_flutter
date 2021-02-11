@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/auditoria_response.dart';
+import 'package:prueba3_git/models/branchOffice.dart';
+import 'package:prueba3_git/models/branchOffice_response.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_info.dart';
 import 'package:prueba3_git/models/product_info_response.dart';
@@ -18,6 +20,9 @@ final String urlBase = 'http://192.168.0.15:45455/laplayacapacitacion/api/';
 String usuarioJson;
 User unUsuario = new User();
 String token;
+String idSucursal = '';
+String idDeposito = '';
+ProductInfo unProductoPrecio = new ProductInfo();
 
 void _logout(context) {
   Navigator.of(context).pushAndRemoveUntil(
@@ -102,38 +107,13 @@ Future<User> postLoginConGoogle(
   return userFromJson(respuestaString);
 }
 
-Future<String> getStatusRegister(BuildContext context, User usuario) async {
-  String token = usuario.token;
-  final String webServiceUrl = 'Account/StatusRegister';
-  Map<String, String> header = {
-    'Content-Type': 'application/json; charset=utf-8',
-    'Authorization': 'Bearer $token',
-  };
-  var respuesta;
-
-  try {
-    respuesta = await http.get(urlBase + webServiceUrl, headers: header);
-  } on Exception {
-    return showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-              title: new Text("ERROR"),
-              content: new Text("La aplicacion debe cerrarse"),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Aceptar'),
-                  onPressed: () {
-                    _logout(context);
-                  },
-                )
-              ],
-            ));
+class Repository {
+  //DESPUES LO SACO DE ACÁ
+  void guardarIdentificacionSucursalDeposito(idS, idD) {
+    idSucursal = idS;
+    idDeposito = idD;
   }
 
-  return respuesta.body;
-}
-
-class Repository {
   final Dio _dio = Dio();
 
   //////////////////////////////////////////////////////////////////////////////
@@ -148,6 +128,24 @@ class Repository {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return UserResponse.withError("$error");
+    }
+  }
+
+  //Devuelve una lista de sucursales con sus respectivos depositos
+  Future<BranchOfficeResponse> getBranchOfficeList(idUsuario) async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+    try {
+      Response response = await _dio.get(
+          urlBase + "branchoffice/GetSucursal?id=$idUsuario",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      BranchOfficeResponse branchOfficeResponse =
+          new BranchOfficeResponse(branchOfficeFromJson(x), "");
+      return branchOfficeResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return BranchOfficeResponse.withError("$error");
     }
   }
 
@@ -177,7 +175,7 @@ class Repository {
       Response response = await _dio.get(
           urlBase + "products/GetProductInfo?id=$idValue",
           options: Options(responseType: ResponseType.json));
-      String x = "[" + json.encode(response.data) + "]";
+      String x = json.encode(response.data);
       print(x);
       ProductInfoResponse productInfoResponse =
           new ProductInfoResponse(productInfoFromJson(x), "");
@@ -193,14 +191,13 @@ class Repository {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
 
+    hint = 'arand';
+    begin = 0;
+    end = 10;
+
     try {
-      Response response = await _dio.get(urlBase +
-          "products/GetList?text=" +
-          hint +
-          "&begin=" +
-          begin +
-          "&end=" +
-          end);
+      Response response = await _dio
+          .get(urlBase + "products/GetList?text=$hint&begin=$begin&end=$end");
       String x = json.encode(response.data);
       ProductResponse productResponse =
           new ProductResponse(productFromJson(x), "");
@@ -211,6 +208,56 @@ class Repository {
     }
   }
 
+  Future<ProductInfo> preciosProductos(idProduct) async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+
+    try {
+      Response response = await _dio.get(
+          urlBase + "products/GetProductInfo?id=$idProduct",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      print(x);
+      // ignore: unused_local_variable
+      unProductoPrecio = productInfoFromJson(x);
+      return null;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return null;
+    }
+  }
+
+  Future<String> getStatusRegister(BuildContext context, User usuario) async {
+    String token = usuario.token;
+    final String webServiceUrl = 'Account/StatusRegister';
+    Map<String, String> header = {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Authorization': 'Bearer $token',
+    };
+    var respuesta;
+
+    try {
+      respuesta = await http.get(urlBase + webServiceUrl, headers: header);
+    } on Exception {
+      return showDialog(
+          context: context,
+          builder: (_) => new AlertDialog(
+                title: new Text("ERROR"),
+                content: new Text("La aplicacion debe cerrarse"),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('Aceptar'),
+                    onPressed: () {
+                      _logout(context);
+                    },
+                  )
+                ],
+              ));
+    }
+
+    return respuesta.body;
+  }
+
   //////////////////////////////////////////////////////////////////////////////
   ///////////////METODOS POST PARA SUBIDA DE DE DATOS //////////////////////////
   //////////////////////////////////////////////////////////////////////////////
@@ -219,15 +266,20 @@ class Repository {
     String webServiceUrl = 'Audit/NewAuditStock';
 
     Auditoria unaAuditoria = new Auditoria();
-    unaAuditoria.branchOfficeId = '1';
-    unaAuditoria.depositId = '2';
+    unaAuditoria.branchOfficeId = idSucursal;
+    unaAuditoria.depositId = idDeposito;
     unaAuditoria.observations = codeDialog;
 
     int index = 0;
     while (index < listaProductos.length) {
       Item unItem = new Item();
+      // ignore: unused_local_variable
+      List<Price> unProducto = new List<Price>();
       unItem.productId = listaProductos[index].id;
-      unItem.presentationId = listaProductos[index].prices[0].presentation;
+      preciosProductos(unItem.productId);
+      unProducto = unProductoPrecio.prices;
+      //unaAuditoria.items.
+      //SE MOVIERON LOS PRECIOS A PRODUCTINFO, VER COMO TRAERLO
       if (unaAuditoria.items == null) {
         unaAuditoria.items = new List<Item>();
       }

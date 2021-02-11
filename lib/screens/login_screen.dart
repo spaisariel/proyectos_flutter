@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/main.dart';
 import 'package:prueba3_git/mixins/validacionMixin.dart';
+import 'package:prueba3_git/models/branchOffice.dart';
 import 'package:prueba3_git/models/user.dart';
 import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/screens/login2_screen.dart';
@@ -28,6 +28,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
   bool boolPassword = true;
   String idDevice;
   bool boolCargando = false;
+  BranchOffice unaSucursal;
 
   final controladorUsuario = TextEditingController();
   final controladorContrasenia = TextEditingController();
@@ -120,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                             'Sucursal ',
                             style: TextStyle(fontSize: 20),
                           ),
-                          ComboBoxSucursalWidget()
+                          //ComboBoxSucursalWidget()
                         ],
                       ),
                       Row(
@@ -130,7 +131,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                             'Deposito ',
                             style: TextStyle(fontSize: 20),
                           ),
-                          ComboBoxDepositoWidget(),
+                          //ComboBoxDepositoWidget(),
                         ],
                       ),
                       SizedBox(height: 15),
@@ -156,10 +157,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                           // ),
 
                           onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                new MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        PaginaInicial(unUsuario)));
+                            // Navigator.of(context).pushReplacement(
+                            //     new MaterialPageRoute(
+                            //         builder: (BuildContext context) =>
+                            //             PaginaInicial(unUsuario)));
                           },
                         ),
                       ),
@@ -253,24 +254,16 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                               borderRadius: new BorderRadius.circular(8.0),
                               side: BorderSide(color: Style.Colors.mainColor),
                             ),
-                            // style: ElevatedButton.styleFrom(
-                            //     primary: Style.Colors.mainColor,
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: new BorderRadius.circular(8.0),
-                            //       side:
-                            //           BorderSide(color: Style.Colors.mainColor),
-                            //     )),
                             onPressed: () async {
                               password =
                                   base64password(controladorContrasenia.text);
                               unUsuario = await postLogin(context,
                                   controladorUsuario.text, password, idDevice);
-
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (BuildContext context) =>
-                                        PaginaInicial(unUsuario),
+                                        Login2Screen(unUsuario),
                                   ));
                               setState(() {
                                 boolCargando = true;

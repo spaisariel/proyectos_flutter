@@ -101,31 +101,3 @@ class Product {
         "Observation": observation,
       };
 }
-
-// class Price {
-//   Price({
-//     this.price,
-//     this.priceName,
-//     this.presentation,
-//     this.isSale,
-//   });
-
-//   double price;
-//   String priceName;
-//   String presentation;
-//   bool isSale;
-
-//   factory Price.fromJson(Map<String, dynamic> json) => Price(
-//         price: json["Price"].toDouble(),
-//         priceName: json["PriceName"],
-//         presentation: json["Presentation"],
-//         isSale: json["isSale"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "Price": price,
-//         "PriceName": priceName,
-//         "Presentation": presentation,
-//         "isSale": isSale,
-//       };
-// }

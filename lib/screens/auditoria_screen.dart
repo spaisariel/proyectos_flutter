@@ -8,16 +8,21 @@ import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
 
 // ignore: must_be_immutable
 class AuditoriaScreen extends StatefulWidget {
+  String idSucursal;
+  String idDeposito;
   List<Product> listaProductos;
-  AuditoriaScreen(this.listaProductos);
+
+  AuditoriaScreen(this.listaProductos, this.idSucursal, this.idDeposito);
   @override
-  _AuditoriaScreenState createState() =>
-      _AuditoriaScreenState(this.listaProductos);
+  _AuditoriaScreenState createState() => _AuditoriaScreenState(
+      this.listaProductos, this.idSucursal, this.idDeposito);
 }
 
 class _AuditoriaScreenState extends State<AuditoriaScreen> {
+  String idSucursal;
+  String idDeposito;
   List<Product> listaProductos;
-  _AuditoriaScreenState(this.listaProductos);
+  _AuditoriaScreenState(this.listaProductos, this.idSucursal, this.idDeposito);
 
   String codeDialog = '';
 
@@ -26,6 +31,8 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
   @override
   void initState() {
     super.initState();
+    idSucursal = this.idSucursal;
+    idDeposito = this.idDeposito;
   }
 
   @override
@@ -43,11 +50,10 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
             SizedBox(height: 30),
             BotonesBusquedaWidget("auditoria"),
             SizedBox(height: 30),
-            //AuditoriaTablaWidget(),
             tablaProductos(listaProductos),
             SizedBox(height: 80),
             Container(
-              child: botonesBusquedaWidget(context),
+              child: botonesBusquedaWidget(context, idSucursal, idDeposito),
               alignment: Alignment.bottomCenter,
             ),
           ],
@@ -97,7 +103,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
     );
   }
 
-  Widget botonesBusquedaWidget(BuildContext context) {
+  Widget botonesBusquedaWidget(BuildContext context, idSucursal, idDeposito) {
     User unUsuario;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -108,13 +114,10 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
           minWidth: MediaQuery.of(context).size.width * 0.3,
           child: RaisedButton(
               shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              // style: ElevatedButton.styleFrom(
-              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              // ),
               onPressed: () {
                 Navigator.of(context).pop();
-                _showMaterialDialogCancelar(context, unUsuario);
-                //Repository().getAuditoriaList();
+                _showMaterialDialogCancelar(
+                    context, unUsuario, idSucursal, idDeposito);
               },
               child: Column(
                 children: [
@@ -132,14 +135,11 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
           minWidth: MediaQuery.of(context).size.width * 0.3,
           child: RaisedButton(
               shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              // style: ElevatedButton.styleFrom(
-              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              // ),
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (BuildContext context) =>
-                      _buildPopUpObservation(context, unUsuario),
+                  builder: (BuildContext context) => _buildPopUpObservation(
+                      context, unUsuario, idSucursal, idDeposito),
                 );
               },
               child: Column(
@@ -155,7 +155,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
     );
   }
 
-  _showMaterialDialogAceptar(context, unUsuario) {
+  _showMaterialDialogAceptar(context, unUsuario, idSucursal, idDeposito) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -172,14 +172,15 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PaginaInicial(unUsuario)));
+                            builder: (context) => PaginaInicial(
+                                unUsuario, idSucursal, idDeposito)));
                   },
                 )
               ],
             ));
   }
 
-  _showMaterialDialogCancelar(context, unUsuario) {
+  _showMaterialDialogCancelar(context, unUsuario, idSucursal, idUsuario) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -201,14 +202,16 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PaginaInicial(unUsuario)));
+                            builder: (context) => PaginaInicial(
+                                unUsuario, idSucursal, idDeposito)));
                   },
                 ),
               ],
             ));
   }
 
-  Widget _buildPopUpObservation(BuildContext context, unUsuario) {
+  Widget _buildPopUpObservation(
+      BuildContext context, unUsuario, idSucursal, idDeposito) {
     String valueText;
 
     return new AlertDialog(
@@ -237,7 +240,8 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
           onPressed: () {
             setState(() {
               codeDialog = valueText;
-              _showMaterialDialogAceptar(context, unUsuario);
+              _showMaterialDialogAceptar(
+                  context, unUsuario, idSucursal, idDeposito);
             });
           },
         )

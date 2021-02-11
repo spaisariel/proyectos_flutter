@@ -15,17 +15,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class PaginaInicial extends StatefulWidget {
   final User usuario;
-  PaginaInicial(this.usuario);
+  String idSucursal;
+  String idDeposito;
+
+  PaginaInicial(this.usuario, this.idSucursal, this.idDeposito);
+
   @override
-  _PaginaInicialState createState() => _PaginaInicialState(this.usuario);
+  _PaginaInicialState createState() =>
+      _PaginaInicialState(this.usuario, this.idSucursal, this.idDeposito);
 }
 
 class _PaginaInicialState extends State<PaginaInicial> {
   //Color azulGrandi = new Color.fromARGB(255, 0, 141, 210);
   final User usuario;
-  _PaginaInicialState(this.usuario);
+  String idSucursal;
+  String idDeposito;
+  _PaginaInicialState(this.usuario, this.idSucursal, this.idDeposito);
 
   int _currentIndex = 0;
 
@@ -38,7 +46,8 @@ class _PaginaInicialState extends State<PaginaInicial> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _children = [
-      StockScreen(),
+      StockScreen(idSucursal,
+          idDeposito), //REVISAR ACA POR FAVOR, NO DEJAR CON LOS STRINGS ASI
       ReportsScreen(),
       UserScreen(usuario),
     ];

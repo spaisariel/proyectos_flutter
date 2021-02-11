@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/blocs/get_branchOffice_bloc.dart';
 import 'package:prueba3_git/main.dart';
+import 'package:prueba3_git/models/branchOffice.dart';
+import 'package:prueba3_git/models/branchOffice_response.dart';
 import 'package:prueba3_git/models/user.dart';
+import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/screens/maps_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
@@ -16,9 +20,67 @@ Color azulGrandi = new Color.fromARGB(255, 0, 141, 210);
 
 class _Login2ScreenState extends State<Login2Screen> {
   User unUsuario;
+
+  String nombreSucursal = '';
+  String nombreDeposito = '';
+  String idSucursal;
+  String idDeposito;
+
   _Login2ScreenState(this.unUsuario);
+
   @override
+  void initState() {
+    super.initState();
+    branchOfficeListBloc..getBranchOfficeLista(unUsuario.userInfo.id);
+  }
+
   Widget build(BuildContext context) {
+    return StreamBuilder<BranchOfficeResponse>(
+      stream: branchOfficeListBloc.subject.stream,
+      builder: (context, AsyncSnapshot<BranchOfficeResponse> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
+            return _buildErrorWidget(snapshot.data.error);
+          }
+          return _buildHomeWidget(snapshot.data);
+        } else if (snapshot.hasError) {
+          return _buildErrorWidget(snapshot.error);
+        } else {
+          return _buildLoadingWidget();
+        }
+      },
+    );
+  }
+
+  Widget _buildLoadingWidget() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 25.0,
+          width: 25.0,
+          child: CircularProgressIndicator(
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
+            strokeWidth: 4.0,
+          ),
+        )
+      ],
+    ));
+  }
+
+  Widget _buildErrorWidget(String error) {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Error occured: $error"),
+      ],
+    ));
+  }
+
+  Widget _buildHomeWidget(BranchOfficeResponse data) {
+    BranchOffice unaSucursal = data.sucursales;
     return Scaffold(
       backgroundColor: Style.Colors.secondColor,
       body: SingleChildScrollView(
@@ -41,7 +103,8 @@ class _Login2ScreenState extends State<Login2Screen> {
                     'Sucursal ',
                     style: TextStyle(fontSize: 20),
                   ),
-                  ComboBoxSucursalWidget()
+                  seleccionarSucursal(unaSucursal.name.toString(),
+                      unaSucursal.branchOfficeId.toString())
                 ],
               ),
               Row(
@@ -51,19 +114,16 @@ class _Login2ScreenState extends State<Login2Screen> {
                     'Deposito ',
                     style: TextStyle(fontSize: 20),
                   ),
-                  ComboBoxDepositoWidget(),
+                  seleccionarDeposito(unaSucursal.deposits)
                 ],
               ),
-
               SizedBox(height: 15),
               selecionarComercio(),
-
               SizedBox(height: 100),
-
-              //Spacer(),
               ButtonTheme(
                 minWidth: 200.0,
-                child: continuarButton(context, unUsuario),
+                child:
+                    continuarButton(context, unUsuario, idSucursal, idDeposito),
               ),
               omitirButton(context, unUsuario),
             ],
@@ -72,98 +132,86 @@ class _Login2ScreenState extends State<Login2Screen> {
       ),
     );
   }
-}
 
-class ComboBoxSucursalWidget extends StatefulWidget {
-  ComboBoxSucursalWidget({Key key}) : super(key: key);
+  Widget seleccionarSucursal(String sucursal, String idSucursal) {
+    String dropdownValue = sucursal;
+    return StreamBuilder(builder: (context, snapshot) {
+      return DropdownButton<String>(
+        value: dropdownValue,
+        icon: Icon(Icons.arrow_drop_down),
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(color: Style.Colors.mainColor, fontSize: 20),
+        underline: Container(
+          height: 2,
+          color: Style.Colors.secondColor,
+        ),
+        onChanged: (String newValue) {
+          setState(() {
+            dropdownValue = newValue;
+            nombreSucursal = newValue;
+            this.idSucursal = idSucursal;
+          });
+        },
+        items: <String>[sucursal.toString()]
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      );
+    });
+  }
 
-  @override
-  _ComboBoxSucursalWidgetState createState() => _ComboBoxSucursalWidgetState();
-}
-
-/// This is the private State class that goes with ComboBoxSucursalWidget.
-class _ComboBoxSucursalWidgetState extends State<ComboBoxSucursalWidget> {
-  String dropdownValue = 'Casa central';
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: Icon(Icons.arrow_drop_down),
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Style.Colors.mainColor, fontSize: 20),
-      underline: Container(
-        height: 2,
-        color: Style.Colors.secondColor,
-      ),
-      onChanged: (String newValue) {
-        setState(() {
-          dropdownValue = newValue;
-        });
-      },
-      items: <String>['Casa central', 'Sucursal  1', 'Sucursal 2', 'Sucursal 3']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
+  Widget seleccionarDeposito(List<Deposit> depositos) {
+    String dropdownValue = depositos[0].name;
+    List<String> nombreDepositos =
+        depositos.map((deposito) => deposito.name).toList();
+    return StreamBuilder(builder: (context, snapshot) {
+      return DropdownButton<String>(
+        value: dropdownValue,
+        icon: Icon(Icons.arrow_drop_down),
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(color: Style.Colors.mainColor, fontSize: 20),
+        underline: Container(
+          height: 2,
+          color: Style.Colors.secondColor,
+        ),
+        onChanged: (String newValue) {
+          setState(() {
+            dropdownValue = newValue;
+            nombreDeposito = newValue;
+            depositos.forEach((deposito) {
+              if (deposito.name == newValue) {
+                idDeposito = deposito.depositId;
+              }
+            });
+          });
+        },
+        items: nombreDepositos.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      );
+    });
   }
 }
 
-class ComboBoxDepositoWidget extends StatefulWidget {
-  ComboBoxDepositoWidget({Key key}) : super(key: key);
-
-  @override
-  _ComboBoxDepositoWidgetState createState() => _ComboBoxDepositoWidgetState();
-}
-
-/// This is the private State class that goes with ComboBoxSucursalWidget.
-class _ComboBoxDepositoWidgetState extends State<ComboBoxDepositoWidget> {
-  String dropdownValue = 'Deposito 1';
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: Icon(Icons.arrow_drop_down),
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Style.Colors.mainColor, fontSize: 20),
-      underline: Container(
-        height: 2,
-        color: Style.Colors.secondColor,
-      ),
-      onChanged: (String newValue) {
-        setState(() {
-          dropdownValue = newValue;
-        });
-      },
-      items: <String>['Deposito 1', 'Deposito 2', 'Deposito 3', 'Deposito 4']
-          .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
-  }
-}
-
-Widget continuarButton(context, unUsuario) {
+Widget continuarButton(context, unUsuario, idSucursal, idDeposito) {
   return RaisedButton(
     color: Style.Colors.mainColor,
     shape: botonRoundedRectangleBorder(),
-    // style: ElevatedButton.styleFrom(
-    //   primary: Style.Colors.mainColor,
-    //   shape: botonRoundedRectangleBorder(),
-    // ),
     child: Text('Continuar', style: TextStyle(color: Colors.white)),
     onPressed: () {
+      Repository()
+          .guardarIdentificacionSucursalDeposito(idSucursal, idDeposito);
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => PaginaInicial(unUsuario)));
+          builder: (BuildContext context) =>
+              PaginaInicial(unUsuario, idSucursal, idDeposito)));
     },
   );
 }
@@ -172,14 +220,11 @@ Widget omitirButton(context, unUsuario) {
   return RaisedButton(
     color: Style.Colors.mainColor,
     shape: botonRoundedRectangleBorder(),
-    // style: ElevatedButton.styleFrom(
-    //   primary: Style.Colors.mainColor,
-    //   shape: botonRoundedRectangleBorder(),
-    // ),
     child: Text('Omitir', style: TextStyle(color: Colors.white)),
     onPressed: () {
       Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => PaginaInicial(unUsuario)));
+          builder: (BuildContext context) => PaginaInicial(unUsuario, '',
+              ''))); //EN UN FUTURO PONER UNA SUCURSAL Y DEPOSITO PREDETERMINADO
     },
   );
 }
@@ -205,13 +250,6 @@ Widget selecionarComercio() {
               borderRadius: new BorderRadius.circular(8.0),
               side: BorderSide(color: Style.Colors.mainColor),
             ),
-            // style: ElevatedButton.styleFrom(
-            //   primary: Style.Colors.mainColor,
-            //   shape: RoundedRectangleBorder(
-            //     borderRadius: new BorderRadius.circular(8.0),
-            //     side: BorderSide(color: Style.Colors.mainColor),
-            //   ),
-            // ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -221,22 +259,6 @@ Widget selecionarComercio() {
               );
             }),
       );
-      // return RaisedButton(
-      //     child:
-      //         Text('Buscar en el mapa', style: TextStyle(color: Colors.white)),
-      //     color: Style.Colors.mainColor,
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: new BorderRadius.circular(8.0),
-      //       side: BorderSide(color: Style.Colors.mainColor),
-      //     ),
-      //     onPressed: () {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(
-      //           builder: (context) => MapaScreen(),
-      //         ),
-      //       );
-      //     });
     },
   );
 }

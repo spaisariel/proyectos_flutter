@@ -9,6 +9,9 @@ import '../style/theme.dart' as Style;
 
 // ignore: must_be_immutable
 class BotonesPrincipalWidget extends StatelessWidget {
+  String idSucursal;
+  String idDeposito;
+  BotonesPrincipalWidget(this.idSucursal, this.idDeposito);
   Product unProducto;
   Repository unRepositorio;
 
@@ -22,14 +25,12 @@ class BotonesPrincipalWidget extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width * 0.8,
         child: RaisedButton.icon(
             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            // style: RaisedButton.styleFrom(
-            //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            // ),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AuditoriaScreen(listaProductos),
+                  builder: (context) =>
+                      AuditoriaScreen(listaProductos, idSucursal, idDeposito),
                 ),
               );
             },
@@ -48,16 +49,12 @@ class BotonesPrincipalWidget extends StatelessWidget {
         child: RaisedButton.icon(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0)),
-            // style: ElevatedButton.styleFrom(
-            //   shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(20.0)),
-            // ),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ControlInventarioScreen(listaProductos),
-                  //builder: (context) => ProductScreen(),
+                  builder: (context) => ControlInventarioScreen(
+                      listaProductos, idSucursal, idDeposito),
                 ),
               );
             },
@@ -76,9 +73,6 @@ class BotonesPrincipalWidget extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width * 0.8,
         child: RaisedButton.icon(
             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            // style: ElevatedButton.styleFrom(
-            //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            // ),
             onPressed: () {
               Navigator.push(
                 context,
@@ -101,9 +95,6 @@ class BotonesPrincipalWidget extends StatelessWidget {
         minWidth: MediaQuery.of(context).size.width * 0.8,
         child: RaisedButton.icon(
             shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            // style: ElevatedButton.styleFrom(
-            //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            // ),
             onPressed: () {
               Navigator.push(
                 context,
