@@ -92,7 +92,7 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text('Consultas de inventario realizadas'),
+          title: Text('Consultas de inventario'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -141,7 +141,6 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
           ),
         ],
         rows: auditorias
-            .take(5)
             .map(
               (auditoria) => DataRow(
                 selected: auditorias.contains(auditoria),

@@ -194,13 +194,6 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                                 ),
                               ),
                             ),
-                            //Revisar que devuelve el producto, necesito la presentacion del mismo
-                            // DataCell(
-                            //   Text(
-                            //     producto.name,
-                            //     overflow: TextOverflow.ellipsis,
-                            //   ),
-                            // ),
                             DataCell(Image.network(producto.image)),
                           ]),
                     )

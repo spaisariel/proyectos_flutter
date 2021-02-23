@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/models/auditoria.dart';
+import 'package:prueba3_git/models/auditoriaInfo_response.dart';
 import 'package:prueba3_git/models/auditoria_response.dart';
 import 'package:prueba3_git/models/branchOffice.dart';
 import 'package:prueba3_git/models/branchOffice_response.dart';
@@ -120,6 +121,7 @@ class Repository {
   ///////////////METODOS GET PARA OBTENCION DE DATOS ///////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
+  //Devuelve un usuario
   Future<UserResponse> getUser() async {
     try {
       UserResponse userResponse =
@@ -149,8 +151,8 @@ class Repository {
     }
   }
 
-  //Devuelve una lista de todas las auditorias
-  Future<AuditoriaResponse> getAuditoriaList() async {
+  //Devuelve una lista de todas las auditorias de gondola
+  Future<AuditoriaResponse> getAuditoriaRackList() async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
     try {
@@ -163,6 +165,23 @@ class Repository {
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return AuditoriaResponse.withError("$error");
+    }
+  }
+
+  Future<AuditoriaInfoResponse> getAuditRackByID(idValue) async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+    try {
+      Response response = await _dio.get(
+          urlBase + "audit/GetAuditRackByID?id=$idValue",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      AuditoriaInfoResponse auditoriaResponse =
+          new AuditoriaInfoResponse(auditoriaInfoFromJson(x), "");
+      return auditoriaResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return AuditoriaInfoResponse.withError("$error");
     }
   }
 
@@ -208,6 +227,7 @@ class Repository {
     }
   }
 
+  //Devuelve el precio de un producto especificando su ID
   Future<ProductInfo> preciosProductos(idProduct) async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
@@ -262,6 +282,7 @@ class Repository {
   ///////////////METODOS POST PARA SUBIDA DE DE DATOS //////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
+  //Realiza un post de la auditoria, recibe la lista de productos y un string que le especifica las observaciones
   void postNuevaAuditoria(listaProductos, codeDialog) {
     String webServiceUrl = 'Audit/NewAuditStock';
 
@@ -278,7 +299,6 @@ class Repository {
       unItem.productId = listaProductos[index].id;
       preciosProductos(unItem.productId);
       unProducto = unProductoPrecio.prices;
-      //unaAuditoria.items.
       //SE MOVIERON LOS PRECIOS A PRODUCTINFO, VER COMO TRAERLO
       if (unaAuditoria.items == null) {
         unaAuditoria.items = new List<Item>();
@@ -301,6 +321,7 @@ class Repository {
     print(auditoriaToJson(unaAuditoria));
   }
 
+  //Realiza un post de la auditoria de stock, recibe la lista de productos y un string que le especifica las observaciones
   void postNuevaAuditoriaStock(listaProductos, codeDialog) {
     String webServiceUrl = 'Audit/NewAuditStockRack';
 
@@ -333,21 +354,5 @@ class Repository {
         headers: header, body: auditoriaToJson(unaAuditoria));
 
     print(auditoriaToJson(unaAuditoria));
-  }
-
-  //Devuelve una lista de todas las consultas de stock
-  Future<AuditoriaResponse> getAuditoriaStock() async {
-    try {
-      Response response = await _dio.get(urlBase + "Audit/NewAuditStock",
-          //"https://run.mocky.io/v3/06fc7f65-bcf6-4e39-a91a-347e16e87e82",
-          options: Options(responseType: ResponseType.json));
-      String x = json.encode(response.data);
-      AuditoriaResponse auditoriaResponse =
-          new AuditoriaResponse(auditoriaFromJson(x), "");
-      return auditoriaResponse;
-    } catch (error, stacktrace) {
-      print("Exception occured: $error stackTrace: $stacktrace");
-      return AuditoriaResponse.withError("$error");
-    }
   }
 }

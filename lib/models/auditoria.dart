@@ -1,12 +1,18 @@
 import 'dart:convert';
 
+//Inicio - Para multiples auditorias
 List<Auditoria> auditoriaFromJson(String str) =>
     List<Auditoria>.from(json.decode(str).map((x) => Auditoria.fromJson(x)));
 
-// String auditoriaToJson(List<Auditoria> data) =>
-//     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 String auditoriaToJson(Auditoria data) => json.encode(data.toJson());
+//Fin
+
+//Inicio - Para una sola auditoria
+Auditoria auditoriaInfoFromJson(String str) =>
+    Auditoria.fromJson(json.decode(str));
+
+String auditoriaInfoToJson(Auditoria data) => json.encode(data.toJson());
+//Fin
 
 class Auditoria {
   Auditoria({
@@ -44,7 +50,6 @@ class Item {
   Item({
     this.id,
     this.productId,
-    this.observations,
     this.quantity,
     this.presentationId,
     this.reasons,
@@ -52,7 +57,6 @@ class Item {
 
   int id;
   String productId;
-  String observations;
   double quantity;
   String presentationId;
   List<Reason> reasons = new List<Reason>();
@@ -60,7 +64,6 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         id: json["Id"],
         productId: json["ProductId"],
-        observations: json["Observations"],
         quantity: json["Quantity"],
         presentationId: json["PresentationId"],
         reasons:
@@ -70,7 +73,6 @@ class Item {
   Map<String, dynamic> toJson() => {
         "Id": id,
         "ProductId": productId,
-        "Observations": observations,
         "Quantity": quantity,
         "PresentationId": presentationId,
         "Reasons": List<dynamic>.from(reasons.map((x) => x.toJson())),
@@ -81,18 +83,22 @@ class Reason {
   Reason({
     this.id,
     this.descripcion,
+    this.observations,
   });
 
   int id;
   String descripcion;
+  String observations;
 
   factory Reason.fromJson(Map<String, dynamic> json) => Reason(
         id: json["Id"],
         descripcion: json["Descripcion"],
+        observations: json["Observations"],
       );
 
   Map<String, dynamic> toJson() => {
         "Id": id,
         "Descripcion": descripcion,
+        "Observations": observations,
       };
 }

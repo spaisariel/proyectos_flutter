@@ -120,6 +120,25 @@ class _BusquedaProductosAuditoriaScreenState
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
         title: Text('Busqueda manual'),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          AuditoriaScreen(selectedProducts, '', ''),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.check,
+                  size: 26.0,
+                ),
+              )),
+        ],
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -162,13 +181,19 @@ class _BusquedaProductosAuditoriaScreenState
                 columns: const <DataColumn>[
                   DataColumn(
                     label: Text(
-                      'ID',
+                      'CODIGO',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                   DataColumn(
                     label: Text(
-                      'NOMBRE',
+                      'DESCRIPCION',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      'FOTO',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -178,11 +203,6 @@ class _BusquedaProductosAuditoriaScreenState
                       (producto) => DataRow(
                           selected: selectedProducts.contains(producto),
                           onSelectChanged: (b) {
-                            // showDialog(
-                            //   context: context,
-                            //   builder: (BuildContext context) =>
-                            //       _buildPopUpObservation(context),
-                            // );
                             onSelectedRow(b, producto);
                           },
                           cells: [
@@ -200,42 +220,45 @@ class _BusquedaProductosAuditoriaScreenState
                               ),
                             ),
                             DataCell(
-                              Text(
-                                producto.name,
-                                overflow: TextOverflow.ellipsis,
+                              Container(
+                                width: 230,
+                                child: Text(
+                                  producto.name,
+                                  overflow: TextOverflow.clip,
+                                ),
                               ),
                             ),
+                            DataCell(Image.network(producto.image)),
                           ]),
                     )
                     .toList(),
               ),
             ),
             SizedBox(height: 20),
-            ButtonTheme(
-              buttonColor: Style.Colors.mainColor,
-              height: MediaQuery.of(context).size.height * 0.1,
-              minWidth: MediaQuery.of(context).size.width * 0.8,
-              child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AuditoriaScreen(selectedProducts,
-                            '', ''), //SACAR ESOS STRING DE AHI Y REEMPLAZARLOS
-                        //CON LO QUE CORRESPONDA (IDSUCURSAL E IDDEPOSITO)
-                      ),
-                    );
-                  },
-                  icon: Icon(Icons.assignment,
-                      size: 40, color: Style.Colors.secondColor),
-                  label: Text(
-                    'Agregar a auditoria',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  )),
-            )
+            // ButtonTheme(
+            //   buttonColor: Style.Colors.mainColor,
+            //   height: MediaQuery.of(context).size.height * 0.1,
+            //   minWidth: MediaQuery.of(context).size.width * 0.8,
+            //   child: ElevatedButton.icon(
+            //       style: ElevatedButton.styleFrom(
+            //         shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+            //       ),
+            //       onPressed: () {
+            //         Navigator.push(
+            //           context,
+            //           MaterialPageRoute(
+            //             builder: (context) =>
+            //                 AuditoriaScreen(selectedProducts, '', ''),
+            //           ),
+            //         );
+            //       },
+            //       icon: Icon(Icons.assignment,
+            //           size: 40, color: Style.Colors.secondColor),
+            //       label: Text(
+            //         'Agregar a auditoria',
+            //         style: TextStyle(color: Colors.white, fontSize: 20),
+            //       )),
+            // )
           ],
         ),
       ),

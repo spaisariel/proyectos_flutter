@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_auditoria_bloc.dart';
 import 'package:prueba3_git/models/auditoria.dart';
-import 'package:prueba3_git/models/auditoria_response.dart';
+import 'package:prueba3_git/models/auditoriaInfo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 class AuditoriaDetalleScreen extends StatefulWidget {
@@ -21,14 +21,14 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
   @override
   void initState() {
     super.initState();
-    auditoriaListBloc..getAuditoriaLista();
+    auditoriaInfoBloc..getAuditoriaGondolaPorID(idValue);
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<AuditoriaResponse>(
-      stream: auditoriaListBloc.subject.stream,
-      builder: (context, AsyncSnapshot<AuditoriaResponse> snapshot) {
+    return StreamBuilder<AuditoriaInfoResponse>(
+      stream: auditoriaInfoBloc.subject.stream,
+      builder: (context, AsyncSnapshot<AuditoriaInfoResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
@@ -70,173 +70,102 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(AuditoriaResponse data) {
-    List<Auditoria> auditorias = data.auditorias;
-    if (auditorias.length == 0) {
-      return Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              children: <Widget>[
-                Text(
-                  "No More Movies",
-                  style: TextStyle(color: Colors.black45),
-                )
-              ],
-            )
-          ],
-        ),
-      );
-    } else
-      return Scaffold(
+  Widget _buildHomeWidget(AuditoriaInfoResponse data) {
+    Auditoria unaAuditoriaInfo = data.auditoria;
+
+    return MaterialApp(
+      home: Scaffold(
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text('Detalle de auditoria'),
+          title: Text('Auditoria N°: ' + unaAuditoriaInfo.id.toString()),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Column(
-            children: [
-              Container(
-                  child: tablaAuditoria(auditorias),
-                  alignment: Alignment.center),
-              SizedBox(height: 80),
-              Container(
-                child: tablaItemsAuditoria(auditorias),
-                alignment: Alignment.center,
-              )
+            children: <Widget>[
+              listaProductos(unaAuditoriaInfo),
             ],
           ),
         ),
-      );
-  }
-
-  Widget tablaAuditoria(List<Auditoria> auditorias) {
-    return Container(
-      //width: MediaQuery.of(context).size.width,
-      child: DataTable(
-        columnSpacing: 10, horizontalMargin: 10.0,
-
-        //columnSpacing: 1.0,
-        columns: const <DataColumn>[
-          DataColumn(
-            label: Text(
-              'ID',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'Sucursal',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'Deposito',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'Observaciones',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ],
-        rows: auditorias
-            //A modo de demostracion, mas adelante se tendrá un endpoint que
-            //devuelva una sola auditoria segun el ID proporcionado
-            .take(1)
-            .map(
-              (auditoria) => DataRow(
-                selected: auditorias.contains(auditoria),
-                cells: [
-                  DataCell(
-                    Text(auditoria.id.toString()),
-                    onTap: () {},
-                  ),
-                  DataCell(
-                    Text(
-                      auditoria.branchOfficeId.toString(),
-                    ),
-                  ),
-                  DataCell(
-                    Text(
-                      auditoria.depositId.toString(),
-                    ),
-                  ),
-                  DataCell(
-                    Text(
-                      auditoria.observations,
-                    ),
-                  ),
-                ],
-              ),
-            )
-            .toList(),
       ),
     );
   }
 
-  Widget tablaItemsAuditoria(List<Auditoria> auditorias) {
-    return Container(
-      //width: MediaQuery.of(context).size.width,
-      child: DataTable(
-        columnSpacing: 10, horizontalMargin: 10.0,
+  Widget listaProductos(Auditoria unaAuditoriaInfo) {
+    List<Item> auditoriaItems = unaAuditoriaInfo.items;
 
-        //columnSpacing: 1.0,
-        columns: const <DataColumn>[
-          DataColumn(
-            label: Text(
-              'ID',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
+    return Container(
+        child: DataTable(
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'ID',
+            style: TextStyle(fontStyle: FontStyle.italic),
           ),
-          DataColumn(
-            label: Text(
-              'Observaciones',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
+        ),
+        DataColumn(
+          label: Text(
+            'Cantidad',
+            style: TextStyle(fontStyle: FontStyle.italic),
           ),
-          DataColumn(
-            label: Text(
-              'Cantidad',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
+        ),
+        DataColumn(
+          label: Text(
+            'Razones',
+            style: TextStyle(fontStyle: FontStyle.italic),
           ),
-        ],
-        rows: auditorias
-            //A modo de demostracion, mas adelante se tendrá un endpoint que
-            //devuelva una sola auditoria segun el ID proporcionado
-            .take(3)
-            .map(
-              (auditoria) => DataRow(
-                selected: auditorias.contains(auditoria),
-                cells: [
-                  DataCell(
-                    Text(auditoria.items[1].id.toString()),
-                    onTap: () {},
-                  ),
-                  DataCell(
-                    Text(
-                      auditoria.items[1].observations,
+        ),
+      ],
+      rows: auditoriaItems
+          .map((auditItem) => DataRow(cells: [
+                DataCell(
+                  Text(auditItem.id.toString()),
+                ),
+                DataCell(
+                  Text(auditItem.quantity.toString()),
+                ),
+                DataCell(Text('Ver errores acá'),
+                    onTap: () =>
+                        _showMaterialDialogCancelar(context, auditItem.reasons)
+                    //+ auditItem.reasons[0].id.toString()),
                     ),
-                  ),
-                  DataCell(
-                    Text(
-                      auditoria.items[1].quantity.toString(),
-                    ),
-                  ),
-                ],
-              ),
-            )
-            .toList(),
-      ),
-    );
+              ]))
+          .toList(),
+    ));
   }
+}
+
+_showMaterialDialogCancelar(context, List<Reason> auditItem) {
+  showDialog(
+      context: context,
+      builder: (_) => new AlertDialog(
+            title: new Text("Listado de razones"),
+            content: DataTable(
+              columns: const <DataColumn>[
+                DataColumn(
+                  label: Text(
+                    'ID',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Descripcion',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+              ],
+              rows: auditItem
+                  .map((rasones) => DataRow(cells: [
+                        DataCell(
+                          Text(rasones.id.toString()),
+                        ),
+                        DataCell(
+                          Text(rasones.descripcion),
+                        ),
+                      ]))
+                  .toList(),
+            ),
+          ));
 }

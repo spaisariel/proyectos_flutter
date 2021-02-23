@@ -162,10 +162,6 @@ class _UserScreenState extends State<UserScreen> {
               child: RaisedButton(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
-                  // style: ElevatedButton.styleFrom(
-                  //   shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(20.0)),
-                  // ),
                   onPressed: () {
                     _showMaterialDialog(context);
                   },
@@ -181,11 +177,6 @@ class _UserScreenState extends State<UserScreen> {
                   color: Style.Colors.cancelColor2,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
-                  // style: ElevatedButton.styleFrom(
-                  //   primary: Style.Colors.cancelColor2,
-                  //   shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(20.0)),
-                  // ),
                   onPressed: () {
                     _logout();
                   },

@@ -1,3 +1,4 @@
+import 'package:prueba3_git/models/auditoriaInfo_response.dart';
 import 'package:prueba3_git/models/auditoria_response.dart';
 import 'package:prueba3_git/repository/repository.dart';
 import 'package:rxdart/rxdart.dart';
@@ -8,7 +9,7 @@ class AuditoriaListBloc {
       BehaviorSubject<AuditoriaResponse>();
 
   getAuditoriaLista() async {
-    AuditoriaResponse response = await _repository.getAuditoriaList();
+    AuditoriaResponse response = await _repository.getAuditoriaRackList();
     _subject.sink.add(response);
   }
 
@@ -20,3 +21,23 @@ class AuditoriaListBloc {
 }
 
 final auditoriaListBloc = AuditoriaListBloc();
+
+class AuditoriaInfoBloc {
+  final Repository _repository = Repository();
+  final BehaviorSubject<AuditoriaInfoResponse> _subject =
+      BehaviorSubject<AuditoriaInfoResponse>();
+
+  getAuditoriaGondolaPorID(idValue) async {
+    AuditoriaInfoResponse response =
+        await _repository.getAuditRackByID(idValue);
+    _subject.sink.add(response);
+  }
+
+  dispose() {
+    _subject.close();
+  }
+
+  BehaviorSubject<AuditoriaInfoResponse> get subject => _subject;
+}
+
+final auditoriaInfoBloc = AuditoriaInfoBloc();

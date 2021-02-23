@@ -139,6 +139,25 @@ class _BusquedaProductosControlScreenState
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
           title: Text('Busqueda manual'),
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ControlInventarioScreen(selectedProducts, '', ''),
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.check,
+                    size: 26.0,
+                  ),
+                )),
+          ],
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -224,30 +243,30 @@ class _BusquedaProductosControlScreenState
                 ),
               ),
               SizedBox(height: 20),
-              ButtonTheme(
-                buttonColor: Style.Colors.mainColor,
-                height: MediaQuery.of(context).size.height * 0.1,
-                minWidth: MediaQuery.of(context).size.width * 0.8,
-                child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ControlInventarioScreen(selectedProducts, '', ''),
-                        ),
-                      );
-                    },
-                    icon: Icon(Icons.assignment,
-                        size: 40, color: Style.Colors.secondColor),
-                    label: Text(
-                      'Agregar a control',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    )),
-              )
+              // ButtonTheme(
+              //   buttonColor: Style.Colors.mainColor,
+              //   height: MediaQuery.of(context).size.height * 0.1,
+              //   minWidth: MediaQuery.of(context).size.width * 0.8,
+              //   child: ElevatedButton.icon(
+              //       style: ElevatedButton.styleFrom(
+              //         shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+              //       ),
+              //       onPressed: () {
+              //         Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) =>
+              //                 ControlInventarioScreen(selectedProducts, '', ''),
+              //           ),
+              //         );
+              //       },
+              //       icon: Icon(Icons.assignment,
+              //           size: 40, color: Style.Colors.secondColor),
+              //       label: Text(
+              //         'Agregar a control',
+              //         style: TextStyle(color: Colors.white, fontSize: 20),
+              //       )),
+              // )
             ],
           ),
         ),
