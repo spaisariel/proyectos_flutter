@@ -13,6 +13,23 @@ class AuditoriaResponse {
         error = "";
 
   AuditoriaResponse.withError(String errorValue)
-      : auditorias = List(),
+      : auditorias = [],
+        error = errorValue;
+}
+
+class ReasonResponse {
+  final List<Reason> razones;
+  final String error;
+
+  ReasonResponse(this.razones, this.error);
+
+  ReasonResponse.fromJson(Map<String, dynamic> json)
+      : razones = (json["results"] as List)
+            .map((i) => new Reason.fromJson(i))
+            .toList(),
+        error = "";
+
+  ReasonResponse.withError(String errorValue)
+      : razones = [],
         error = errorValue;
 }

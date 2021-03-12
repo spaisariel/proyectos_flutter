@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_product_bloc.dart';
+import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_response.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
@@ -7,12 +8,15 @@ import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
 
+// ignore: must_be_immutable
 class BusquedaProductosAuditoriaScreen extends StatefulWidget {
-  BusquedaProductosAuditoriaScreen({Key key}) : super(key: key);
+  List<Reason> listaRazones;
+
+  BusquedaProductosAuditoriaScreen(this.listaRazones);
 
   @override
   _BusquedaProductosAuditoriaScreenState createState() =>
-      _BusquedaProductosAuditoriaScreenState();
+      _BusquedaProductosAuditoriaScreenState(this.listaRazones);
 }
 
 class _BusquedaProductosAuditoriaScreenState
@@ -20,32 +24,56 @@ class _BusquedaProductosAuditoriaScreenState
   List<bool> filtrosSeleccionados;
   Product filtroSeleccionado;
   Product unProducto;
+  int cantProductos;
   String idValue;
   String hint = '';
-  String begin;
-  String end;
+  String begin = '0';
+  String end = '15';
   String codeDialog = '';
   List<Product> selectedProducts;
+  List<Reason> selectedReasons = [];
+  List<Reason> listaRazones;
+  List<Item> listaItems = [];
+  String dropdownValue;
+
+  _BusquedaProductosAuditoriaScreenState(this.listaRazones);
 
   TextEditingController hintController = new TextEditingController();
   TextEditingController _textFieldController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     productListBloc..getProductLista(hint, begin, end);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        end = (cantProductos + 30).toString();
+        setState(() {
+          productListBloc..getProductLista(hintController.text, begin, end);
+        });
+      }
+    });
     selectedProducts = [];
   }
 
   onSelectedRow(bool selected, Product unProducto) async {
     setState(() {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) => _buildPopUpObservation(context),
-      );
       if (selected) {
         unProducto.observation = codeDialog;
         selectedProducts.add(unProducto);
+        Item unItem = new Item();
+        //unItem.id = (unProducto.internalCode) as int;
+        unItem.id = int.parse(unProducto.internalCode);
+        unItem.productId = unProducto.id;
+        unItem.name = unProducto.name;
+        unItem.quantity = unProducto.stock;
+        showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              _buildPopUpObservation(context, unItem),
+        );
       } else {
         unProducto.observation = '';
         selectedProducts.remove(unProducto);
@@ -114,6 +142,7 @@ class _BusquedaProductosAuditoriaScreenState
 
   Widget _buildHomeWidget(ProductResponse data) {
     List<Product> productos = data.products;
+    cantProductos = data.products.length;
 
     return Scaffold(
       backgroundColor: Style.Colors.blanco,
@@ -128,8 +157,8 @@ class _BusquedaProductosAuditoriaScreenState
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          AuditoriaScreen(selectedProducts, '', ''),
+                      builder: (context) => AuditoriaScreen(
+                          selectedProducts, listaRazones, listaItems, '', ''),
                     ),
                   );
                 },
@@ -157,9 +186,7 @@ class _BusquedaProductosAuditoriaScreenState
                       decoration: InputDecoration(
                         hintText: 'Ingrese nombre o codigo',
                       ),
-                      onSaved: (String valor) {
-                        //hint = valor;
-                      },
+                      onSaved: (String valor) {},
                     )),
                 IconButton(
                     icon: Icon(Icons.search),
@@ -235,38 +262,21 @@ class _BusquedaProductosAuditoriaScreenState
               ),
             ),
             SizedBox(height: 20),
-            // ButtonTheme(
-            //   buttonColor: Style.Colors.mainColor,
-            //   height: MediaQuery.of(context).size.height * 0.1,
-            //   minWidth: MediaQuery.of(context).size.width * 0.8,
-            //   child: ElevatedButton.icon(
-            //       style: ElevatedButton.styleFrom(
-            //         shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            //       ),
-            //       onPressed: () {
-            //         Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //             builder: (context) =>
-            //                 AuditoriaScreen(selectedProducts, '', ''),
-            //           ),
-            //         );
-            //       },
-            //       icon: Icon(Icons.assignment,
-            //           size: 40, color: Style.Colors.secondColor),
-            //       label: Text(
-            //         'Agregar a auditoria',
-            //         style: TextStyle(color: Colors.white, fontSize: 20),
-            //       )),
-            // )
           ],
         ),
       ),
     );
   }
 
-  Widget _buildPopUpObservation(BuildContext context) {
+  Widget _buildPopUpObservation(BuildContext context, Item unItem) {
     String valueText;
+    dropdownValue = listaRazones[0].descripcion;
+
+    List<String> nombreRazones =
+        listaRazones.map((razon) => razon.descripcion).toList();
+    String id = listaRazones[0].id;
+    String descripcion = dropdownValue;
+    String observacion = 'No aplica';
 
     return new AlertDialog(
       title: const Text('Ingrese una observación'),
@@ -278,6 +288,7 @@ class _BusquedaProductosAuditoriaScreenState
             onChanged: (value) {
               setState(() {
                 valueText = value;
+                observacion = _textFieldController.text;
               });
             },
             controller: _textFieldController,
@@ -287,17 +298,52 @@ class _BusquedaProductosAuditoriaScreenState
         ],
       ),
       actions: <Widget>[
+        DropdownButton<String>(
+          value: dropdownValue,
+          icon: Icon(Icons.arrow_drop_down),
+          iconSize: 24,
+          elevation: 16,
+          underline: Container(
+            height: 2,
+            color: Style.Colors.secondColor,
+          ),
+          onChanged: (String newValue) {
+            setState(() {
+              dropdownValue = newValue;
+              descripcion = newValue;
+              listaRazones.forEach((item) {
+                if (item.descripcion == descripcion) {
+                  id = item.id;
+                }
+              });
+            });
+          },
+          items: nombreRazones.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+        ),
         FlatButton(
           color: Colors.green,
           textColor: Colors.white,
           child: Text('Aceptar'),
           onPressed: () {
+            Reason unaRazon = new Reason();
+            unaRazon.id = id;
+            unaRazon.descripcion = descripcion;
+            unaRazon.observations = observacion;
+            selectedReasons.add(unaRazon);
+            unItem.reasons = [];
+            unItem.reasons.add(unaRazon);
+            listaItems.add(unItem);
             setState(() {
               codeDialog = valueText;
               Navigator.pop(context);
             });
           },
-        )
+        ),
       ],
     );
   }

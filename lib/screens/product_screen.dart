@@ -192,7 +192,7 @@ class _ProductScreenState extends State<ProductScreen> {
                                   Text(precios.price.toString()),
                                 ),
                                 DataCell(
-                                  Text(precios.isSale.toString()),
+                                  Text(precios.presentation),
                                 ),
                               ]),
                             )

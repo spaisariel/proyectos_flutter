@@ -41,3 +41,22 @@ class AuditoriaInfoBloc {
 }
 
 final auditoriaInfoBloc = AuditoriaInfoBloc();
+
+class RazonesBloc {
+  final Repository _repository = Repository();
+  final BehaviorSubject<ReasonResponse> _subject =
+      BehaviorSubject<ReasonResponse>();
+
+  getRazonesLista() async {
+    ReasonResponse response = await _repository.getReasons();
+    _subject.sink.add(response);
+  }
+
+  dispose() {
+    _subject.close();
+  }
+
+  BehaviorSubject<ReasonResponse> get subject => _subject;
+}
+
+final razonesListBloc = RazonesBloc();

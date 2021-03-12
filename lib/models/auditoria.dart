@@ -14,6 +14,13 @@ Auditoria auditoriaInfoFromJson(String str) =>
 String auditoriaInfoToJson(Auditoria data) => json.encode(data.toJson());
 //Fin
 
+//inicio - Traer razones
+List<Reason> reasonFromJson(String str) =>
+    List<Reason>.from(json.decode(str).map((x) => Reason.fromJson(x)));
+
+String reasonToJson(Reason data) => json.encode(data.toJson());
+//Fin
+
 class Auditoria {
   Auditoria({
     this.id,
@@ -27,7 +34,7 @@ class Auditoria {
   String branchOfficeId;
   String depositId;
   String observations;
-  List<Item> items = new List<Item>();
+  List<Item> items = [];
 
   factory Auditoria.fromJson(Map<String, dynamic> json) => Auditoria(
         id: json["Id"],
@@ -50,6 +57,7 @@ class Item {
   Item({
     this.id,
     this.productId,
+    this.name,
     this.quantity,
     this.presentationId,
     this.reasons,
@@ -57,6 +65,7 @@ class Item {
 
   int id;
   String productId;
+  String name;
   double quantity;
   String presentationId;
   List<Reason> reasons = new List<Reason>();
@@ -64,6 +73,7 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         id: json["Id"],
         productId: json["ProductId"],
+        name: json["Name"],
         quantity: json["Quantity"],
         presentationId: json["PresentationId"],
         reasons:
@@ -73,6 +83,7 @@ class Item {
   Map<String, dynamic> toJson() => {
         "Id": id,
         "ProductId": productId,
+        "Name": name,
         "Quantity": quantity,
         "PresentationId": presentationId,
         "Reasons": List<dynamic>.from(reasons.map((x) => x.toJson())),
@@ -86,19 +97,19 @@ class Reason {
     this.observations,
   });
 
-  int id;
+  String id;
   String descripcion;
   String observations;
 
   factory Reason.fromJson(Map<String, dynamic> json) => Reason(
         id: json["Id"],
-        descripcion: json["Descripcion"],
+        descripcion: json["Description"],
         observations: json["Observations"],
       );
 
   Map<String, dynamic> toJson() => {
         "Id": id,
-        "Descripcion": descripcion,
+        "Description": descripcion,
         "Observations": observations,
       };
 }

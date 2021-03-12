@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
@@ -11,9 +12,11 @@ import '../style/theme.dart' as Style;
 class BotonesPrincipalWidget extends StatelessWidget {
   String idSucursal;
   String idDeposito;
-  BotonesPrincipalWidget(this.idSucursal, this.idDeposito);
+  List<Reason> listaRazones;
+  BotonesPrincipalWidget(this.idSucursal, this.idDeposito, this.listaRazones);
   Product unProducto;
   Repository unRepositorio;
+  List<Item> listaItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +32,8 @@ class BotonesPrincipalWidget extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      AuditoriaScreen(listaProductos, idSucursal, idDeposito),
+                  builder: (context) => AuditoriaScreen(listaProductos,
+                      listaRazones, listaItems, idSucursal, idDeposito),
                 ),
               );
             },

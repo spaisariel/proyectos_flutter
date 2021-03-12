@@ -141,7 +141,6 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
           ),
         ],
         rows: auditorias
-            .take(5)
             .map(
               (auditoria) => DataRow(
                 selected: auditorias.contains(auditoria),

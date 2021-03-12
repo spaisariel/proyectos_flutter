@@ -27,6 +27,7 @@ dependencies:
   bloc: ^3.0.0
   rxdart: ^0.23.1
   eva_icons_flutter: ^2.0.0
+  flutter_tts: ^3.0.0
   device_info:
 
   # The following adds the Cupertino Icons font to your application.

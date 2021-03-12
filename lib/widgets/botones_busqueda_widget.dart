@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/screens/busqueda_productos_auditoria.dart';
 import 'package:prueba3_git/screens/busqueda_productos_control.dart';
 
@@ -8,17 +9,20 @@ import 'package:prueba3_git/screens/busquedamanual_screen.dart';
 
 import '../style/theme.dart' as Style;
 
+// ignore: must_be_immutable
 class BotonesBusquedaWidget extends StatefulWidget {
   final String llamada;
-  BotonesBusquedaWidget(this.llamada);
+  List<Reason> listaRazones;
+  BotonesBusquedaWidget(this.llamada, this.listaRazones);
   @override
   _BotonesBusquedaWidgetState createState() =>
-      _BotonesBusquedaWidgetState(this.llamada);
+      _BotonesBusquedaWidgetState(this.llamada, this.listaRazones);
 }
 
 class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
   final String llamada;
-  _BotonesBusquedaWidgetState(this.llamada);
+  List<Reason> listaRazones;
+  _BotonesBusquedaWidgetState(this.llamada, this.listaRazones);
   // ignore: unused_field
   String _scanBarcode = 'Desconocido';
   List<String> idProductos = new List<String>();
@@ -79,86 +83,103 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ButtonTheme(
-          buttonColor: Style.Colors.mainColor,
+        FlatButton(
+          textColor: Colors.white,
           height: MediaQuery.of(context).size.height * 0.1,
-          minWidth: MediaQuery.of(context).size.width * 0.3,
-          child: RaisedButton.icon(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              onPressed: () async {
-                if (llamada == "auditoria") {
-                  idProductos = await Navigator.push(
+          minWidth: MediaQuery.of(context).size.width * 0.23,
+          color: Style.Colors.mainColor,
+          shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          onPressed: () async {
+            if (llamada == "auditoria") {
+              idProductos = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (
                     context,
-                    MaterialPageRoute(
-                      builder: (
-                        context,
-                      ) =>
-                          BusquedaProductosAuditoriaScreen(),
-                    ),
-                  );
-                } else if (llamada == "inventario") {
-                  idProductos = await Navigator.push(
+                  ) =>
+                      BusquedaProductosAuditoriaScreen(listaRazones),
+                ),
+              );
+            } else if (llamada == "inventario") {
+              idProductos = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (
                     context,
-                    MaterialPageRoute(
-                      builder: (
-                        context,
-                      ) =>
-                          BusquedaProductosControlScreen(),
-                    ),
-                  );
-                } else {
-                  idProductos = await Navigator.push(
+                  ) =>
+                      BusquedaProductosControlScreen(),
+                ),
+              );
+            } else {
+              idProductos = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (
                     context,
-                    MaterialPageRoute(
-                      builder: (
-                        context,
-                      ) =>
-                          BusquedaManualScreen(),
-                    ),
-                  );
-                }
-              },
-              icon: Icon(
-                Icons.edit,
-                color: Style.Colors.secondColor,
-                size: 40,
+                  ) =>
+                      BusquedaManualScreen(),
+                ),
+              );
+            }
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                ),
               ),
-              label: Column(
-                children: [
-                  Text('Busqueda',
-                      style: TextStyle(color: Colors.white, fontSize: 15)),
-                  Text('Manual',
-                      style: TextStyle(color: Colors.white, fontSize: 15))
-                ],
-              )),
+              Text('Manual'),
+            ],
+          ),
         ),
         SizedBox(width: 20),
-        ButtonTheme(
-          buttonColor: Style.Colors.mainColor,
+        FlatButton(
+          textColor: Colors.white,
           height: MediaQuery.of(context).size.height * 0.1,
-          minWidth: MediaQuery.of(context).size.width * 0.4,
-          child: RaisedButton.icon(
-              shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              // style: ElevatedButton.styleFrom(
-              //   shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-              // ),
-              onPressed: () {
-                _showMaterialDialog(context);
-              },
-              icon: Icon(
-                Icons.camera,
-                color: Style.Colors.secondColor,
-                size: 40,
+          minWidth: MediaQuery.of(context).size.width * 0.23,
+          color: Style.Colors.mainColor,
+          shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          onPressed: () => scanQR(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.qr_code,
+                  color: Colors.white,
+                ),
               ),
-              label: Column(
-                children: [
-                  Text('Busqueda',
-                      style: TextStyle(color: Colors.white, fontSize: 15)),
-                  Text('QR',
-                      style: TextStyle(color: Colors.white, fontSize: 15))
-                ],
-              )),
-        )
+              Text('QR'),
+            ],
+          ),
+        ),
+        SizedBox(width: 20),
+        FlatButton(
+          textColor: Colors.white,
+          height: MediaQuery.of(context).size.height * 0.1,
+          minWidth: MediaQuery.of(context).size.width * 0.23,
+          color: Style.Colors.mainColor,
+          shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
+          onPressed: () => scanBarcodeNormal(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.line_weight,
+                  color: Colors.white,
+                ),
+              ),
+              Text('Barras'),
+            ],
+          ),
+        ),
       ],
     );
   }

@@ -20,20 +20,31 @@ class _BusquedaProductosControlScreenState
   List<bool> filtrosSeleccionados;
   Product filtroSeleccionado;
   Product unProducto;
+  int cantProductos;
   String idValue;
   String hint = '';
-  String begin;
-  String end;
+  String begin = '0';
+  String end = '15';
   String codeDialog = '';
   List<Product> selectedProducts;
 
   TextEditingController hintController = new TextEditingController();
   TextEditingController _textFieldController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     productListBloc..getProductLista(hint, begin, end);
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        end = (cantProductos + 30).toString();
+        setState(() {
+          productListBloc..getProductLista(hintController.text, begin, end);
+        });
+      }
+    });
     selectedProducts = [];
   }
 
@@ -114,6 +125,7 @@ class _BusquedaProductosControlScreenState
 
   Widget _buildHomeWidget(ProductResponse data) {
     List<Product> productos = data.products;
+    cantProductos = data.products.length;
 
     if (productos.length == 0) {
       return Container(

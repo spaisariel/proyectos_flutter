@@ -210,10 +210,6 @@ class Repository {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
 
-    hint = 'arand';
-    begin = 0;
-    end = 10;
-
     try {
       Response response = await _dio
           .get(urlBase + "products/GetList?text=$hint&begin=$begin&end=$end");
@@ -278,12 +274,27 @@ class Repository {
     return respuesta.body;
   }
 
+  Future<ReasonResponse> getReasons() async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+    try {
+      Response response = await _dio.get(urlBase + "Audit/getReasons",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      ReasonResponse razones = new ReasonResponse(reasonFromJson(x), "");
+      return razones;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return ReasonResponse.withError("$error");
+    }
+  }
+
   //////////////////////////////////////////////////////////////////////////////
   ///////////////METODOS POST PARA SUBIDA DE DE DATOS //////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
   //Realiza un post de la auditoria, recibe la lista de productos y un string que le especifica las observaciones
-  void postNuevaAuditoria(listaProductos, codeDialog) {
+  void postNuevaAuditoriaStock(listaProductos, codeDialog) {
     String webServiceUrl = 'Audit/NewAuditStock';
 
     Auditoria unaAuditoria = new Auditoria();
@@ -321,29 +332,18 @@ class Repository {
     print(auditoriaToJson(unaAuditoria));
   }
 
-  //Realiza un post de la auditoria de stock, recibe la lista de productos y un string que le especifica las observaciones
-  void postNuevaAuditoriaStock(listaProductos, codeDialog) {
+  //Realiza un post de la auditoria de gondola, recibe la lista de productos y un string que le especifica las observaciones
+  void postNuevaAuditoriaGondola(List<Item> listaItems, codeDialog) {
     String webServiceUrl = 'Audit/NewAuditStockRack';
 
     Auditoria unaAuditoria = new Auditoria();
-    unaAuditoria.branchOfficeId = '1';
-    unaAuditoria.depositId = '2';
+    unaAuditoria.items = [];
+    unaAuditoria.branchOfficeId = idSucursal;
+    unaAuditoria.depositId = idDeposito;
     unaAuditoria.observations = codeDialog;
-
-    int index = 0;
-    while (index < listaProductos.length) {
-      Item unItem = new Item();
-      unItem.productId = listaProductos[index].id;
-      unItem.presentationId = listaProductos[index].prices[0].presentation;
-      if (unaAuditoria.items == null) {
-        unaAuditoria.items = new List<Item>();
-      }
-      if (unItem.reasons == null) {
-        unItem.reasons = new List<Reason>();
-      }
-      unaAuditoria.items.add(unItem);
-      index++;
-    }
+    listaItems.forEach((item) {
+      unaAuditoria.items.add(item);
+    });
 
     Map<String, String> header = {
       'Content-Type': 'application/json; charset=utf-8',
