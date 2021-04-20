@@ -38,15 +38,17 @@ class ButtonThemes {
     IconData icon,
     String title,
   ) {
-    return ButtonTheme(
-      buttonColor: Colors.mainColor,
-      height: MediaQuery.of(context).size.height * 0.1,
-      minWidth: MediaQuery.of(context).size.width * 0.8,
-      child: RaisedButton.icon(
-          shape: Shapes.botonGrandeRoundedRectangleBorder(),
-          // style: ElevatedButton.styleFrom(
-          //   shape: Shapes.botonGrandeRoundedRectangleBorder(),
-          // ),
+    return ConstrainedBox(
+      constraints: BoxConstraints.tightFor(
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: MediaQuery.of(context).size.height * 0.1),
+      // buttonColor: Colors.mainColor,
+      // height: MediaQuery.of(context).size.height * 0.1,
+      // minWidth: MediaQuery.of(context).size.width * 0.8,
+      child: ElevatedButton.icon(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all(
+                  Shapes.botonGrandeRoundedRectangleBorder())),
           onPressed: () {},
           icon: Icon(
             Icons.assignment_turned_in,
@@ -64,8 +66,10 @@ class ButtonThemes {
   ) {
     return ButtonTheme(
       buttonColor: Colors.mainColor,
-      child: RaisedButton(
-          shape: Shapes.botonGrandeRoundedRectangleBorder(),
+      child: ElevatedButton(
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all(
+                  Shapes.botonGrandeRoundedRectangleBorder())),
           // style: ElevatedButton.styleFrom(
           //   shape: Shapes.botonGrandeRoundedRectangleBorder(),
           // ),

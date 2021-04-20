@@ -72,6 +72,7 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
 
   Widget _buildHomeWidget(AuditoriaInfoResponse data) {
     Auditoria unaAuditoriaInfo = data.auditoria;
+    unaAuditoriaInfo.depositName = "";
 
     return MaterialApp(
       home: Scaffold(
@@ -100,7 +101,7 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
       columns: const <DataColumn>[
         DataColumn(
           label: Text(
-            'ID',
+            'Nombre',
             style: TextStyle(fontStyle: FontStyle.italic),
           ),
         ),
@@ -120,28 +121,28 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
       rows: auditoriaItems
           .map((auditItem) => DataRow(cells: [
                 DataCell(
-                  Text(auditItem.id.toString()),
+                  Text(auditItem.name ?? "No tiene/Arrgelar"),
                 ),
                 DataCell(
                   Text(auditItem.quantity.toString()),
                 ),
-                DataCell(Text('Ver errores acá'),
+                DataCell(Text(auditItem.reasons[0].descripcion),
                     onTap: () =>
-                        _showMaterialDialogCancelar(context, auditItem.reasons)
-                    //+ auditItem.reasons[0].id.toString()),
-                    ),
+                        _showMaterialDialogReasons(context, auditItem.reasons)),
               ]))
           .toList(),
     ));
   }
 }
 
-_showMaterialDialogCancelar(context, List<Reason> auditItem) {
+_showMaterialDialogReasons(context, List<Reason> auditItem) {
   showDialog(
       context: context,
       builder: (_) => new AlertDialog(
+            insetPadding: EdgeInsets.all(10),
             title: new Text("Listado de razones"),
             content: DataTable(
+              columnSpacing: 30.0,
               columns: const <DataColumn>[
                 DataColumn(
                   label: Text(
@@ -155,6 +156,12 @@ _showMaterialDialogCancelar(context, List<Reason> auditItem) {
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
+                DataColumn(
+                  label: Text(
+                    'Observación',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
               ],
               rows: auditItem
                   .map((rasones) => DataRow(cells: [
@@ -163,6 +170,12 @@ _showMaterialDialogCancelar(context, List<Reason> auditItem) {
                         ),
                         DataCell(
                           Text(rasones.descripcion),
+                        ),
+                        DataCell(
+                          Text(
+                            rasones.observations,
+                            overflow: TextOverflow.fade,
+                          ),
                         ),
                       ]))
                   .toList(),

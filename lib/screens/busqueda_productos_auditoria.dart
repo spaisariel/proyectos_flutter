@@ -3,20 +3,20 @@ import 'package:prueba3_git/blocs/get_product_bloc.dart';
 import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_response.dart';
-import 'package:prueba3_git/screens/auditoria_screen.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
 
 // ignore: must_be_immutable
 class BusquedaProductosAuditoriaScreen extends StatefulWidget {
   List<Reason> listaRazones;
+  List<Product> listaProductos;
 
-  BusquedaProductosAuditoriaScreen(this.listaRazones);
+  BusquedaProductosAuditoriaScreen(this.listaRazones, this.listaProductos);
 
   @override
   _BusquedaProductosAuditoriaScreenState createState() =>
-      _BusquedaProductosAuditoriaScreenState(this.listaRazones);
+      _BusquedaProductosAuditoriaScreenState(
+          this.listaRazones, this.listaProductos);
 }
 
 class _BusquedaProductosAuditoriaScreenState
@@ -30,13 +30,15 @@ class _BusquedaProductosAuditoriaScreenState
   String begin = '0';
   String end = '15';
   String codeDialog = '';
-  List<Product> selectedProducts;
+  List<Product> selectedProducts = [];
   List<Reason> selectedReasons = [];
   List<Reason> listaRazones;
+  List<Product> listaProductos = []; //VER
   List<Item> listaItems = [];
   String dropdownValue;
 
-  _BusquedaProductosAuditoriaScreenState(this.listaRazones);
+  _BusquedaProductosAuditoriaScreenState(
+      this.listaRazones, this.listaProductos);
 
   TextEditingController hintController = new TextEditingController();
   TextEditingController _textFieldController = TextEditingController();
@@ -55,7 +57,9 @@ class _BusquedaProductosAuditoriaScreenState
         });
       }
     });
-    selectedProducts = [];
+    //selectedProducts = [];
+
+    //listaItems.forEach((item) { })
   }
 
   onSelectedRow(bool selected, Product unProducto) async {
@@ -64,7 +68,6 @@ class _BusquedaProductosAuditoriaScreenState
         unProducto.observation = codeDialog;
         selectedProducts.add(unProducto);
         Item unItem = new Item();
-        //unItem.id = (unProducto.internalCode) as int;
         unItem.id = int.parse(unProducto.internalCode);
         unItem.productId = unProducto.id;
         unItem.name = unProducto.name;
@@ -77,6 +80,8 @@ class _BusquedaProductosAuditoriaScreenState
       } else {
         unProducto.observation = '';
         selectedProducts.remove(unProducto);
+        listaItems.removeWhere(
+            (item) => item.id == int.parse(unProducto.internalCode));
       }
     });
   }
@@ -148,25 +153,20 @@ class _BusquedaProductosAuditoriaScreenState
       backgroundColor: Style.Colors.blanco,
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context, listaItems),
+            );
+          },
+        ),
         title: Text('Busqueda manual'),
         actions: <Widget>[
           Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AuditoriaScreen(
-                          selectedProducts, listaRazones, listaItems, '', ''),
-                    ),
-                  );
-                },
-                child: Icon(
-                  Icons.check,
-                  size: 26.0,
-                ),
-              )),
+            padding: EdgeInsets.all(20),
+            child: Text("Cantidad: " + listaItems.length.toString()),
+          ),
         ],
         centerTitle: true,
       ),
@@ -174,7 +174,6 @@ class _BusquedaProductosAuditoriaScreenState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            FiltroBusquedaWidget(productos),
             SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -200,27 +199,24 @@ class _BusquedaProductosAuditoriaScreenState
             ),
             Container(
               child: DataTable(
-                columnSpacing: 10,
                 horizontalMargin: 10.0,
                 showCheckboxColumn: true,
-
-                //columnSpacing: 1.0,
                 columns: const <DataColumn>[
                   DataColumn(
                     label: Text(
-                      'CODIGO',
+                      'Codigo',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                   DataColumn(
                     label: Text(
-                      'DESCRIPCION',
+                      'Descripción',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
                   DataColumn(
                     label: Text(
-                      'FOTO',
+                      'Foto',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
@@ -234,7 +230,20 @@ class _BusquedaProductosAuditoriaScreenState
                           },
                           cells: [
                             DataCell(
-                              Text(producto.id.toString()),
+                              Container(
+                                  width: 50,
+                                  child: Text(producto.id.toString())),
+                            ),
+                            DataCell(
+                              Container(
+                                child: Text(
+                                  producto.name,
+                                  overflow: TextOverflow.clip,
+                                ),
+                              ),
+                            ),
+                            DataCell(
+                              Container(child: Image.network(producto.image)),
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -246,16 +255,6 @@ class _BusquedaProductosAuditoriaScreenState
                                 ),
                               ),
                             ),
-                            DataCell(
-                              Container(
-                                width: 230,
-                                child: Text(
-                                  producto.name,
-                                  overflow: TextOverflow.clip,
-                                ),
-                              ),
-                            ),
-                            DataCell(Image.network(producto.image)),
                           ]),
                     )
                     .toList(),
@@ -278,73 +277,102 @@ class _BusquedaProductosAuditoriaScreenState
     String descripcion = dropdownValue;
     String observacion = 'No aplica';
 
-    return new AlertDialog(
-      title: const Text('Ingrese una observación'),
-      content: new Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TextField(
-            onChanged: (value) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        title: const Text('Ingrese una observación'),
+        content: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                  observacion = _textFieldController.text;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: 'Observación'),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          DropdownButton<String>(
+            value: dropdownValue,
+            icon: Icon(Icons.arrow_drop_down),
+            iconSize: 24,
+            elevation: 16,
+            underline: Container(
+              height: 2,
+              color: Style.Colors.secondColor,
+            ),
+            onChanged: (String newValue) {
               setState(() {
-                valueText = value;
-                observacion = _textFieldController.text;
+                dropdownValue = newValue;
+                descripcion = newValue;
+                listaRazones.forEach((item) {
+                  if (item.descripcion == descripcion) {
+                    id = item.id;
+                  }
+                });
               });
             },
-            controller: _textFieldController,
-            decoration: InputDecoration(
-                border: InputBorder.none, hintText: 'Observación'),
+            items: nombreRazones.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  style: TextStyle(fontSize: 14),
+                ),
+              );
+            }).toList(),
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.cancelColor2)),
+                child: Text(
+                  'Cancelar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              SizedBox(
+                width: 50,
+              ),
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.acceptColor2)),
+                child: Text(
+                  'Aceptar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Reason unaRazon = new Reason();
+                  unaRazon.id = id;
+                  unaRazon.descripcion = descripcion;
+                  unaRazon.observations = observacion;
+                  selectedReasons.add(unaRazon);
+                  unItem.reasons = [];
+                  unItem.reasons.add(unaRazon);
+                  listaItems.add(unItem);
+                  setState(() {
+                    codeDialog = valueText;
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          )
         ],
-      ),
-      actions: <Widget>[
-        DropdownButton<String>(
-          value: dropdownValue,
-          icon: Icon(Icons.arrow_drop_down),
-          iconSize: 24,
-          elevation: 16,
-          underline: Container(
-            height: 2,
-            color: Style.Colors.secondColor,
-          ),
-          onChanged: (String newValue) {
-            setState(() {
-              dropdownValue = newValue;
-              descripcion = newValue;
-              listaRazones.forEach((item) {
-                if (item.descripcion == descripcion) {
-                  id = item.id;
-                }
-              });
-            });
-          },
-          items: nombreRazones.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-        FlatButton(
-          color: Colors.green,
-          textColor: Colors.white,
-          child: Text('Aceptar'),
-          onPressed: () {
-            Reason unaRazon = new Reason();
-            unaRazon.id = id;
-            unaRazon.descripcion = descripcion;
-            unaRazon.observations = observacion;
-            selectedReasons.add(unaRazon);
-            unItem.reasons = [];
-            unItem.reasons.add(unaRazon);
-            listaItems.add(unItem);
-            setState(() {
-              codeDialog = valueText;
-              Navigator.pop(context);
-            });
-          },
-        ),
-      ],
-    );
+      );
+    });
   }
 }

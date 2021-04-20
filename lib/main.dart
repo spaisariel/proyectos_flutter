@@ -46,8 +46,8 @@ class _PaginaInicialState extends State<PaginaInicial> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _children = [
-      StockScreen(idSucursal,
-          idDeposito), //REVISAR ACA POR FAVOR, NO DEJAR CON LOS STRINGS ASI
+      StockScreen(
+          "2", "2"), //REVISAR ACA POR FAVOR, NO DEJAR CON LOS STRINGS ASI
       ReportsScreen(),
       UserScreen(usuario),
     ];

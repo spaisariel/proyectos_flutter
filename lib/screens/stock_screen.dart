@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_auditoria_bloc.dart';
 import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/auditoria_response.dart';
+import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/widgets/botones_busqueda_widget.dart';
 import 'package:prueba3_git/widgets/botones_principal_widget.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
@@ -21,6 +22,7 @@ class _StockScreenState extends State<StockScreen> {
   String idDeposito;
 
   List<Reason> listaRazones;
+  List<Product> listaProductos = [];
 
   @override
   void initState() {
@@ -92,7 +94,7 @@ class _StockScreenState extends State<StockScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20),
-            BotonesBusquedaWidget("comun", listaRazones),
+            BotonesBusquedaWidget("comun", listaRazones, listaProductos),
             SizedBox(height: 20),
             BotonesPrincipalWidget(idSucursal, idDeposito, listaRazones),
           ],

@@ -23,95 +23,118 @@ class BotonesPrincipalWidget extends StatelessWidget {
     List<Product> listaProductos = [];
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       ButtonTheme(
-        buttonColor: Style.Colors.mainColor,
-        height: MediaQuery.of(context).size.height * 0.1,
-        minWidth: MediaQuery.of(context).size.width * 0.8,
-        child: RaisedButton.icon(
-            shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AuditoriaScreen(listaProductos,
-                      listaRazones, listaItems, idSucursal, idDeposito),
-                ),
-              );
-            },
-            icon: Icon(Icons.shopping_cart,
-                size: 40, color: Style.Colors.secondColor),
-            label: Text(
-              'Auditoria de gondola',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            )),
+        child: ConstrainedBox(
+          constraints: BoxConstraints.tightFor(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.1),
+          child: ElevatedButton.icon(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+                  shape: MaterialStateProperty.all(
+                      Style.Shapes.botonGrandeRoundedRectangleBorder())),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AuditoriaScreen(listaProductos,
+                        listaRazones, listaItems, idSucursal, idDeposito),
+                  ),
+                );
+              },
+              icon: Icon(Icons.shopping_cart,
+                  size: 40, color: Style.Colors.secondColor),
+              label: Text(
+                'Auditoria de gondola',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              )),
+        ),
       ),
       SizedBox(height: 20),
       ButtonTheme(
-        buttonColor: Style.Colors.mainColor,
-        height: MediaQuery.of(context).size.height * 0.1,
-        minWidth: MediaQuery.of(context).size.width * 0.8,
-        child: RaisedButton.icon(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0)),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ControlInventarioScreen(
-                      listaProductos, idSucursal, idDeposito),
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.assignment_turned_in,
-              color: Style.Colors.secondColor,
-              size: 40,
-            ),
-            label: Text('Control de inventario',
-                style: TextStyle(color: Colors.white, fontSize: 20))),
+        child: ConstrainedBox(
+          constraints: BoxConstraints.tightFor(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.1),
+          child: ElevatedButton.icon(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+                  shape: MaterialStateProperty.all(
+                      Style.Shapes.botonGrandeRoundedRectangleBorder())),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ControlInventarioScreen(
+                        listaProductos, idSucursal, idDeposito, listaItems),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.assignment_turned_in,
+                color: Style.Colors.secondColor,
+                size: 40,
+              ),
+              label: Text('Control de inventario',
+                  style: TextStyle(color: Colors.white, fontSize: 20))),
+        ),
       ),
       SizedBox(height: 20),
       ButtonTheme(
-        buttonColor: Style.Colors.mainColor,
-        height: MediaQuery.of(context).size.height * 0.1,
-        minWidth: MediaQuery.of(context).size.width * 0.8,
-        child: RaisedButton.icon(
-            shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ConsultaAuditoriaScreen(),
-                ),
-              );
-            },
-            icon: Icon(Icons.assignment,
-                size: 40, color: Style.Colors.secondColor),
-            label: Text(
-              'Auditorias realizadas',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            )),
+        child: ConstrainedBox(
+          constraints: BoxConstraints.tightFor(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.1),
+          child: ElevatedButton.icon(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+                  shape: MaterialStateProperty.all(
+                      Style.Shapes.botonGrandeRoundedRectangleBorder())),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ConsultaAuditoriaScreen(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.assignment,
+                  size: 40, color: Style.Colors.secondColor),
+              label: Text(
+                'Auditorias realizadas',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              )),
+        ),
       ),
       SizedBox(height: 20),
       ButtonTheme(
-        buttonColor: Style.Colors.mainColor,
-        height: MediaQuery.of(context).size.height * 0.1,
-        minWidth: MediaQuery.of(context).size.width * 0.8,
-        child: RaisedButton.icon(
-            shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ConsultaInventarioScreen(),
-                ),
-              );
-            },
-            icon: Icon(Icons.receipt_long,
-                size: 40, color: Style.Colors.secondColor),
-            label: Text(
-              'Consultas de inventario',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            )),
+        child: ConstrainedBox(
+          constraints: BoxConstraints.tightFor(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.1),
+          child: ElevatedButton.icon(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+                  shape: MaterialStateProperty.all(
+                      Style.Shapes.botonGrandeRoundedRectangleBorder())),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ConsultaInventarioScreen(),
+                  ),
+                );
+              },
+              icon: Icon(Icons.receipt_long,
+                  size: 40, color: Style.Colors.secondColor),
+              label: Text(
+                'Consultas de inventario',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              )),
+        ),
       )
     ]);
   }

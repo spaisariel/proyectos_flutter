@@ -202,30 +202,45 @@ class _Login2ScreenState extends State<Login2Screen> {
 }
 
 Widget continuarButton(context, unUsuario, idSucursal, idDeposito) {
-  return RaisedButton(
-    color: Style.Colors.mainColor,
-    shape: botonRoundedRectangleBorder(),
-    child: Text('Continuar', style: TextStyle(color: Colors.white)),
-    onPressed: () {
-      Repository()
-          .guardarIdentificacionSucursalDeposito(idSucursal, idDeposito);
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) =>
-              PaginaInicial(unUsuario, idSucursal, idDeposito)));
-    },
+  return Container(
+    width: MediaQuery.of(context).size.width * 0.60,
+    child: ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+          //shape: MaterialStateProperty.all(botonRoundedRectangleBorder())),
+          shape: MaterialStateProperty.all(
+              Style.Shapes.botonGrandeRoundedRectangleBorder())),
+      child: Text('Continuar',
+          style: TextStyle(color: Colors.white, fontSize: 20)),
+      onPressed: () {
+        Repository()
+            .guardarIdentificacionSucursalDeposito(idSucursal, idDeposito);
+        Navigator.of(context).pushReplacement(new MaterialPageRoute(
+            builder: (BuildContext context) =>
+                PaginaInicial(unUsuario, idSucursal, idDeposito)));
+      },
+    ),
   );
 }
 
 Widget omitirButton(context, unUsuario) {
-  return RaisedButton(
-    color: Style.Colors.mainColor,
-    shape: botonRoundedRectangleBorder(),
-    child: Text('Omitir', style: TextStyle(color: Colors.white)),
-    onPressed: () {
-      Navigator.of(context).pushReplacement(new MaterialPageRoute(
-          builder: (BuildContext context) => PaginaInicial(unUsuario, '',
-              ''))); //EN UN FUTURO PONER UNA SUCURSAL Y DEPOSITO PREDETERMINADO
-    },
+  return Container(
+    width: MediaQuery.of(context).size.width * 0.60,
+    child: ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+          shape: MaterialStateProperty.all(
+              Style.Shapes.botonGrandeRoundedRectangleBorder())),
+      child:
+          Text('Omitir', style: TextStyle(color: Colors.white, fontSize: 20)),
+      onPressed: () {
+        Navigator.of(context).pushReplacement(new MaterialPageRoute(
+            builder: (BuildContext context) => PaginaInicial(unUsuario, '2',
+                '2'))); //EN UN FUTURO PONER UNA SUCURSAL Y DEPOSITO PREDETERMINADO
+      },
+    ),
   );
 }
 
@@ -239,25 +254,25 @@ RoundedRectangleBorder botonRoundedRectangleBorder() {
 Widget selecionarComercio() {
   return StreamBuilder(
     builder: (context, snapshot) {
-      return ButtonTheme(
-        minWidth: 215.0,
-        height: 40.0,
-        child: RaisedButton(
-            child: Text('Buscar en el mapa',
-                style: TextStyle(color: Colors.white)),
-            color: Style.Colors.mainColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(8.0),
-              side: BorderSide(color: Style.Colors.mainColor),
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MapaScreen(),
-                ),
-              );
-            }),
+      return Container(
+        width: MediaQuery.of(context).size.width * 0.60,
+        child: ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+              shape: MaterialStateProperty.all(
+                  Style.Shapes.botonGrandeRoundedRectangleBorder())),
+          child: Text('Buscar en el mapa',
+              style: TextStyle(color: Colors.white, fontSize: 20)),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MapaScreen(),
+              ),
+            );
+          },
+        ),
       );
     },
   );

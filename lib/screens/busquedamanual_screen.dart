@@ -116,9 +116,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                       decoration: InputDecoration(
                         hintText: 'Ingrese nombre o codigo',
                       ),
-                      onSaved: (String valor) {
-                        //hint = valor;
-                      },
+                      onSaved: (String valor) {},
                     )),
                 IconButton(
                     icon: Icon(Icons.search),
@@ -134,22 +132,13 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
               child: DataTable(
                 columnSpacing: 10,
                 horizontalMargin: 10.0,
-
-                //columnSpacing: 1.0,
-                columns: /*const <DataColumn>*/ [
+                columns: [
                   DataColumn(
                     label: Text(
                       'CODIGO',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ),
-                  //Revisar que devuelve el producto, necesito la presentacion del mismo
-                  // DataColumn(
-                  //   label: Text(
-                  //     'PRESENTACION',
-                  //     style: TextStyle(fontStyle: FontStyle.italic),
-                  //   ),
-                  // ),
                   DataColumn(
                     label: Text(
                       'DESCRIPCION',
@@ -176,14 +165,6 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductScreen(
-                                        producto.id.toString(),
-                                        producto.name,
-                                        producto.image),
-                                  )),
                             ),
                             DataCell(
                               Container(
@@ -194,7 +175,17 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                                 ),
                               ),
                             ),
-                            DataCell(Image.network(producto.image)),
+                            DataCell(
+                              Container(child: Image.network(producto.image)),
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductScreen(
+                                        producto.id.toString(),
+                                        producto.name,
+                                        producto.image),
+                                  )),
+                            ),
                           ]),
                     )
                     .toList(),

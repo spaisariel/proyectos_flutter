@@ -168,7 +168,7 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
                   ),
                   DataCell(
                     Text(
-                      auditoria.observations,
+                      auditoria.observations ?? 'No posee',
                     ),
                   ),
                 ],

@@ -25,21 +25,27 @@ class Auditoria {
   Auditoria({
     this.id,
     this.branchOfficeId,
+    this.branchOfficeName,
     this.depositId,
+    this.depositName,
     this.observations,
     this.items,
   });
 
   int id;
   String branchOfficeId;
+  String branchOfficeName;
   String depositId;
+  String depositName;
   String observations;
   List<Item> items = [];
 
   factory Auditoria.fromJson(Map<String, dynamic> json) => Auditoria(
         id: json["Id"],
         branchOfficeId: json["BranchOfficeId"],
+        branchOfficeName: json["BranchOfficeName"],
         depositId: json["DepositId"],
+        depositName: json["DepositName"],
         observations: json["Observations"],
         items: List<Item>.from(json["Items"].map((x) => Item.fromJson(x))),
       );
@@ -47,7 +53,9 @@ class Auditoria {
   Map<String, dynamic> toJson() => {
         "Id": id,
         "BranchOfficeId": branchOfficeId,
+        "BranchOfficeName": branchOfficeName,
         "DepositId": depositId,
+        "DepositName": depositName,
         "Observations": observations,
         "Items": List<dynamic>.from(items.map((x) => x.toJson())),
       };
@@ -68,7 +76,7 @@ class Item {
   String name;
   double quantity;
   String presentationId;
-  List<Reason> reasons = new List<Reason>();
+  List<Reason> reasons = [];
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
         id: json["Id"],

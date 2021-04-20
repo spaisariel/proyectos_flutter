@@ -67,18 +67,21 @@ class Price {
     this.priceName,
     this.presentation,
     this.isSale,
+    this.currency,
   });
 
   double price;
   String priceName;
   String presentation;
   bool isSale;
+  String currency;
 
   factory Price.fromJson(Map<String, dynamic> json) => Price(
         price: json["Price"].toDouble(),
         priceName: json["PriceName"],
         presentation: json["Presentation"],
         isSale: json["isSale"],
+        currency: json["Currency"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -86,6 +89,7 @@ class Price {
         "PriceName": priceName,
         "Presentation": presentation,
         "isSale": isSale,
+        "Currency": currency,
       };
 }
 

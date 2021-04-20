@@ -115,12 +115,12 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
 
         //columnSpacing: 1.0,
         columns: const <DataColumn>[
-          DataColumn(
-            label: Text(
-              'ID',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
+          // DataColumn(
+          //   label: Text(
+          //     'ID',
+          //     style: TextStyle(fontStyle: FontStyle.italic),
+          //   ),
+          // ),
           DataColumn(
             label: Text(
               'Sucursal',
@@ -143,10 +143,10 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
         rows: auditorias
             .map(
               (auditoria) => DataRow(
-                selected: auditorias.contains(auditoria),
+                //selected: auditorias.contains(auditoria),
                 cells: [
                   DataCell(
-                    Text(auditoria.id.toString()),
+                    Text(auditoria.branchOfficeName),
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -158,17 +158,12 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
                   ),
                   DataCell(
                     Text(
-                      auditoria.branchOfficeId.toString(),
+                      auditoria.depositName,
                     ),
                   ),
                   DataCell(
                     Text(
-                      auditoria.depositId.toString(),
-                    ),
-                  ),
-                  DataCell(
-                    Text(
-                      auditoria.observations,
+                      auditoria.observations ?? 'No posee',
                     ),
                   ),
                 ],

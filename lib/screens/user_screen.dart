@@ -84,149 +84,177 @@ class _UserScreenState extends State<UserScreen> {
       direccion = unUsuario.userInfo.addresses;
     }
 
-    return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return <Widget>[
-            SliverAppBar(
-              expandedHeight: 200.0,
-              floating: false,
-              pinned: true,
-              flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: Text(
-                      "Perfil - ${unUsuario.userInfo.firstName} ${unUsuario.userInfo.lastName}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
-                      )),
-                  background: Image.network(
-                    "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
-                    fit: BoxFit.cover,
-                  )),
-            ),
-          ];
-        },
-        body: SingleChildScrollView(
-          child: Column(children: [
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(Icons.mail),
-                  Column(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                expandedHeight: 200.0,
+                floating: false,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: Text(
+                        "${unUsuario.userInfo.firstName} ${unUsuario.userInfo.lastName}",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        )),
+                    background: Image.network(
+                      "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
+                      fit: BoxFit.cover,
+                    )),
+              ),
+            ];
+          },
+          body: Container(
+            // decoration: BoxDecoration(
+            //     color: Colors.yellow[100],
+            //     border: Border.all(
+            //       color: Colors.red,
+            //       width: 5,
+            //     )),
+            child: SingleChildScrollView(
+              child: Column(children: [
+                ListTile(
+                  title: Row(
                     children: [
-                      Text("E-Mail",
-                          style: TextStyle(color: Style.Colors.secondColor)),
-                      Text(email,
-                          style: TextStyle(color: Style.Colors.titleColor)),
+                      Icon(Icons.mail),
+                      Column(
+                        children: [
+                          Text("E-Mail",
+                              style:
+                                  TextStyle(color: Style.Colors.secondColor)),
+                          Text(email,
+                              style: TextStyle(color: Style.Colors.titleColor)),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(Icons.phone),
-                  Column(
+                ),
+                ListTile(
+                  title: Row(
                     children: [
-                      Text("Telefono",
-                          style: TextStyle(color: Style.Colors.secondColor)),
-                      Text(unUsuario.userInfo.phone,
-                          style: TextStyle(color: Style.Colors.titleColor)),
+                      Icon(Icons.phone),
+                      Column(
+                        children: [
+                          Text("Telefono",
+                              style:
+                                  TextStyle(color: Style.Colors.secondColor)),
+                          Text(unUsuario.userInfo.phone,
+                              style: TextStyle(color: Style.Colors.titleColor)),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            ListTile(
-              title: Row(
-                children: [
-                  Icon(Icons.place),
-                  Column(
+                ),
+                ListTile(
+                  title: Row(
                     children: [
-                      Text("Dirección",
-                          style: TextStyle(color: Style.Colors.secondColor)),
-                      Text(direccion,
-                          style: TextStyle(color: Style.Colors.titleColor)),
+                      Icon(Icons.place),
+                      Column(
+                        children: [
+                          Text("Dirección",
+                              style:
+                                  TextStyle(color: Style.Colors.secondColor)),
+                          Text(direccion,
+                              style: TextStyle(color: Style.Colors.titleColor)),
+                        ],
+                      ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                //SizedBox(height: 50),
+                // ConstrainedBox(
+                //   constraints: BoxConstraints.tightFor(
+                //       width: MediaQuery.of(context).size.width * 0.8,
+                //       height: MediaQuery.of(context).size.height * 0.1),
+                //   child: ElevatedButton(
+                //     style: ButtonStyle(
+                //         backgroundColor: MaterialStateProperty.all<Color>(
+                //             Style.Colors.mainColor),
+                //         shape: MaterialStateProperty.all(
+                //             Style.Shapes.botonGrandeRoundedRectangleBorder())),
+                //     onPressed: () {
+                //       _showMaterialDialog(context);
+                //     },
+                //     child: Text(
+                //       'Cambiar de sucursal o deposito',
+                //       style: TextStyle(color: Colors.white, fontSize: 20),
+                //       textAlign: TextAlign.center,
+                //     ),
+                //   ),
+                // ),
+
+                SizedBox(height: 200),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.80,
+                  alignment: Alignment.bottomCenter,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Style.Colors.cancelColor2),
+                        shape: MaterialStateProperty.all(
+                            Style.Shapes.botonGrandeRoundedRectangleBorder())),
+                    onPressed: () {
+                      _logout();
+                    },
+                    child: Text(
+                      'Cerrar sesión',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ]),
             ),
-            SizedBox(height: 50),
-            ButtonTheme(
-              buttonColor: Style.Colors.mainColor,
-              height: MediaQuery.of(context).size.height * 0.1,
-              minWidth: MediaQuery.of(context).size.width * 0.8,
-              child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  onPressed: () {
-                    _showMaterialDialog(context);
-                  },
-                  child: Text('Cambiar de sucursal o deposito',
-                      style: TextStyle(color: Colors.white, fontSize: 20))),
-            ),
-            SizedBox(height: 25),
-            ButtonTheme(
-              buttonColor: Style.Colors.mainColor,
-              height: MediaQuery.of(context).size.height * 0.1,
-              minWidth: MediaQuery.of(context).size.width * 0.8,
-              child: RaisedButton(
-                  color: Style.Colors.cancelColor2,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0)),
-                  onPressed: () {
-                    _logout();
-                  },
-                  child: Text('Cerrar sesión',
-                      style: TextStyle(color: Colors.white, fontSize: 20))),
-            ),
-          ]),
+          ),
         ),
       ),
     );
   }
 }
 
-_showMaterialDialog(context) {
-  return showDialog(
-      context: context,
-      builder: (_) => new AlertDialog(
-            title: new Text("Cambio de sucursal/deposito"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Sucursal ',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    //ComboBoxSucursalWidget()
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Deposito ',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    //ComboBoxDepositoWidget(),
-                  ],
-                )
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text('Aceptar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          ));
-}
+// _showMaterialDialog(context) {
+//   return showDialog(
+//       context: context,
+//       builder: (_) => new AlertDialog(
+//             title: new Text("Cambio de sucursal/deposito"),
+//             content: Column(
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Text(
+//                       'Sucursal ',
+//                       style: TextStyle(fontSize: 20),
+//                     ),
+//                     //ComboBoxSucursalWidget()
+//                   ],
+//                 ),
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.center,
+//                   children: [
+//                     Text(
+//                       'Deposito ',
+//                       style: TextStyle(fontSize: 20),
+//                     ),
+//                     //ComboBoxDepositoWidget(),
+//                   ],
+//                 )
+//               ],
+//             ),
+//             actions: <Widget>[
+//               TextButton(
+//                 child: Text('Aceptar'),
+//                 onPressed: () {
+//                   Navigator.of(context).pop();
+//                 },
+//               )
+//             ],
+//           ));
+// }

@@ -306,16 +306,16 @@ class Repository {
     while (index < listaProductos.length) {
       Item unItem = new Item();
       // ignore: unused_local_variable
-      List<Price> unProducto = new List<Price>();
+      List<Price> unProducto = [];
       unItem.productId = listaProductos[index].id;
       preciosProductos(unItem.productId);
       unProducto = unProductoPrecio.prices;
       //SE MOVIERON LOS PRECIOS A PRODUCTINFO, VER COMO TRAERLO
       if (unaAuditoria.items == null) {
-        unaAuditoria.items = new List<Item>();
+        unaAuditoria.items = [];
       }
       if (unItem.reasons == null) {
-        unItem.reasons = new List<Reason>();
+        unItem.reasons = [];
       }
       unaAuditoria.items.add(unItem);
       index++;

@@ -23,7 +23,7 @@ class _FiltroDropDownState extends State<FiltroDropDown> {
   }
 
   List<DropdownMenuItem<ListItem>> buildDropDownMenuItems(List listItems) {
-    List<DropdownMenuItem<ListItem>> items = List();
+    List<DropdownMenuItem<ListItem>> items = [];
     for (ListItem listItem in listItems) {
       items.add(
         DropdownMenuItem(

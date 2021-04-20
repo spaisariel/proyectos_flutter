@@ -57,39 +57,43 @@ class _ReportsScreenState extends State<ReportsScreen> {
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Reportes'),
-        centerTitle: true,
-        backgroundColor: Style.Colors.mainColor,
-      ),
-      backgroundColor: Style.Colors.secondColor,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Presione el boton ',
-                  style: TextStyle(fontSize: 25),
-                ),
-                Icon(Icons.arrow_upward_rounded)
-              ],
-            ),
-            Container(
-              child: chartWidget,
-              color: Style.Colors.blanco,
-            ),
-          ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Reportes'),
+          centerTitle: true,
+          backgroundColor: Style.Colors.mainColor,
+          automaticallyImplyLeading: false,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Style.Colors.mainColor,
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.arrow_upward),
+        backgroundColor: Style.Colors.secondColor,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Presione el boton ',
+                    style: TextStyle(fontSize: 25),
+                  ),
+                  Icon(Icons.arrow_upward_rounded)
+                ],
+              ),
+              Container(
+                child: chartWidget,
+                color: Style.Colors.blanco,
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Style.Colors.mainColor,
+          onPressed: _incrementCounter,
+          tooltip: 'Increment',
+          child: Icon(Icons.arrow_upward),
+        ),
       ),
     );
   }

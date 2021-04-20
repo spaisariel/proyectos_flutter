@@ -13,6 +13,6 @@ class ProductResponse {
         error = "";
 
   ProductResponse.withError(String errorValue)
-      : products = List(),
+      : products = [],
         error = errorValue;
 }

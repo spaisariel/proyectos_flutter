@@ -172,7 +172,7 @@ class _ProductScreenState extends State<ProductScreen> {
                           ),
                           DataColumn(
                             label: Text(
-                              'poner moneda',
+                              'Moneda',
                               style: TextStyle(fontStyle: FontStyle.italic),
                             ),
                           )
@@ -192,7 +192,10 @@ class _ProductScreenState extends State<ProductScreen> {
                                   Text(precios.price.toString()),
                                 ),
                                 DataCell(
-                                  Text(precios.presentation),
+                                  Text(
+                                    precios.currency,
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ]),
                             )
