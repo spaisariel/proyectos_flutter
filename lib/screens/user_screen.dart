@@ -34,7 +34,7 @@ class _UserScreenState extends State<UserScreen> {
       stream: userListBloc.subject.stream,
       builder: (context, AsyncSnapshot<UserResponse> snapshot) {
         if (snapshot.hasData) {
-          return _buildHomeWidget(unUsuario);
+          return _buildHomeWidget(snapshot.data);
         } else if (snapshot.hasError) {
           return _buildErrorWidget(snapshot.error);
         } else {
@@ -71,8 +71,8 @@ class _UserScreenState extends State<UserScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(unUser) {
-    User unUsuario = unUser;
+  Widget _buildHomeWidget(UserResponse unUser) {
+    User unUsuario = unUser.unUsuario;
     String email = "No aplica";
     String direccion = "No aplica";
 

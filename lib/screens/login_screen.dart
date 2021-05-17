@@ -9,7 +9,7 @@ import 'package:prueba3_git/screens/login2_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../main.dart';
+//import '../main.dart';
 
 class LoginScreen extends StatefulWidget {
   final String title;
@@ -69,23 +69,23 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
     return base64Str;
   }
 
-  _login() async {
-    try {
-      await _googleSignIn.signIn();
-      setState(() {
-        _isLoggedIn = true;
-      });
-    } catch (error) {
-      print(error);
-    }
-  }
+  // _login() async {
+  //   try {
+  //     await _googleSignIn.signIn();
+  //     setState(() {
+  //       _isLoggedIn = true;
+  //     });
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
 
-  _logout() {
-    _googleSignIn.signOut();
-    setState(() {
-      _isLoggedIn = false;
-    });
-  }
+  // _logout() {
+  //   _googleSignIn.signOut();
+  //   setState(() {
+  //     _isLoggedIn = false;
+  //   });
+  // }
 
   Widget build(BuildContext context) {
     getIdDevice();
@@ -107,90 +107,96 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
             key: formkey,
             child: Container(
               child: _isLoggedIn
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          'Bienvenido!',
-                          textAlign: TextAlign.center,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          _googleSignIn.currentUser.displayName,
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 22),
-                        ),
-                        SizedBox(height: 25),
-                        (_googleSignIn.currentUser.photoUrl == null)
-                            ? Image.asset('lib/assets/no_photo.png',
-                                height: 100, width: 100)
-                            : NetworkImage(_googleSignIn.currentUser.photoUrl),
-                        SizedBox(height: 25),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Sucursal Paraná 2',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            //ComboBoxSucursalWidget()
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Deposito Federico Bandi',
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            //ComboBoxDepositoWidget(),
-                          ],
-                        ),
-                        SizedBox(height: 15),
-                        selecionarComercio(),
-                        SizedBox(height: 25),
-                        ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Style.Colors.mainColor),
-                            shape: MaterialStateProperty.all(
-                                RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(8.0),
-                              side: BorderSide(color: Style.Colors.mainColor),
-                            )),
-                          ),
-                          child: Text('Continuar',
-                              style: TextStyle(color: Colors.white)),
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                new MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        PaginaInicial(unUsuario, idSucursal,
-                                            idDeposito)));
-                          },
-                        ),
-                        ElevatedButton.icon(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Style.Colors.mainColor),
-                              shape: MaterialStateProperty.all(Style.Shapes
-                                  .botonGrandeRoundedRectangleBorder()),
-                            ),
-                            onPressed: () {
-                              _logout();
-                            },
-                            icon: Image.asset('lib/assets/g logo.png',
-                                height: 20,
-                                width: 20,
-                                color: Style.Colors.secondColor),
-                            label: Text(
-                              'Logout de Google',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            )),
-                      ],
-                    )
+                  ? Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            Login2Screen(unUsuario),
+                      ))
+                  // ? Column(
+                  //     mainAxisAlignment: MainAxisAlignment.end,
+                  //     children: <Widget>[
+                  //       Text(
+                  //         'Bienvenido!',
+                  //         textAlign: TextAlign.center,
+                  //         overflow: TextOverflow.ellipsis,
+                  //         style: TextStyle(fontWeight: FontWeight.bold),
+                  //       ),
+                  //       Text(
+                  //         _googleSignIn.currentUser.displayName,
+                  //         style: TextStyle(
+                  //             fontWeight: FontWeight.normal, fontSize: 22),
+                  //       ),
+                  //       SizedBox(height: 25),
+                  //       (_googleSignIn.currentUser.photoUrl == null)
+                  //           ? Image.asset('lib/assets/no_photo.png',
+                  //               height: 100, width: 100)
+                  //           : NetworkImage(_googleSignIn.currentUser.photoUrl),
+                  //       SizedBox(height: 25),
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Text(
+                  //             'Sucursal Paraná 2',
+                  //             style: TextStyle(fontSize: 20),
+                  //           ),
+                  //           //ComboBoxSucursalWidget()
+                  //         ],
+                  //       ),
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.center,
+                  //         children: [
+                  //           Text(
+                  //             'Deposito Federico Bandi',
+                  //             style: TextStyle(fontSize: 20),
+                  //           ),
+                  //           //ComboBoxDepositoWidget(),
+                  //         ],
+                  //       ),
+                  //       SizedBox(height: 15),
+                  //       selecionarComercio(),
+                  //       SizedBox(height: 25),
+                  //       ElevatedButton(
+                  //         style: ButtonStyle(
+                  //           backgroundColor: MaterialStateProperty.all<Color>(
+                  //               Style.Colors.mainColor),
+                  //           shape: MaterialStateProperty.all(
+                  //               RoundedRectangleBorder(
+                  //             borderRadius: new BorderRadius.circular(8.0),
+                  //             side: BorderSide(color: Style.Colors.mainColor),
+                  //           )),
+                  //         ),
+                  //         child: Text('Continuar',
+                  //             style: TextStyle(color: Colors.white)),
+                  //         onPressed: () {
+                  //           Navigator.of(context).pushReplacement(
+                  //               new MaterialPageRoute(
+                  //                   builder: (BuildContext context) =>
+                  //                       PaginaInicial(unUsuario, idSucursal,
+                  //                           idDeposito)));
+                  //         },
+                  //       ),
+                  //       ElevatedButton.icon(
+                  //           style: ButtonStyle(
+                  //             backgroundColor: MaterialStateProperty.all<Color>(
+                  //                 Style.Colors.mainColor),
+                  //             shape: MaterialStateProperty.all(Style.Shapes
+                  //                 .botonGrandeRoundedRectangleBorder()),
+                  //           ),
+                  //           onPressed: () {
+                  //             _logout();
+                  //           },
+                  //           icon: Image.asset('lib/assets/g logo.png',
+                  //               height: 20,
+                  //               width: 20,
+                  //               color: Style.Colors.secondColor),
+                  //           label: Text(
+                  //             'Logout de Google',
+                  //             style:
+                  //                 TextStyle(color: Colors.white, fontSize: 20),
+                  //           )),
+                  //     ],
+                  //   )
                   : Column(
                       children: [
                         Container(
@@ -267,7 +273,7 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                                     controladorUsuario.text,
                                     password,
                                     idDevice);
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                       builder: (BuildContext context) =>
@@ -288,9 +294,18 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                                   shape: MaterialStateProperty.all(Style.Shapes
                                       .botonGrandeRoundedRectangleBorder())),
                               onPressed: () async {
-                                _login();
+                                //_login();
                                 unUsuario = await postLoginConGoogle(context,
                                     _googleSignIn.currentUser.email, idDevice);
+
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Login2Screen(unUsuario)));
+                                setState(() {
+                                  boolCargando = true;
+                                });
                               },
                               icon: Image.asset('lib/assets/g logo.png',
                                   height: 20,

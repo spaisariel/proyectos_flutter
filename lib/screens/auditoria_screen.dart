@@ -7,6 +7,7 @@ import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/user.dart';
 import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/screens/auditoria_items_detalle.dart';
+import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 import 'package:prueba3_git/screens/busqueda_productos_auditoria.dart';
 
@@ -34,7 +35,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
   String idDeposito;
   List<Product> listaProductos;
   List<Reason> listaRazones;
-  List<Item> listaItems;
+  List<Item> listaItems = [];
   String dropdownValue;
   List<Item> items = [];
 
@@ -70,7 +71,23 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
             SizedBox(height: 30),
             _buildSearchButtons(),
             SizedBox(height: 30),
-            tablaProductos(),
+            (listaItems.length != 0)
+                ? tablaProductos()
+                : Container(
+                    child: new Column(
+                      children: [
+                        Text(
+                          "Tabla vacia",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 22),
+                        ),
+                        Icon(
+                          Icons.list,
+                          size: 200,
+                        ),
+                      ],
+                    ),
+                  ),
             SizedBox(height: 80),
             Container(
               child: botonesBusquedaWidget(context, idSucursal, idDeposito),
@@ -103,7 +120,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
           ),
           DataColumn(
             label: Text(
-              'Observación',
+              'Acciones',
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
           ),
@@ -122,14 +139,31 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                     onTap: () {},
                   ),
                   DataCell(
-                    Text(item.reasons[0].observations),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) =>
-                            popUpReasons(context, item),
-                      );
-                    },
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.mode_edit,
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  popUpReasons(context, item),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Style.Colors.cancelColor,
+                          ),
+                          onPressed: () {
+                            _showMaterialDialogBorrarProducto(item);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -137,154 +171,6 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
             .toList(),
       ),
     );
-  }
-
-  Widget popUpReasons(BuildContext context, Item unItem) {
-    List<Reason> razonesItem = unItem.reasons;
-    String valueText;
-    dropdownValue = listaRazones[0].descripcion;
-
-    List<String> nombreRazones =
-        listaRazones.map((razon) => razon.descripcion).toList();
-    String id = listaRazones[0].id;
-    String descripcion = dropdownValue;
-    String observacion = 'No aplica';
-    return StatefulBuilder(builder: (context, setState) {
-      return AlertDialog(
-        title: const Text('Observaciones'),
-        content: new Column(
-          children: [
-            SingleChildScrollView(
-              child: DataTable(
-                columnSpacing: 10,
-                horizontalMargin: 10.0,
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'ID',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Observación',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ],
-                rows: razonesItem
-                    .map(
-                      (razon) => DataRow(
-                          // selected: selectedProducts.contains(producto),
-                          // onSelectChanged: (b) {
-                          //   onSelectedRow(b, producto);
-                          // },
-                          cells: [
-                            DataCell(
-                              Text(razon.id.toString()),
-                            ),
-                            DataCell(
-                              Container(
-                                width: 230,
-                                child: Text(
-                                  razon.observations,
-                                  overflow: TextOverflow.clip,
-                                ),
-                              ),
-                            ),
-                          ]),
-                    )
-                    .toList(),
-              ),
-            ),
-            Column(
-              children: [
-                TextField(
-                  maxLength: 50,
-                  onChanged: (value) {
-                    setState(() {
-                      valueText = value;
-                      observacion = _textFieldController.text;
-                    });
-                  },
-                  controller: _textFieldController,
-                  obscureText: false,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Ingrese nueva observación',
-                  ),
-                  autofocus: false,
-                ),
-                DropdownButton<String>(
-                  value: dropdownValue,
-                  icon: Icon(Icons.arrow_drop_down),
-                  iconSize: 24,
-                  elevation: 16,
-                  underline: Container(
-                    height: 2,
-                    color: Style.Colors.secondColor,
-                  ),
-                  onChanged: (String newValue) {
-                    dropdownValue = newValue;
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
-                  },
-                  items: nombreRazones
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * 0.60,
-                        child: Text(
-                          value,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Style.Colors.cancelColor2),
-                      ),
-                      child: Text('Cancelar'),
-                      onPressed: () {
-                        setState(() {
-                          Navigator.pop(context);
-                        });
-                      },
-                    ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Style.Colors.acceptColor),
-                      ),
-                      child: Text('Aceptar'),
-                      onPressed: () {
-                        Reason unaRazon = new Reason();
-                        unaRazon.id = id;
-                        unaRazon.descripcion = descripcion;
-                        unaRazon.observations = observacion;
-                        unItem.reasons.add(unaRazon);
-                        setState(() {
-                          codeDialog = valueText;
-                          Navigator.pop(context);
-                        });
-                      },
-                    ),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-      );
-    });
   }
 
   Widget botonesBusquedaWidget(BuildContext context, idSucursal, idDeposito) {
@@ -390,23 +276,33 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
     );
   }
 
-  //Zona widgets
-
   _showMaterialDialogAceptar(context, unUsuario, idSucursal, idDeposito) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
-              title: new Text(
-                  "Se guardo correctamente la auditoria de gondola N°"),
+              title:
+                  new Text("Se guardo correctamente la auditoria de gondola"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    child: TextButton(
+                      child: Icon(
+                        Icons.check_circle,
+                        size: 100,
+                        color: Style.Colors.acceptColor2,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Aceptar'),
+                  child: Text('Continuar'),
                   onPressed: () {
-                    Repository()
-                        .postNuevaAuditoriaGondola(listaItems, codeDialog);
+                    // Repository()
+                    //     .postNuevaAuditoriaGondola(listaItems, codeDialog);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -448,6 +344,62 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
             ));
   }
 
+  _showMaterialDialogBorrarProducto(Item item) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text('¿Seguro desea eliminar el item?'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: Text('Si'),
+                  onPressed: () {
+                    listaItems.removeWhere((itemBorrar) => itemBorrar == item);
+                    Navigator.pop(context);
+                    setState(() {});
+                  },
+                ),
+              ],
+            ));
+  }
+
+  _showMaterialDialogBorrarObservacion(
+      Reason razon, List<Reason> razonesItem, Item unItem) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text('¿Seguro desea eliminar la observación?'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: Text('Si'),
+                  onPressed: () {
+                    razonesItem
+                        .removeWhere((razonBorrar) => razonBorrar == razon);
+                    Navigator.pop(context);
+                    popUpReasons(context, unItem);
+                  },
+                ),
+              ],
+            ));
+  }
+
   Widget _buildPopUpObservation(
       BuildContext context, unUsuario, idSucursal, idDeposito) {
     String valueText;
@@ -456,38 +408,62 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
       title: const Text('Ingrese una observación'),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextField(
+            maxLength: 500,
             onChanged: (value) {
               setState(() {
                 valueText = value;
+                codeDialog = valueText;
               });
             },
             controller: _textFieldController,
+            obscureText: false,
             decoration: InputDecoration(
-                border: InputBorder.none, hintText: 'Observación'),
+              border: OutlineInputBorder(),
+              labelText: 'Ingrese nueva observación',
+            ),
+            autofocus: false,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.cancelColor2)),
+                child: Text(
+                  'Cancelar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              SizedBox(
+                width: 50,
+              ),
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.acceptColor2)),
+                child: Text(
+                  'Aceptar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Repository()
+                      .postNuevaAuditoriaGondola(listaItems, codeDialog);
+                  setState(() {
+                    _showMaterialDialogAceptar(
+                        context, unUsuario, idSucursal, idDeposito);
+                  });
+                },
+              )
+            ],
           ),
         ],
       ),
-      actions: <Widget>[
-        TextButton(
-          style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(Style.Colors.acceptColor2)),
-          child: Text(
-            'Aceptar',
-            style: TextStyle(color: Colors.white),
-          ),
-          onPressed: () {
-            setState(() {
-              codeDialog = valueText;
-              _showMaterialDialogAceptar(
-                  context, unUsuario, idSucursal, idDeposito);
-            });
-          },
-        )
-      ],
     );
   }
 
@@ -546,7 +522,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                     Style.Shapes.botonGrandeRoundedRectangleBorder()),
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Style.Colors.mainColor)),
-            onPressed: () => scanQR(),
+            onPressed: () => scanQR(listaRazones),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -572,7 +548,6 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                     Style.Shapes.botonGrandeRoundedRectangleBorder()),
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Style.Colors.mainColor)),
-            //onPressed: () => scanBarcodeNormal(),
             onPressed: () => scanBarcodeNormal(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -593,12 +568,26 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
     );
   }
 
-  Future<void> scanQR() async {
+  Future<void> scanQR(listaRazones) async {
     String barcodeScanRes;
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.QR);
-      print(barcodeScanRes);
+          "#ff6666", "Cancelar", true, ScanMode.QR);
+      //print(barcodeScanRes);
+
+      if (barcodeScanRes != '-1') {
+        final respuesta = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductScreen(
+                barcodeScanRes, "", 'busquedaCamara', listaRazones),
+          ),
+        );
+        Item unItem = new Item();
+        unItem = respuesta;
+        print(unItem.id);
+        listaItems.add(unItem);
+      }
     } on PlatformException {
       barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
     }
@@ -615,7 +604,20 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
-      print(barcodeScanRes);
+
+      if (barcodeScanRes != '-1') {
+        final respuesta = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductScreen(
+                barcodeScanRes, "", 'busquedaCamara', listaRazones),
+          ),
+        );
+        Item unItem = new Item();
+        unItem = respuesta;
+        print(unItem.id);
+        listaItems.add(unItem);
+      }
 
       // Navigator.push(
       //   context,
@@ -630,6 +632,184 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
 
     setState(() {
       _scanBarcode = barcodeScanRes;
+    });
+  }
+
+  Widget popUpReasons(BuildContext context, Item unItem) {
+    List<Reason> razonesItem = unItem.reasons;
+    String valueText;
+    dropdownValue = listaRazones[0].descripcion;
+    _textFieldController.clear();
+
+    List<String> nombreRazones =
+        listaRazones.map((razon) => razon.descripcion).toList();
+    String id = listaRazones[0].id;
+    String descripcion = dropdownValue;
+    String observacion = 'No aplica';
+    return StatefulBuilder(builder: (context, setState) {
+      return SingleChildScrollView(
+        child: Container(
+          //width: MediaQuery.of(context).size.width * 0.50,
+          child: AlertDialog(
+            insetPadding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.05),
+            title: const Text('Observaciones'),
+            content: new Column(
+              children: [
+                SingleChildScrollView(
+                  child: DataTable(
+                    columnSpacing: 10,
+                    horizontalMargin: 10.0,
+                    columns: const <DataColumn>[
+                      DataColumn(
+                        label: Text(
+                          'Nombre',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Observación',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Acciones',
+                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                    ],
+                    rows: razonesItem
+                        .map(
+                          (razon) => DataRow(
+                              // selected: selectedProducts.contains(producto),
+                              // onSelectChanged: (b) {
+                              //   onSelectedRow(b, producto);
+                              // },
+                              cells: [
+                                DataCell(
+                                  Text(razon.descripcion),
+                                ),
+                                DataCell(
+                                  Container(
+                                    width: 100,
+                                    child: Text(
+                                      razon.observations,
+                                      overflow: TextOverflow.clip,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(Row(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        Icons.cancel,
+                                        color: Style.Colors.cancelColor,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        _showMaterialDialogBorrarObservacion(
+                                            razon, razonesItem, unItem);
+                                      },
+                                    ),
+                                  ],
+                                )),
+                              ]),
+                        )
+                        .toList(),
+                  ),
+                ),
+                Column(
+                  children: [
+                    SizedBox(height: 20),
+                    TextField(
+                      maxLength: 500,
+                      onChanged: (value) {
+                        setState(() {
+                          valueText = value;
+                          observacion = _textFieldController.text;
+                        });
+                      },
+                      controller: _textFieldController,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Ingrese nueva observación',
+                      ),
+                      autofocus: false,
+                    ),
+                    DropdownButton<String>(
+                      value: dropdownValue,
+                      icon: Icon(Icons.arrow_drop_down),
+                      iconSize: 24,
+                      elevation: 16,
+                      underline: Container(
+                        height: 2,
+                        color: Style.Colors.secondColor,
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                          descripcion = dropdownValue;
+                        });
+                      },
+                      items: nombreRazones
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width * 0.60,
+                            child: Text(
+                              value,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Style.Colors.cancelColor2),
+                          ),
+                          child: Text('Cancelar'),
+                          onPressed: () {
+                            setState(() {
+                              Navigator.pop(context);
+                            });
+                          },
+                        ),
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Style.Colors.acceptColor),
+                          ),
+                          child: Text('Aceptar'),
+                          onPressed: () {
+                            Reason unaRazon = new Reason();
+                            unaRazon.id = id;
+                            unaRazon.descripcion = descripcion;
+                            unaRazon.observations = observacion;
+                            unItem.reasons.add(unaRazon);
+                            setState(() {
+                              codeDialog = valueText;
+                              Navigator.pop(context);
+                            });
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      );
     });
   }
 }

@@ -1,77 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_auditoria_bloc.dart';
+//import 'package:prueba3_git/blocs/get_auditoria_bloc.dart';
 import 'package:prueba3_git/models/auditoria.dart';
-import 'package:prueba3_git/models/auditoriaInfo_response.dart';
+//import 'package:prueba3_git/models/auditoriaInfo_response.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 class AuditoriaDetalleScreen extends StatefulWidget {
-  final String idValue;
-  AuditoriaDetalleScreen(this.idValue);
+  final Auditoria unaAuditoria;
+  final String tipo;
+  AuditoriaDetalleScreen(this.unaAuditoria, this.tipo);
   @override
   _AuditoriaDetalleScreenState createState() =>
-      _AuditoriaDetalleScreenState(this.idValue);
+      _AuditoriaDetalleScreenState(this.unaAuditoria, this.tipo);
 }
 
 class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
-  final String idValue;
-  _AuditoriaDetalleScreenState(this.idValue);
+  final Auditoria unaAuditoria;
+  final String tipo;
+  _AuditoriaDetalleScreenState(this.unaAuditoria, this.tipo);
   List<Auditoria> listaAuditorias;
-  Auditoria unaAudutoria;
 
   @override
   void initState() {
     super.initState();
-    auditoriaInfoBloc..getAuditoriaGondolaPorID(idValue);
+    //auditoriaInfoBloc..getAuditoriaGondolaPorID(idValue);
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<AuditoriaInfoResponse>(
-      stream: auditoriaInfoBloc.subject.stream,
-      builder: (context, AsyncSnapshot<AuditoriaInfoResponse> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
-            return _buildErrorWidget(snapshot.data.error);
-          }
-          return _buildHomeWidget(snapshot.data);
-        } else if (snapshot.hasError) {
-          return _buildErrorWidget(snapshot.error);
-        } else {
-          return _buildLoadingWidget();
-        }
-      },
-    );
-  }
-
-  Widget _buildLoadingWidget() {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          height: 25.0,
-          width: 25.0,
-          child: CircularProgressIndicator(
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
-            strokeWidth: 4.0,
-          ),
-        )
-      ],
-    ));
-  }
-
-  Widget _buildErrorWidget(String error) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("Error occured: $error"),
-      ],
-    ));
-  }
-
-  Widget _buildHomeWidget(AuditoriaInfoResponse data) {
-    Auditoria unaAuditoriaInfo = data.auditoria;
+    Auditoria unaAuditoriaInfo = unaAuditoria;
     unaAuditoriaInfo.depositName = "";
 
     return MaterialApp(
@@ -85,7 +41,9 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              listaProductos(unaAuditoriaInfo),
+              (tipo == "gondola")
+                  ? listaProductosGondola(unaAuditoriaInfo)
+                  : listaProductosStock(unaAuditoriaInfo)
             ],
           ),
         ),
@@ -93,7 +51,7 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
     );
   }
 
-  Widget listaProductos(Auditoria unaAuditoriaInfo) {
+  Widget listaProductosGondola(Auditoria unaAuditoriaInfo) {
     List<Item> auditoriaItems = unaAuditoriaInfo.items;
 
     return Container(
@@ -121,7 +79,7 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
       rows: auditoriaItems
           .map((auditItem) => DataRow(cells: [
                 DataCell(
-                  Text(auditItem.name ?? "No tiene/Arrgelar"),
+                  Text(auditItem.name ?? "No tiene"),
                 ),
                 DataCell(
                   Text(auditItem.quantity.toString()),
@@ -129,6 +87,38 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
                 DataCell(Text(auditItem.reasons[0].descripcion),
                     onTap: () =>
                         _showMaterialDialogReasons(context, auditItem.reasons)),
+              ]))
+          .toList(),
+    ));
+  }
+
+  Widget listaProductosStock(Auditoria unaAuditoriaInfo) {
+    List<Item> auditoriaItems = unaAuditoriaInfo.items;
+
+    return Container(
+        child: DataTable(
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Text(
+            'Nombre',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+        DataColumn(
+          label: Text(
+            'Cantidad',
+            style: TextStyle(fontStyle: FontStyle.italic),
+          ),
+        ),
+      ],
+      rows: auditoriaItems
+          .map((auditItem) => DataRow(cells: [
+                DataCell(
+                  Text(auditItem.name ?? "No tiene/Arrgelar"),
+                ),
+                DataCell(
+                  Text(auditItem.quantity.toString()),
+                ),
               ]))
           .toList(),
     ));

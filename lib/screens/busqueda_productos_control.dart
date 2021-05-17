@@ -29,9 +29,10 @@ class _BusquedaProductosControlScreenState
   String begin = '0';
   String end = '15';
   String codeDialog = '';
-  List<Product> selectedProducts;
+  List<Product> selectedProducts = [];
   List<Product> listaProductos = [];
   List<Item> listaItems = [];
+  List<Reason> listaRazones = [];
 
   _BusquedaProductosControlScreenState(this.listaProductos);
 
@@ -65,33 +66,15 @@ class _BusquedaProductosControlScreenState
         unItem.productId = unProducto.id;
         unItem.name = unProducto.name;
         unItem.quantity = unProducto.stock;
+        unItem.presentationId = 'Unidad';
         listaItems.add(unItem);
-        // showDialog(
-        //   context: context,
-        //   builder: (BuildContext context) =>
-        //       _buildPopUpObservation(context, unItem),
-        // );
       } else {
         unProducto.observation = '';
         selectedProducts.remove(unProducto);
       }
     });
-    // setState(() {
-    //   showDialog(
-    //     context: context,
-    //     builder: (BuildContext context) => _buildPopUpObservation(context, unItem),
-    //   );
-    //   if (selected) {
-    //     unProducto.observation = codeDialog;
-    //     selectedProducts.add(unProducto);
-    //   } else {
-    //     unProducto.observation = '';
-    //     selectedProducts.remove(unProducto);
-    //   }
-    // });
   }
 
-  //VER BIEN FUNCIONAMIENTO DE ESTE METODO
   deleteSelected() async {
     setState(() {
       if (selectedProducts.isNotEmpty) {
@@ -155,30 +138,6 @@ class _BusquedaProductosControlScreenState
     cantProductos = data.products.length;
     return Scaffold(
       backgroundColor: Style.Colors.blanco,
-      // appBar: AppBar(
-      //   backgroundColor: Style.Colors.mainColor,
-      //   title: Text('Busqueda manual'),
-      //   actions: <Widget>[
-      //     Padding(
-      //         padding: EdgeInsets.only(right: 20.0),
-      //         child: GestureDetector(
-      //           onTap: () {
-      //             Navigator.push(
-      //               context,
-      //               MaterialPageRoute(
-      //                 builder: (context) =>
-      //                     ControlInventarioScreen(selectedProducts, '', ''),
-      //               ),
-      //             );
-      //           },
-      //           child: Icon(
-      //             Icons.check,
-      //             size: 26.0,
-      //           ),
-      //         )),
-      //   ],
-      //   centerTitle: true,
-      // ),
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
         leading: Builder(
@@ -228,7 +187,7 @@ class _BusquedaProductosControlScreenState
             Container(
               child: DataTable(
                 horizontalMargin: 10.0,
-                showCheckboxColumn: true,
+                showCheckboxColumn: false,
                 columns: const <DataColumn>[
                   DataColumn(
                     label: Text(
@@ -261,16 +220,6 @@ class _BusquedaProductosControlScreenState
                               Container(
                                   width: 50,
                                   child: Text(producto.id.toString())),
-                              // onTap: () => Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ProductScreen(
-                              //       producto.id.toString(),
-                              //       producto.name,
-                              //       producto.image,
-                              //     ),
-                              //   ),
-                              // ),
                             ),
                             DataCell(
                               Text(
@@ -285,8 +234,9 @@ class _BusquedaProductosControlScreenState
                                 MaterialPageRoute(
                                   builder: (context) => ProductScreen(
                                     producto.id.toString(),
-                                    producto.name,
                                     producto.image,
+                                    '',
+                                    listaRazones,
                                   ),
                                 ),
                               ),
@@ -297,74 +247,9 @@ class _BusquedaProductosControlScreenState
               ),
             ),
             SizedBox(height: 20),
-            // ButtonTheme(
-            //   buttonColor: Style.Colors.mainColor,
-            //   height: MediaQuery.of(context).size.height * 0.1,
-            //   minWidth: MediaQuery.of(context).size.width * 0.8,
-            //   child: ElevatedButton.icon(
-            //       style: ElevatedButton.styleFrom(
-            //         shape: Style.Shapes.botonGrandeRoundedRectangleBorder(),
-            //       ),
-            //       onPressed: () {
-            //         Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //             builder: (context) =>
-            //                 ControlInventarioScreen(selectedProducts, '', ''),
-            //           ),
-            //         );
-            //       },
-            //       icon: Icon(Icons.assignment,
-            //           size: 40, color: Style.Colors.secondColor),
-            //       label: Text(
-            //         'Agregar a control',
-            //         style: TextStyle(color: Colors.white, fontSize: 20),
-            //       )),
-            // )
           ],
         ),
       ),
     );
   }
-
-  // Widget _buildPopUpObservation(BuildContext context, Item unItem) {
-  //   String valueText;
-
-  //   return new AlertDialog(
-  //     title: const Text('Ingrese una observación'),
-  //     content: new Column(
-  //       mainAxisSize: MainAxisSize.min,
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: <Widget>[
-  //         TextField(
-  //           onChanged: (value) {
-  //             setState(() {
-  //               valueText = value;
-  //             });
-  //           },
-  //           controller: _textFieldController,
-  //           decoration: InputDecoration(
-  //               border: InputBorder.none, hintText: 'Observación'),
-  //         ),
-  //       ],
-  //     ),
-  //     actions: <Widget>[
-  //       TextButton(
-  //         style: ButtonStyle(
-  //             backgroundColor:
-  //                 MaterialStateProperty.all<Color>(Style.Colors.acceptColor2)),
-  //         child: Text(
-  //           'Aceptar',
-  //           style: TextStyle(color: Colors.white),
-  //         ),
-  //         onPressed: () {
-  //           setState(() {
-  //             codeDialog = valueText;
-  //             Navigator.pop(context);
-  //           });
-  //         },
-  //       )
-  //     ],
-  //   );
-  // }
 }

@@ -49,19 +49,23 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
     try {
       qrScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.QR);
-      print(qrScanRes);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProductScreen(qrScanRes, "Traer nombre", ""),
-        ),
-      );
+      if (qrScanRes != '-1') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ProductScreen(qrScanRes, '', '', listaRazones),
+          ),
+        );
+      }
     } on PlatformException {
       qrScanRes = 'Fallo al obtener la version de la plataforma.';
     }
 
-    if (!mounted) return;
+    if (!mounted) {
+      Navigator.pop(context);
+    }
 
     setState(() {
       _scanBarcode = qrScanRes;
@@ -73,14 +77,16 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
-      print(barcodeScanRes);
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProductScreen(barcodeScanRes, "Prueba", ""),
-        ),
-      );
+      if (barcodeScanRes != '-1') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ProductScreen(barcodeScanRes, '', '', listaRazones),
+          ),
+        );
+      }
     } on PlatformException {
       barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
     }

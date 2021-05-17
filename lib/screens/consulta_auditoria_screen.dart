@@ -151,8 +151,9 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => AuditoriaDetalleScreen(
-                          auditoria.id.toString(),
-                        ),
+                            //auditoria.id.toString(),
+                            auditoria,
+                            "gondola"),
                       ),
                     ),
                   ),

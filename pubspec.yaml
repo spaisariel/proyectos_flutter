@@ -38,9 +38,14 @@ dependencies:
   lazy_data_table: ^0.1.5
   lazy_load_scrollview:
   charts_flutter:
+  draw_graph: ^0.0.2
+  fl_chart: ^0.35.0
   google_maps_flutter:
   google_sign_in:
   grouped_list: ^3.7.1
+  carousel_slider: ^3.0.0
+
+  expansion_tile_card: ^1.1.0
   
 dev_dependencies:
   flutter_test:

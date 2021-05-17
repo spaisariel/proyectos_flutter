@@ -15,6 +15,7 @@ class GroupListViewDemo extends StatefulWidget {
 
 class _GroupListViewDemoState extends State<GroupListViewDemo> {
   List<Item> listaItems;
+  List<Reason> listaRazones;
   List auditoria;
   List razones;
 
@@ -48,11 +49,9 @@ class _GroupListViewDemoState extends State<GroupListViewDemo> {
                 MaterialPageRoute(
                   builder: (context) => ProductScreen(
                     element.productId.toString(),
-                    element.name,
                     '',
-                    //producto.id.toString(),
-                    //producto.name,
-                    //producto.image,
+                    '',
+                    listaRazones,
                   ),
                 ),
               ),

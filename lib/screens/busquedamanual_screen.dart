@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_product_bloc.dart';
+import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_response.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
@@ -24,6 +25,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
   String hint = '';
   String begin = '0';
   String end = '15';
+  List<Reason> listaRazones = [];
 
   TextEditingController hintController = new TextEditingController();
 
@@ -181,9 +183,11 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => ProductScreen(
-                                        producto.id.toString(),
-                                        producto.name,
-                                        producto.image),
+                                      producto.id.toString(),
+                                      producto.image,
+                                      '',
+                                      listaRazones,
+                                    ),
                                   )),
                             ),
                           ]),

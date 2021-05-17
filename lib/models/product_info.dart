@@ -8,6 +8,7 @@ String productInfoToJson(ProductInfo data) => json.encode(data.toJson());
 class ProductInfo {
   ProductInfo({
     this.id,
+    this.name,
     this.internalCode,
     this.codigoProveedorHabitual,
     this.codigoProveedorAlternativo,
@@ -18,9 +19,11 @@ class ProductInfo {
     this.prices,
     this.existenciaUnidades,
     this.stocks,
+    this.image,
   });
 
   String id;
+  String name;
   String internalCode;
   String codigoProveedorHabitual;
   String codigoProveedorAlternativo;
@@ -31,9 +34,11 @@ class ProductInfo {
   List<Price> prices;
   int existenciaUnidades;
   List<Stock> stocks;
+  String image;
 
   factory ProductInfo.fromJson(Map<String, dynamic> json) => ProductInfo(
         id: json["Id"],
+        name: json["Name"],
         internalCode: json["InternalCode"],
         codigoProveedorHabitual: json["CodigoProveedorHabitual"],
         codigoProveedorAlternativo: json["CodigoProveedorAlternativo"],
@@ -44,10 +49,12 @@ class ProductInfo {
         prices: List<Price>.from(json["Prices"].map((x) => Price.fromJson(x))),
         existenciaUnidades: json["ExistenciaUnidades"],
         stocks: List<Stock>.from(json["Stocks"].map((x) => Stock.fromJson(x))),
+        image: json["Image"],
       );
 
   Map<String, dynamic> toJson() => {
         "Id": id,
+        "Name": name,
         "InternalCode": internalCode,
         "CodigoProveedorHabitual": codigoProveedorHabitual,
         "CodigoProveedorAlternativo": codigoProveedorAlternativo,
@@ -58,6 +65,7 @@ class ProductInfo {
         "Prices": List<dynamic>.from(prices.map((x) => x.toJson())),
         "ExistenciaUnidades": existenciaUnidades,
         "Stocks": List<dynamic>.from(stocks.map((x) => x.toJson())),
+        "Image": image,
       };
 }
 

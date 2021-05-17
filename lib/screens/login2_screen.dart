@@ -135,6 +135,7 @@ class _Login2ScreenState extends State<Login2Screen> {
 
   Widget seleccionarSucursal(String sucursal, String idSucursal) {
     String dropdownValue = sucursal;
+    idSucursal = idSucursal;
     return StreamBuilder(builder: (context, snapshot) {
       return DropdownButton<String>(
         value: dropdownValue,
@@ -166,6 +167,7 @@ class _Login2ScreenState extends State<Login2Screen> {
 
   Widget seleccionarDeposito(List<Deposit> depositos) {
     String dropdownValue = depositos[0].name;
+    idDeposito = depositos[0].depositId;
     List<String> nombreDepositos =
         depositos.map((deposito) => deposito.name).toList();
     return StreamBuilder(builder: (context, snapshot) {

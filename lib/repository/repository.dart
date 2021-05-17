@@ -8,6 +8,8 @@ import 'package:prueba3_git/models/auditoriaInfo_response.dart';
 import 'package:prueba3_git/models/auditoria_response.dart';
 import 'package:prueba3_git/models/branchOffice.dart';
 import 'package:prueba3_git/models/branchOffice_response.dart';
+import 'package:prueba3_git/models/chart.dart';
+import 'package:prueba3_git/models/chart_response.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_info.dart';
 import 'package:prueba3_git/models/product_info_response.dart';
@@ -73,7 +75,6 @@ Future<User> postLogin(BuildContext context, String nombre, String password,
 
 Future<User> postLoginConGoogle(
     BuildContext context, String nombre, String idDevice) async {
-  //final String webServiceUrl = 'account/login';
   final String webServiceUrl = 'account/loginWithGoogleAccount';
 
   Map<String, String> header = {
@@ -105,7 +106,10 @@ Future<User> postLoginConGoogle(
   }
 
   final String respuestaString = respuesta.body;
-  return userFromJson(respuestaString);
+  usuarioJson = respuestaString;
+  unUsuario = userFromJson(respuestaString);
+  token = unUsuario.token;
+  return unUsuario;
 }
 
 class Repository {
@@ -168,6 +172,25 @@ class Repository {
     }
   }
 
+  //Devuelve una lista de todas las auditorias de stock
+  Future<AuditoriaResponse> getAuditoriaStockList() async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+    try {
+      Response response = await _dio.get(urlBase + "audit/GetAllAuditsStock",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      AuditoriaResponse auditoriaResponse =
+          new AuditoriaResponse(auditoriaFromJson(x), "");
+      print(auditoriaFromJson(x));
+      return auditoriaResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return AuditoriaResponse.withError("$error");
+    }
+  }
+
+  //Devuelve el detalle de una sola auditoria, especificando el ID
   Future<AuditoriaInfoResponse> getAuditRackByID(idValue) async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
@@ -289,37 +312,55 @@ class Repository {
     }
   }
 
+  Future<ChartResponse> getChartsByCode(codigo) async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+    try {
+      Response response = await _dio.get(
+          urlBase + "charts/GraficoCasosCampania?codigoConsulta=$codigo",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      ChartResponse chartResponse = new ChartResponse(chartFromJson(x), "");
+      return chartResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return ChartResponse.withError("$error");
+    }
+  }
+
+  Future<PerfilResponse> getCharts() async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+    try {
+      Response response = await _dio.get(urlBase + "charts/getConsultaDePerfil",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      PerfilResponse perfilResponse = new PerfilResponse(perfilFromJson(x), "");
+      return perfilResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return PerfilResponse.withError("$error");
+    }
+  }
+
   //////////////////////////////////////////////////////////////////////////////
   ///////////////METODOS POST PARA SUBIDA DE DE DATOS //////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
   //Realiza un post de la auditoria, recibe la lista de productos y un string que le especifica las observaciones
-  void postNuevaAuditoriaStock(listaProductos, codeDialog) {
+  void postNuevaAuditoriaStock(List<Item> listaItems, codeDialog) {
     String webServiceUrl = 'Audit/NewAuditStock';
 
     Auditoria unaAuditoria = new Auditoria();
+    unaAuditoria.items = [];
     unaAuditoria.branchOfficeId = idSucursal;
     unaAuditoria.depositId = idDeposito;
     unaAuditoria.observations = codeDialog;
 
-    int index = 0;
-    while (index < listaProductos.length) {
-      Item unItem = new Item();
-      // ignore: unused_local_variable
-      List<Price> unProducto = [];
-      unItem.productId = listaProductos[index].id;
-      preciosProductos(unItem.productId);
-      unProducto = unProductoPrecio.prices;
-      //SE MOVIERON LOS PRECIOS A PRODUCTINFO, VER COMO TRAERLO
-      if (unaAuditoria.items == null) {
-        unaAuditoria.items = [];
-      }
-      if (unItem.reasons == null) {
-        unItem.reasons = [];
-      }
-      unaAuditoria.items.add(unItem);
-      index++;
-    }
+    listaItems.forEach((item) {
+      unaAuditoria.items.add(item);
+      item.reasons = [];
+    });
 
     Map<String, String> header = {
       'Content-Type': 'application/json; charset=utf-8',
@@ -341,6 +382,7 @@ class Repository {
     unaAuditoria.branchOfficeId = idSucursal;
     unaAuditoria.depositId = idDeposito;
     unaAuditoria.observations = codeDialog;
+
     listaItems.forEach((item) {
       unaAuditoria.items.add(item);
     });

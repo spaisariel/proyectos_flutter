@@ -33,7 +33,7 @@ class _BusquedaProductosAuditoriaScreenState
   List<Product> selectedProducts = [];
   List<Reason> selectedReasons = [];
   List<Reason> listaRazones;
-  List<Product> listaProductos = []; //VER
+  List<Product> listaProductos = [];
   List<Item> listaItems = [];
   String dropdownValue;
 
@@ -57,9 +57,6 @@ class _BusquedaProductosAuditoriaScreenState
         });
       }
     });
-    //selectedProducts = [];
-
-    //listaItems.forEach((item) { })
   }
 
   onSelectedRow(bool selected, Product unProducto) async {
@@ -200,7 +197,7 @@ class _BusquedaProductosAuditoriaScreenState
             Container(
               child: DataTable(
                 horizontalMargin: 10.0,
-                showCheckboxColumn: true,
+                showCheckboxColumn: false,
                 columns: const <DataColumn>[
                   DataColumn(
                     label: Text(
@@ -248,10 +245,10 @@ class _BusquedaProductosAuditoriaScreenState
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ProductScreen(
-                                    producto.id.toString(),
-                                    producto.name,
-                                    producto.image,
-                                  ),
+                                      producto.id.toString(),
+                                      producto.image,
+                                      '',
+                                      listaRazones),
                                 ),
                               ),
                             ),

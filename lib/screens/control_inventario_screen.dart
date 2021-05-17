@@ -6,8 +6,9 @@ import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/user.dart';
 import 'package:prueba3_git/repository/repository.dart';
-import 'package:prueba3_git/screens/busqueda_productos_control.dart';
+import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
+import 'package:prueba3_git/screens/busqueda_productos_control.dart';
 
 // ignore: must_be_immutable
 class ControlInventarioScreen extends StatefulWidget {
@@ -27,8 +28,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
   List<Product> listaProductos;
   String idSucursal;
   String idDeposito;
-  List<Item> listaItems;
-  //Quitar despues listaRazones
+  List<Item> listaItems = [];
   List<Reason> listaRazones;
   List<Item> items = [];
   _ControlInventarioScreenState(
@@ -64,7 +64,23 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
             SizedBox(height: 30),
             _buildSearchButtons(),
             SizedBox(height: 30),
-            tablaProductos(),
+            (listaItems.length != 0)
+                ? tablaProductos()
+                : Container(
+                    child: new Column(
+                      children: [
+                        Text(
+                          "Tabla vacia",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 22),
+                        ),
+                        Icon(
+                          Icons.list,
+                          size: 200,
+                        ),
+                      ],
+                    ),
+                  ),
             SizedBox(height: 80),
             Container(
               child: botonesBusquedaWidget(context, idSucursal, idDeposito),
@@ -85,13 +101,25 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
         columns: const <DataColumn>[
           DataColumn(
             label: Text(
-              'CODIGO',
+              'Codigo',
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
           ),
           DataColumn(
             label: Text(
-              'NOMBRE',
+              'Nombre',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Cantidad',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              'Acciones',
               style: TextStyle(fontStyle: FontStyle.italic),
             ),
           ),
@@ -108,6 +136,31 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                   DataCell(
                     Text(item.name),
                     onTap: () {},
+                  ),
+                  DataCell(
+                    Text(item.quantity.toString()),
+                    onTap: () {},
+                  ),
+                  DataCell(
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.mode_edit,
+                          ),
+                          onPressed: () {},
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.cancel,
+                            color: Style.Colors.cancelColor,
+                          ),
+                          onPressed: () {
+                            _showMaterialDialogBorrarProducto(item);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -151,39 +204,6 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
             ),
           ),
         ),
-        // ConstrainedBox(
-        //   constraints: BoxConstraints.tightFor(
-        //       width: MediaQuery.of(context).size.width * 0.23,
-        //       height: MediaQuery.of(context).size.height * 0.1),
-        //   child: TextButton(
-        //     style: ButtonStyle(
-        //         shape: MaterialStateProperty.all(
-        //             Style.Shapes.botonGrandeRoundedRectangleBorder()),
-        //         backgroundColor:
-        //             MaterialStateProperty.all<Color>(Style.Colors.mainColor)),
-        //     onPressed: () {
-        //       Navigator.push(
-        //           context,
-        //           MaterialPageRoute(
-        //             builder: (BuildContext context) =>
-        //                 GroupListViewDemo(listaItems),
-        //           ));
-        //     },
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.center,
-        //       children: [
-        //         Padding(
-        //           padding: const EdgeInsets.all(8.0),
-        //           child: Icon(
-        //             Icons.list,
-        //             color: Colors.white,
-        //           ),
-        //         ),
-        //         Text('Ver detalle', style: TextStyle(color: Colors.white)),
-        //       ],
-        //     ),
-        //   ),
-        // ),
         ConstrainedBox(
           constraints: BoxConstraints.tightFor(
               width: MediaQuery.of(context).size.width * 0.23,
@@ -220,7 +240,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
     );
   }
 
-  _showMaterialDialogAceptar(context, unUsuario) {
+  _showMaterialDialogAceptar(context, unUsuario, idSucursal, idDeposito) {
     showDialog(
         context: context,
         builder: (_) => new AlertDialog(
@@ -228,14 +248,23 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                   new Text("Se guardo correctamente el control de inventario"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    child: TextButton(
+                      child: Icon(
+                        Icons.check_circle,
+                        size: 100,
+                        color: Style.Colors.acceptColor2,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
               ),
               actions: <Widget>[
                 TextButton(
                   child: Text('Aceptar'),
                   onPressed: () {
-                    //CAMBIAR ACÁ
-                    Repository()
-                        .postNuevaAuditoriaStock(listaProductos, codeDialog);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -277,6 +306,33 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
             ));
   }
 
+  _showMaterialDialogBorrarProducto(Item item) {
+    showDialog(
+        context: context,
+        builder: (_) => new AlertDialog(
+              title: new Text('¿Seguro desea eliminar el item?'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('No'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: Text('Si'),
+                  onPressed: () {
+                    listaItems.removeWhere((itemBorrar) => itemBorrar == item);
+                    Navigator.pop(context);
+                    setState(() {});
+                  },
+                ),
+              ],
+            ));
+  }
+
   Widget _buildPopUpObservation(context, unUsuario, idSucursal, idUsuario) {
     String valueText;
 
@@ -284,17 +340,22 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
       title: const Text('Ingrese una observación'),
       content: new Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextField(
+            maxLength: 500,
             onChanged: (value) {
               setState(() {
                 valueText = value;
+                codeDialog = valueText;
               });
             },
             controller: _textFieldController,
+            obscureText: false,
             decoration: InputDecoration(
-                border: InputBorder.none, hintText: 'Observación'),
+              border: OutlineInputBorder(),
+              labelText: 'Ingrese nueva observación',
+            ),
+            autofocus: false,
           ),
         ],
       ),
@@ -308,10 +369,11 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
             style: TextStyle(color: Colors.white),
           ),
           onPressed: () {
+            //Repository().postNuevaAuditoriaStock(listaItems, codeDialog);
+            Repository().postNuevaAuditoriaStock(listaItems, codeDialog);
             setState(() {
-              codeDialog = valueText;
-              //Navigator.pop(context);
-              _showMaterialDialogAceptar(context, unUsuario);
+              _showMaterialDialogAceptar(
+                  context, unUsuario, idSucursal, idDeposito);
             });
           },
         )
@@ -401,7 +463,6 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                     Style.Shapes.botonGrandeRoundedRectangleBorder()),
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Style.Colors.mainColor)),
-            //onPressed: () => scanBarcodeNormal(),
             onPressed: () => scanBarcodeNormal(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -427,7 +488,21 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.QR);
-      print(barcodeScanRes);
+
+      if (barcodeScanRes != '-1') {
+        final respuesta = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductScreen(
+                barcodeScanRes, "", 'busquedaCamaraControl', listaRazones),
+          ),
+        );
+        Item unItem = new Item();
+        unItem = respuesta;
+        unItem.reasons = [];
+        print(unItem.id);
+        listaItems.add(unItem);
+      }
     } on PlatformException {
       barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
     }
@@ -446,12 +521,19 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
           "#ff6666", "Cancel", true, ScanMode.BARCODE);
       print(barcodeScanRes);
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => ProductScreen(unProducto),
-      //   ),
-      // );
+      if (barcodeScanRes != '-1') {
+        final respuesta = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductScreen(
+                barcodeScanRes, "", 'busquedaCamaraControl', listaRazones),
+          ),
+        );
+        Item unItem = new Item();
+        unItem = respuesta;
+        print(unItem.id);
+        listaItems.add(unItem);
+      }
     } on PlatformException {
       barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
     }
