@@ -24,6 +24,10 @@ String reasonToJson(Reason data) => json.encode(data.toJson());
 class Auditoria {
   Auditoria({
     this.id,
+    this.operationType,
+    this.abbreviationOperationType,
+    this.nameOperationType,
+    this.date,
     this.branchOfficeId,
     this.branchOfficeName,
     this.depositId,
@@ -33,6 +37,10 @@ class Auditoria {
   });
 
   int id;
+  String operationType;
+  String abbreviationOperationType;
+  String nameOperationType;
+  String date;
   String branchOfficeId;
   String branchOfficeName;
   String depositId;
@@ -42,6 +50,10 @@ class Auditoria {
 
   factory Auditoria.fromJson(Map<String, dynamic> json) => Auditoria(
         id: json["Id"],
+        operationType: json["OperationType"],
+        abbreviationOperationType: json["AbbreviationOperationType"],
+        nameOperationType: json["NameOperationType"],
+        date: json["Date"],
         branchOfficeId: json["BranchOfficeId"],
         branchOfficeName: json["BranchOfficeName"],
         depositId: json["DepositId"],
@@ -52,6 +64,10 @@ class Auditoria {
 
   Map<String, dynamic> toJson() => {
         "Id": id,
+        "OperationType": operationType,
+        "AbbreviationOperationType": abbreviationOperationType,
+        "NameOperationType": nameOperationType,
+        "Date": date,
         "BranchOfficeId": branchOfficeId,
         "BranchOfficeName": branchOfficeName,
         "DepositId": depositId,

@@ -3,7 +3,7 @@ import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/screens/auditoria_screen.dart';
-import 'package:prueba3_git/screens/consulta_auditoria_screen.dart';
+//import 'package:prueba3_git/screens/consulta_auditoria_screen.dart';
 import 'package:prueba3_git/screens/consulta_inventario_screen.dart';
 import 'package:prueba3_git/screens/control_inventario_screen.dart';
 import '../style/theme.dart' as Style;
@@ -81,34 +81,34 @@ class BotonesPrincipalWidget extends StatelessWidget {
         ),
       ),
       SizedBox(height: 20),
-      ButtonTheme(
-        child: ConstrainedBox(
-          constraints: BoxConstraints.tightFor(
-              width: MediaQuery.of(context).size.width * 0.8,
-              height: MediaQuery.of(context).size.height * 0.1),
-          child: ElevatedButton.icon(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Style.Colors.mainColor),
-                  shape: MaterialStateProperty.all(
-                      Style.Shapes.botonGrandeRoundedRectangleBorder())),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ConsultaAuditoriaScreen(),
-                  ),
-                );
-              },
-              icon: Icon(Icons.assignment,
-                  size: 40, color: Style.Colors.secondColor),
-              label: Text(
-                'Auditorias realizadas',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              )),
-        ),
-      ),
-      SizedBox(height: 20),
+      // ButtonTheme(
+      //   child: ConstrainedBox(
+      //     constraints: BoxConstraints.tightFor(
+      //         width: MediaQuery.of(context).size.width * 0.8,
+      //         height: MediaQuery.of(context).size.height * 0.1),
+      //     child: ElevatedButton.icon(
+      //         style: ButtonStyle(
+      //             backgroundColor:
+      //                 MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+      //             shape: MaterialStateProperty.all(
+      //                 Style.Shapes.botonGrandeRoundedRectangleBorder())),
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => ConsultaAuditoriaScreen(),
+      //             ),
+      //           );
+      //         },
+      //         icon: Icon(Icons.assignment,
+      //             size: 40, color: Style.Colors.secondColor),
+      //         label: Text(
+      //           'Auditorias realizadas',
+      //           style: TextStyle(color: Colors.white, fontSize: 20),
+      //         )),
+      //   ),
+      // ),
+      // SizedBox(height: 20),
       ButtonTheme(
         child: ConstrainedBox(
           constraints: BoxConstraints.tightFor(
@@ -128,10 +128,10 @@ class BotonesPrincipalWidget extends StatelessWidget {
                   ),
                 );
               },
-              icon: Icon(Icons.receipt_long,
+              icon: Icon(Icons.assignment,
                   size: 40, color: Style.Colors.secondColor),
               label: Text(
-                'Consultas de inventario',
+                'Operaciones realizadas',
                 style: TextStyle(color: Colors.white, fontSize: 20),
               )),
         ),

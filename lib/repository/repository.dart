@@ -190,6 +190,24 @@ class Repository {
     }
   }
 
+  //Devuelve una lista de todas las auditorias
+  Future<AuditoriaResponse> getAllAudits() async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+    try {
+      Response response = await _dio.get(urlBase + "audit/GetAllAudits",
+          options: Options(responseType: ResponseType.json));
+      String x = json.encode(response.data);
+      AuditoriaResponse auditoriaResponse =
+          new AuditoriaResponse(auditoriaFromJson(x), "");
+      print(auditoriaFromJson(x));
+      return auditoriaResponse;
+    } catch (error, stacktrace) {
+      print("Exception occured: $error stackTrace: $stacktrace");
+      return AuditoriaResponse.withError("$error");
+    }
+  }
+
   //Devuelve el detalle de una sola auditoria, especificando el ID
   Future<AuditoriaInfoResponse> getAuditRackByID(idValue) async {
     _dio.options.headers['content-Type'] = 'application/json';
@@ -341,6 +359,16 @@ class Repository {
       print("Exception occured: $error stackTrace: $stacktrace");
       return PerfilResponse.withError("$error");
     }
+  }
+
+  //Borrado de auditorias
+  Future<Response> deleteAudit(int id) async {
+    _dio.options.headers['content-Type'] = 'application/json';
+    _dio.options.headers["authorization"] = "Bearer $token";
+
+    Response response =
+        await _dio.get(urlBase + "audit/deleteAuditByID?id=$id");
+    return response;
   }
 
   //////////////////////////////////////////////////////////////////////////////

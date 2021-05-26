@@ -41,6 +41,26 @@ class AuditoriaStockListBloc {
 }
 
 final auditoriaStockListBloc = AuditoriaStockListBloc();
+
+////////////////////////////////////////////////////////////////////////////
+class AuditoriasListBloc {
+  final Repository _repository = Repository();
+  final BehaviorSubject<AuditoriaResponse> _subject =
+      BehaviorSubject<AuditoriaResponse>();
+
+  getAuditoriasLista() async {
+    AuditoriaResponse response = await _repository.getAllAudits();
+    _subject.sink.add(response);
+  }
+
+  dispose() {
+    _subject.close();
+  }
+
+  BehaviorSubject<AuditoriaResponse> get subject => _subject;
+}
+
+final auditoriasListBloc = AuditoriasListBloc();
 ////////////////////////////////////////////////////////////////////////////
 
 class AuditoriaInfoBloc {

@@ -13,21 +13,20 @@ class _ReportsScreenState extends State<ReportsScreen> {
   @override
   void initState() {
     super.initState();
-    chartBloc..getChart('1156');
+    perfilBloc.getPerfil();
   }
 
   List<int> listaPuntos = [];
   List<FlSpot> listaPuntos2 = [];
+  List<String> nombreGraficos = [];
   int index = 0;
   int coso = 0;
-
-  //SOLO PARA MUESTRA
-  String dropdownValue = 'Ventas por dia';
+  String dropDownValue;
 
   Widget build(BuildContext context) {
-    return StreamBuilder<ChartResponse>(
-      stream: chartBloc.subject.stream,
-      builder: (context, AsyncSnapshot<ChartResponse> snapshot) {
+    return StreamBuilder<PerfilResponse>(
+      stream: perfilBloc.subject.stream,
+      builder: (context, AsyncSnapshot<PerfilResponse> snapshot) {
         if (snapshot.hasData) {
           if (snapshot.data.error != null && snapshot.data.error.length > 0) {
             return _buildErrorWidget(snapshot.data.error);
@@ -69,18 +68,20 @@ class _ReportsScreenState extends State<ReportsScreen> {
     ));
   }
 
-  Widget _buildHomeWidget(ChartResponse data) {
-    data.graficos.datos[0].data.forEach((punto) {
-      listaPuntos.add(punto);
+  Widget _buildHomeWidget(PerfilResponse data) {
+    nombreGraficos = [];
+    listaPuntos = [];
+
+    data.datos.consultasDashboard.forEach((grafico) {
+      nombreGraficos.add(grafico.descripcion);
     });
 
-    if (coso == 0) puntosPrueba();
-    coso++;
+    dropDownValue = nombreGraficos[0];
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
-        title: Text('Auditoria - ' + data.graficos.titulo),
+        title: Text('Reporteria'),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -88,13 +89,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
         child: Column(
           children: [
             new DropdownButton<String>(
-              value: dropdownValue,
-              items: <String>[
-                'Ventas por dia',
-                'Ventas por mes',
-                'Ventas sucursal 1',
-                'Ventas sucursal 2'
-              ].map((String value) {
+              value: dropDownValue,
+              items: nombreGraficos.map((String value) {
                 return new DropdownMenuItem<String>(
                   value: value,
                   child: new Text(value),
@@ -102,32 +98,44 @@ class _ReportsScreenState extends State<ReportsScreen> {
               }).toList(),
               onChanged: (_) {},
             ),
-            SizedBox(height: 20),
-            Container(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.9,
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: LineChart(
-                  LineChartData(
-                    gridData: FlGridData(
-                      show: true,
-                    ),
-                    borderData: FlBorderData(show: true),
-                    lineBarsData: [
-                      LineChartBarData(
-                        spots: listaPuntos2,
-                        isCurved: false,
-                        barWidth: 3,
-                        colors: [
-                          Colors.orange,
+            StreamBuilder(
+              stream: chartBloc.subject.stream,
+              initialData: chartBloc..getChart('1156'),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                snapshot.data.graficos.datos[0].data.forEach((punto) {
+                  listaPuntos.add(punto);
+                });
+
+                if (coso == 0) puntosPrueba();
+                coso++;
+
+                return Container(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    child: LineChart(
+                      LineChartData(
+                        gridData: FlGridData(
+                          show: true,
+                        ),
+                        borderData: FlBorderData(show: true),
+                        lineBarsData: [
+                          LineChartBarData(
+                            spots: listaPuntos2,
+                            isCurved: false,
+                            barWidth: 3,
+                            colors: [
+                              Colors.orange,
+                            ],
+                          ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
-            Text(data.graficos.datos[0].name)
+            SizedBox(height: 20),
           ],
         ),
       ),
