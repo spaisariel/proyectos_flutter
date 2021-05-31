@@ -54,8 +54,7 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ProductScreen(qrScanRes, '', '', listaRazones),
+            builder: (context) => ProductScreen(qrScanRes, '', listaRazones),
           ),
         );
       }
@@ -83,7 +82,7 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                ProductScreen(barcodeScanRes, '', '', listaRazones),
+                ProductScreen(barcodeScanRes, '', listaRazones),
           ),
         );
       }

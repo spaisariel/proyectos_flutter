@@ -494,7 +494,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => ProductScreen(
-                barcodeScanRes, "", 'busquedaCamaraControl', listaRazones),
+                barcodeScanRes, 'busquedaCamaraControl', listaRazones),
           ),
         );
         Item unItem = new Item();
@@ -526,7 +526,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
           context,
           MaterialPageRoute(
             builder: (context) => ProductScreen(
-                barcodeScanRes, "", 'busquedaCamaraControl', listaRazones),
+                barcodeScanRes, 'busquedaCamaraControl', listaRazones),
           ),
         );
         Item unItem = new Item();

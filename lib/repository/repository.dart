@@ -55,7 +55,6 @@ Future<User> postLogin(BuildContext context, String nombre, String password,
               title: new Text("ERROR"),
               content: new Text("Usuario no valido"),
               actions: <Widget>[
-                //Prueba cambio de boton
                 TextButton(
                   child: Text('Aceptar'),
                   onPressed: () {

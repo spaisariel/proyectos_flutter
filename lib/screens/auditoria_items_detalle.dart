@@ -50,7 +50,6 @@ class _GroupListViewDemoState extends State<GroupListViewDemo> {
                   builder: (context) => ProductScreen(
                     element.productId.toString(),
                     '',
-                    '',
                     listaRazones,
                   ),
                 ),

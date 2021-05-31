@@ -100,7 +100,7 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProductScreen(
-                          auditItem.id.toString(), '', '', listaRazones),
+                          auditItem.id.toString(), '', listaRazones),
                     ),
                   ),
                 ),
@@ -142,8 +142,8 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ProductScreen(
-                          auditItem.productId, '', '', listaRazones),
+                      builder: (context) =>
+                          ProductScreen(auditItem.productId, '', listaRazones),
                     ),
                   ),
                 ),

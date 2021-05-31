@@ -16,8 +16,6 @@ class Login2Screen extends StatefulWidget {
   _Login2ScreenState createState() => _Login2ScreenState(this.unUsuario);
 }
 
-Color azulGrandi = new Color.fromARGB(255, 0, 141, 210);
-
 class _Login2ScreenState extends State<Login2Screen> {
   User unUsuario;
 

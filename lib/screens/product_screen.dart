@@ -10,24 +10,24 @@ import 'package:prueba3_git/style/theme.dart' as Style;
 // ignore: must_be_immutable
 class ProductScreen extends StatefulWidget {
   final String idValue;
-  final String image;
+  //final String image;
   final String busqueda;
   List<Reason> listaRazones = [];
-  ProductScreen(this.idValue, this.image, this.busqueda, this.listaRazones);
+  ProductScreen(
+      this.idValue /*, this.image*/, this.busqueda, this.listaRazones);
   @override
   _ProductScreenState createState() => _ProductScreenState(
-      this.idValue, this.image, this.busqueda, this.listaRazones);
+      this.idValue /*, this.image*/, this.busqueda, this.listaRazones);
 }
 
 class _ProductScreenState extends State<ProductScreen> {
   final String idValue;
-  final String image;
+  //final String image;
   final String busqueda;
   List<Reason> listaRazones = [];
   Item unItemPrueba = new Item();
 
-  _ProductScreenState(
-      this.idValue, this.image, this.busqueda, this.listaRazones);
+  _ProductScreenState(this.idValue, this.busqueda, this.listaRazones);
 
   String dropdownValue;
   List<Reason> selectedReasons = [];

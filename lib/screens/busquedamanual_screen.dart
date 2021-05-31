@@ -184,7 +184,6 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                                   MaterialPageRoute(
                                     builder: (context) => ProductScreen(
                                       producto.id.toString(),
-                                      producto.image,
                                       '',
                                       listaRazones,
                                     ),

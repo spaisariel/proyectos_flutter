@@ -579,8 +579,8 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
         final respuesta = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductScreen(
-                barcodeScanRes, "", 'busquedaCamara', listaRazones),
+            builder: (context) =>
+                ProductScreen(barcodeScanRes, 'busquedaCamara', listaRazones),
           ),
         );
         Item unItem = new Item();
@@ -609,8 +609,8 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
         final respuesta = await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductScreen(
-                barcodeScanRes, "", 'busquedaCamara', listaRazones),
+            builder: (context) =>
+                ProductScreen(barcodeScanRes, 'busquedaCamara', listaRazones),
           ),
         );
         Item unItem = new Item();

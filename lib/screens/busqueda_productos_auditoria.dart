@@ -245,10 +245,7 @@ class _BusquedaProductosAuditoriaScreenState
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ProductScreen(
-                                      producto.id.toString(),
-                                      producto.image,
-                                      '',
-                                      listaRazones),
+                                      producto.id.toString(), '', listaRazones),
                                 ),
                               ),
                             ),
