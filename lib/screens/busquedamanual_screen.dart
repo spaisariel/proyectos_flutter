@@ -5,7 +5,6 @@ import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_response.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
-import 'package:prueba3_git/widgets/filtro_busqueda_widget.dart';
 
 class BusquedaManualScreen extends StatefulWidget {
   BusquedaManualScreen({Key key}) : super(key: key);
@@ -95,10 +94,12 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
     cantProductos = data.products.length;
 
     return Scaffold(
-      backgroundColor: Style.Colors.blanco,
+      backgroundColor: Style.Colors.secondColor,
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
-        title: Text('Busqueda manual'),
+        title: FittedBox(
+          child: Text('Busqueda manual'),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -106,7 +107,6 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            FiltroBusquedaWidget(productos),
             SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -130,72 +130,140 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                     })
               ],
             ),
-            Container(
-              child: DataTable(
-                columnSpacing: 10,
-                horizontalMargin: 10.0,
-                columns: [
-                  DataColumn(
-                    label: Text(
-                      'CODIGO',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'DESCRIPCION',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'FOTO',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ],
-                rows: productos
-                    .map(
-                      (producto) => DataRow(
-                          selected: productos.contains(producto),
-                          cells: [
-                            DataCell(
-                              Container(
-                                width: 40,
-                                child: Text(
-                                  producto.id.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Container(
-                                width: 260,
-                                child: Text(
-                                  producto.name,
-                                  overflow: TextOverflow.clip,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Container(child: Image.network(producto.image)),
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProductScreen(
-                                      producto.id.toString(),
-                                      '',
-                                      listaRazones,
-                                    ),
-                                  )),
-                            ),
-                          ]),
-                    )
-                    .toList(),
+            tablaProductos(productos)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget tablaProductos(List<Product> productos) {
+    return FittedBox(
+      child: Container(
+        child: DataTable(
+          columnSpacing: 10,
+          horizontalMargin: 10.0,
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Text(
+                'Codigo',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Descripción',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Foto',
+                style: TextStyle(fontStyle: FontStyle.italic),
               ),
             ),
           ],
+          rows: productos
+              .map(
+                (producto) => DataRow(
+                    //selected: productos.contains(producto),
+                    cells: [
+                      DataCell(
+                        Container(
+                          width: 40,
+                          child: Text(
+                            producto.id.toString(),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Container(
+                          width: 250,
+                          child: Text(
+                            producto.name,
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Container(
+                            width: 60, child: Image.network(producto.image)),
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProductScreen(
+                                producto.id.toString(),
+                                '',
+                                listaRazones,
+                              ),
+                            )),
+                      ),
+                    ]),
+              )
+              .toList(),
         ),
+        // child: DataTable(
+        //   columnSpacing: 10,
+        //   horizontalMargin: 10.0,
+        //   columns: [
+        //     DataColumn(
+        //       label: Text(
+        //         'Codigo',
+        //         style: TextStyle(fontStyle: FontStyle.italic),
+        //       ),
+        //     ),
+        //     DataColumn(
+        //       label: Text(
+        //         'Descripción',
+        //         style: TextStyle(fontStyle: FontStyle.italic),
+        //       ),
+        //     ),
+        //     DataColumn(
+        //       label: Text(
+        //         'Foto',
+        //         style: TextStyle(fontStyle: FontStyle.italic),
+        //       ),
+        //     ),
+        //   ],
+        //   rows: productos
+        //       .map(
+        //         (producto) =>
+        //             DataRow(selected: productos.contains(producto), cells: [
+        //           DataCell(
+        //             Container(
+        //               width: 40,
+        //               child: Text(
+        //                 producto.id.toString(),
+        //                 overflow: TextOverflow.ellipsis,
+        //               ),
+        //             ),
+        //           ),
+        //           DataCell(
+        //             Container(
+        //               width: 260,
+        //               child: Text(
+        //                 producto.name,
+        //                 overflow: TextOverflow.clip,
+        //               ),
+        //             ),
+        //           ),
+        //           DataCell(
+        //             Container(child: Image.network(producto.image)),
+        //             onTap: () => Navigator.push(
+        //                 context,
+        //                 MaterialPageRoute(
+        //                   builder: (context) => ProductScreen(
+        //                     producto.id.toString(),
+        //                     '',
+        //                     listaRazones,
+        //                   ),
+        //                 )),
+        //           ),
+        //         ]),
+        //       )
+        //       .toList(),
+        // ),
       ),
     );
   }

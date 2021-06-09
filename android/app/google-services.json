@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:382192111905:android:3e151e44f896460765ee60",
+        "android_client_info": {
+          "package_name": "com.GrandiComercial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382192111905-lqbe0nfrbpiu9hcvo7hq1dsaltcd1q3e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.GrandiComercial",
+            "certificate_hash": "253a3f124f2dc9fec93ff2b77fffe5d2154597e7"
+          }
+        },
+        {
+          "client_id": "382192111905-usrjhdpovr4pa13u8q1rl47simjtaj21.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfVp7jHjRiIsVU63MH16HFOzwVmxt9Bos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382192111905-usrjhdpovr4pa13u8q1rl47simjtaj21.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:382192111905:android:4b7625b3f6a46d9465ee60",
         "android_client_info": {
           "package_name": "com.example.prueba3_git"
@@ -20,6 +57,14 @@
           "android_info": {
             "package_name": "com.example.prueba3_git",
             "certificate_hash": "253a3f124f2dc9fec93ff2b77fffe5d2154597e7"
+          }
+        },
+        {
+          "client_id": "382192111905-srng1c1f54d9fqj64jf7ncshp6dj20se.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prueba3_git",
+            "certificate_hash": "573d2ea42173fecbaceb812d058e344c43966856"
           }
         },
         {

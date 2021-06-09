@@ -33,7 +33,6 @@ class _BusquedaQRscreenState extends State<BusquedaQRscreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.QR);
-      print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Fallo al obtener la version de la plataforma.';
     }
@@ -120,7 +119,7 @@ class _BusquedaQRscreenState extends State<BusquedaQRscreen> {
             Column(
               children: <Widget>[
                 Text(
-                  "No More Movies",
+                  "No se encuentra el producto",
                   style: TextStyle(color: Colors.black45),
                 )
               ],

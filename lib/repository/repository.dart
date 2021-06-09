@@ -18,7 +18,11 @@ import 'package:prueba3_git/models/user.dart';
 import 'package:prueba3_git/models/user_response.dart';
 import 'package:prueba3_git/screens/login_screen.dart';
 
-final String urlBase = 'http://192.168.0.15:45455/laplayacapacitacion/api/';
+//final String urlBase = 'http://192.168.0.15:45455/laplayacapacitacion/api/';
+//APUNTAR AQUI
+//test1-sap02-servicios.gya.com.ar
+final String urlBase =
+    'http://test1-sap02-servicios.gya.com.ar/servicioslogintest/api/';
 
 String usuarioJson;
 User unUsuario = new User();
@@ -236,9 +240,13 @@ class Repository {
           options: Options(responseType: ResponseType.json));
       String x = json.encode(response.data);
       print(x);
-      ProductInfoResponse productInfoResponse =
-          new ProductInfoResponse(productInfoFromJson(x), "");
-      return productInfoResponse;
+
+      if (x != 'null') {
+        ProductInfoResponse productInfoResponse =
+            new ProductInfoResponse(productInfoFromJson(x), "");
+        return productInfoResponse;
+      }
+      return null;
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return ProductInfoResponse.withError("$error");

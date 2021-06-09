@@ -25,7 +25,9 @@ class _GroupListViewDemoState extends State<GroupListViewDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Listado de razones'),
+        title: FittedBox(
+          child: Text('Listado de razones'),
+        ),
         centerTitle: true,
       ),
       body: GroupedListView<dynamic, String>(

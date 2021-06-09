@@ -83,7 +83,6 @@ class _BusquedaProductosAuditoriaScreenState
     });
   }
 
-  //VER BIEN FUNCIONAMIENTO DE ESTE METODO
   deleteSelected() async {
     setState(() {
       if (selectedProducts.isNotEmpty) {
@@ -158,11 +157,17 @@ class _BusquedaProductosAuditoriaScreenState
             );
           },
         ),
-        title: Text('Busqueda manual'),
+        title: FittedBox(
+          child: Text('Busqueda manual'),
+        ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.all(20),
-            child: Text("Cantidad: " + listaItems.length.toString()),
+            child: FittedBox(
+              child: Text(
+                "Cantidad: " + listaItems.length.toString(),
+              ),
+            ),
           ),
         ],
         centerTitle: true,
@@ -194,66 +199,7 @@ class _BusquedaProductosAuditoriaScreenState
                     })
               ],
             ),
-            Container(
-              child: DataTable(
-                horizontalMargin: 10.0,
-                showCheckboxColumn: false,
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'Codigo',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Descripción',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Foto',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ],
-                rows: productos
-                    .map(
-                      (producto) => DataRow(
-                          selected: selectedProducts.contains(producto),
-                          onSelectChanged: (b) {
-                            onSelectedRow(b, producto);
-                          },
-                          cells: [
-                            DataCell(
-                              Container(
-                                  width: 50,
-                                  child: Text(producto.id.toString())),
-                            ),
-                            DataCell(
-                              Container(
-                                child: Text(
-                                  producto.name,
-                                  overflow: TextOverflow.clip,
-                                ),
-                              ),
-                            ),
-                            DataCell(
-                              Container(child: Image.network(producto.image)),
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProductScreen(
-                                      producto.id.toString(), '', listaRazones),
-                                ),
-                              ),
-                            ),
-                          ]),
-                    )
-                    .toList(),
-              ),
-            ),
+            tablaProductos(productos),
             SizedBox(height: 20),
           ],
         ),
@@ -261,8 +207,81 @@ class _BusquedaProductosAuditoriaScreenState
     );
   }
 
+  Widget tablaProductos(List<Product> productos) {
+    return FittedBox(
+      child: Container(
+        child: DataTable(
+          columnSpacing: 10,
+          horizontalMargin: 10.0,
+          showCheckboxColumn: false,
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Text(
+                'Codigo',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Descripción',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Foto',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+          ],
+          rows: productos
+              .map(
+                (producto) => DataRow(
+                    selected: selectedProducts.contains(producto),
+                    onSelectChanged: (b) {
+                      onSelectedRow(b, producto);
+                    },
+                    cells: [
+                      DataCell(
+                        Container(
+                          width: 40,
+                          child: Text(
+                            producto.id.toString(),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Container(
+                          width: 250,
+                          child: Text(
+                            producto.name,
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Container(
+                            width: 60, child: Image.network(producto.image)),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductScreen(
+                                producto.id.toString(), '', listaRazones),
+                          ),
+                        ),
+                      ),
+                    ]),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+
   Widget _buildPopUpObservation(BuildContext context, Item unItem) {
     String valueText;
+    _textFieldController.clear();
     dropdownValue = listaRazones[0].descripcion;
 
     List<String> nombreRazones =
@@ -292,35 +311,38 @@ class _BusquedaProductosAuditoriaScreenState
           ],
         ),
         actions: <Widget>[
-          DropdownButton<String>(
-            value: dropdownValue,
-            icon: Icon(Icons.arrow_drop_down),
-            iconSize: 24,
-            elevation: 16,
-            underline: Container(
-              height: 2,
-              color: Style.Colors.secondColor,
-            ),
-            onChanged: (String newValue) {
-              setState(() {
-                dropdownValue = newValue;
-                descripcion = newValue;
-                listaRazones.forEach((item) {
-                  if (item.descripcion == descripcion) {
-                    id = item.id;
-                  }
+          FittedBox(
+            child: DropdownButton<String>(
+              value: dropdownValue,
+              icon: Icon(Icons.arrow_drop_down),
+              iconSize: 24,
+              elevation: 16,
+              underline: Container(
+                height: 2,
+                color: Style.Colors.secondColor,
+              ),
+              onChanged: (String newValue) {
+                setState(() {
+                  dropdownValue = newValue;
+                  descripcion = newValue;
+                  listaRazones.forEach((item) {
+                    if (item.descripcion == descripcion) {
+                      id = item.id;
+                    }
+                  });
                 });
-              });
-            },
-            items: nombreRazones.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(
-                  value,
-                  style: TextStyle(fontSize: 14),
-                ),
-              );
-            }).toList(),
+              },
+              items:
+                  nombreRazones.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(fontSize: 14),
+                  ),
+                );
+              }).toList(),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

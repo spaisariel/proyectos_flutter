@@ -3,7 +3,6 @@ import 'package:prueba3_git/blocs/get_product_bloc.dart';
 import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/product.dart';
 import 'package:prueba3_git/models/product_response.dart';
-//import 'package:prueba3_git/screens/control_inventario_screen.dart';
 import 'package:prueba3_git/screens/product_screen.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
@@ -33,11 +32,12 @@ class _BusquedaProductosControlScreenState
   List<Product> listaProductos = [];
   List<Item> listaItems = [];
   List<Reason> listaRazones = [];
+  double cantStock;
 
   _BusquedaProductosControlScreenState(this.listaProductos);
 
   TextEditingController hintController = new TextEditingController();
-  //TextEditingController _textFieldController = TextEditingController();
+  TextEditingController _textFieldController = TextEditingController();
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -59,18 +59,20 @@ class _BusquedaProductosControlScreenState
   onSelectedRow(bool selected, Product unProducto) async {
     setState(() {
       if (selected) {
-        unProducto.observation = codeDialog;
         selectedProducts.add(unProducto);
         Item unItem = new Item();
         unItem.id = int.parse(unProducto.internalCode);
         unItem.productId = unProducto.id;
         unItem.name = unProducto.name;
-        unItem.quantity = unProducto.stock;
-        unItem.presentationId = 'Unidad';
-        listaItems.add(unItem);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              _buildPopUpQuantity(context, unItem),
+        );
       } else {
-        unProducto.observation = '';
         selectedProducts.remove(unProducto);
+        listaItems.removeWhere(
+            (item) => item.id == int.parse(unProducto.internalCode));
       }
     });
   }
@@ -148,11 +150,17 @@ class _BusquedaProductosControlScreenState
             );
           },
         ),
-        title: Text('Busqueda manual'),
+        title: FittedBox(
+          child: Text('Busqueda manual'),
+        ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.all(20),
-            child: Text("Cantidad: " + listaItems.length.toString()),
+            child: FittedBox(
+              child: Text(
+                "Cantidad: " + listaItems.length.toString(),
+              ),
+            ),
           ),
         ],
         centerTitle: true,
@@ -184,71 +192,156 @@ class _BusquedaProductosControlScreenState
                     })
               ],
             ),
-            Container(
-              child: DataTable(
-                horizontalMargin: 10.0,
-                showCheckboxColumn: false,
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'CODIGO',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'NOMBRE',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'FOTO',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                ],
-                rows: productos
-                    .map(
-                      (producto) => DataRow(
-                          selected: selectedProducts.contains(producto),
-                          onSelectChanged: (b) {
-                            onSelectedRow(b, producto);
-                          },
-                          cells: [
-                            DataCell(
-                              Container(
-                                  width: 50,
-                                  child: Text(producto.id.toString())),
-                            ),
-                            DataCell(
-                              Text(
-                                producto.name,
-                                overflow: TextOverflow.clip,
-                              ),
-                            ),
-                            DataCell(
-                              Container(child: Image.network(producto.image)),
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ProductScreen(
-                                    producto.id.toString(),
-                                    '',
-                                    listaRazones,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ]),
-                    )
-                    .toList(),
-              ),
-            ),
+            tablaProductos(productos),
             SizedBox(height: 20),
           ],
         ),
       ),
     );
+  }
+
+  Widget tablaProductos(List<Product> productos) {
+    return FittedBox(
+      child: Container(
+        child: DataTable(
+          columnSpacing: 10,
+          horizontalMargin: 10.0,
+          showCheckboxColumn: false,
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Text(
+                'Codigo',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Nombre',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Foto',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+          ],
+          rows: productos
+              .map(
+                (producto) => DataRow(
+                    selected: selectedProducts.contains(producto),
+                    onSelectChanged: (b) {
+                      onSelectedRow(b, producto);
+                    },
+                    cells: [
+                      DataCell(
+                        Container(
+                          width: 40,
+                          child: Text(
+                            producto.id.toString(),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Container(
+                          width: 250,
+                          child: Text(
+                            producto.name,
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
+                      ),
+                      DataCell(
+                        Container(
+                          width: 60,
+                          child: Image.network(producto.image),
+                        ),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductScreen(
+                              producto.id.toString(),
+                              '',
+                              listaRazones,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ]),
+              )
+              .toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPopUpQuantity(context, Item unItem) {
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
+        title: const Text('Ingrese el stock'),
+        content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                maxLength: 4,
+                onChanged: (value) {
+                  setState(() {
+                    cantStock = double.parse(value);
+                  });
+                },
+                controller: _textFieldController,
+                obscureText: false,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Ingrese cantidad en stock',
+                ),
+                keyboardType: TextInputType.number,
+                autofocus: true,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Style.Colors.cancelColor2)),
+                    child: Text(
+                      'Cancelar',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      unItem.quantity = cantStock;
+                      unItem.presentationId = 'Unidad';
+                      listaItems.add(unItem);
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            Style.Colors.acceptColor2)),
+                    child: Text(
+                      'Aceptar',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      unItem.quantity = cantStock;
+                      unItem.presentationId = 'Unidad';
+                      listaItems.add(unItem);
+                      setState(() {
+                        Navigator.pop(context);
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ]),
+      );
+    });
   }
 }

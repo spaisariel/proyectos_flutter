@@ -20,6 +20,7 @@ class ProductInfo {
     this.existenciaUnidades,
     this.stocks,
     this.image,
+    this.images,
   });
 
   String id;
@@ -35,6 +36,7 @@ class ProductInfo {
   int existenciaUnidades;
   List<Stock> stocks;
   String image;
+  List<String> images;
 
   factory ProductInfo.fromJson(Map<String, dynamic> json) => ProductInfo(
         id: json["Id"],
@@ -50,6 +52,7 @@ class ProductInfo {
         existenciaUnidades: json["ExistenciaUnidades"],
         stocks: List<Stock>.from(json["Stocks"].map((x) => Stock.fromJson(x))),
         image: json["Image"],
+        images: json["Images"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -66,6 +69,7 @@ class ProductInfo {
         "ExistenciaUnidades": existenciaUnidades,
         "Stocks": List<dynamic>.from(stocks.map((x) => x.toJson())),
         "Image": image,
+        "Images": images,
       };
 }
 

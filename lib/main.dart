@@ -4,12 +4,16 @@ import 'package:prueba3_git/screens/login_screen.dart';
 import 'package:prueba3_git/screens/reportes_screen.dart';
 import 'package:prueba3_git/screens/stock_screen.dart';
 import 'package:prueba3_git/screens/user_screen.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return new MaterialApp(
         debugShowCheckedModeBanner: false, home: LoginScreen());
   }
@@ -29,7 +33,6 @@ class PaginaInicial extends StatefulWidget {
 }
 
 class _PaginaInicialState extends State<PaginaInicial> {
-  //Color azulGrandi = new Color.fromARGB(255, 0, 141, 210);
   final User usuario;
   String idSucursal;
   String idDeposito;
@@ -46,8 +49,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _children = [
-      StockScreen(
-          "2", "2"), //REVISAR ACA POR FAVOR, NO DEJAR CON LOS STRINGS ASI
+      StockScreen(idSucursal, idDeposito),
       ReportsScreen(),
       UserScreen(usuario),
     ];
@@ -71,8 +73,8 @@ class _PaginaInicialState extends State<PaginaInicial> {
               label: 'Reporteria',
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.keyboard_arrow_up),
-              label: 'Mas',
+              icon: new Icon(Icons.supervised_user_circle),
+              label: 'Usuario',
             ),
           ]),
     );

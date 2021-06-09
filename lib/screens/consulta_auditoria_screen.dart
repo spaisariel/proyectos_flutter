@@ -92,7 +92,9 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text('Auditorias realizadas'),
+          title: FittedBox(
+            child: Text('Auditorias realizadas'),
+          ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -115,12 +117,6 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
 
         //columnSpacing: 1.0,
         columns: const <DataColumn>[
-          // DataColumn(
-          //   label: Text(
-          //     'ID',
-          //     style: TextStyle(fontStyle: FontStyle.italic),
-          //   ),
-          // ),
           DataColumn(
             label: Text(
               'Sucursal',
@@ -150,10 +146,8 @@ class _ConsultaAuditoriaScreenState extends State<ConsultaAuditoriaScreen> {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AuditoriaDetalleScreen(
-                            //auditoria.id.toString(),
-                            auditoria,
-                            "gondola"),
+                        builder: (context) =>
+                            AuditoriaDetalleScreen(auditoria, "gondola"),
                       ),
                     ),
                   ),

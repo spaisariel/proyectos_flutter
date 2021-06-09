@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application android:usesCleartextTraffic="true"
         android:name="io.flutter.app.FlutterApplication"
-        android:label="prueba3_git"
+        android:label="Comercial Grandi"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

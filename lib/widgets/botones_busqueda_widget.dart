@@ -147,18 +147,20 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                 );
               }
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('Manual', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('Manual', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         ),
@@ -174,18 +176,20 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Style.Colors.mainColor)),
             onPressed: () => scanQR(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.qr_code,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.qr_code,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('QR', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('QR', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         ),
@@ -201,18 +205,20 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Style.Colors.mainColor)),
             onPressed: () => scanBarcodeNormal(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.line_weight,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.line_weight,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('Barras', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('Barras', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         ),

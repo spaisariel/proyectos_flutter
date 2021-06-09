@@ -30,7 +30,9 @@ class _MapaScreenState extends State<MapaScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Mapa'),
+          title: FittedBox(
+            child: Text('Mapa'),
+          ),
         ),
         body: GoogleMap(
           onMapCreated: _onMapCreated,

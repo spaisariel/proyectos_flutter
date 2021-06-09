@@ -1,28 +1,25 @@
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/material.dart';
-import 'package:prueba3_git/blocs/get_product_info_bloc.dart';
 import 'package:prueba3_git/models/auditoria.dart';
 import 'package:prueba3_git/models/product_info.dart';
 import 'package:prueba3_git/models/product_info_response.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:prueba3_git/repository/repository.dart';
 import 'package:prueba3_git/style/theme.dart' as Style;
 
 // ignore: must_be_immutable
 class ProductScreen extends StatefulWidget {
   final String idValue;
-  //final String image;
   final String busqueda;
   List<Reason> listaRazones = [];
-  ProductScreen(
-      this.idValue /*, this.image*/, this.busqueda, this.listaRazones);
+  ProductScreen(this.idValue, this.busqueda, this.listaRazones);
   @override
-  _ProductScreenState createState() => _ProductScreenState(
-      this.idValue /*, this.image*/, this.busqueda, this.listaRazones);
+  _ProductScreenState createState() =>
+      _ProductScreenState(this.idValue, this.busqueda, this.listaRazones);
 }
 
 class _ProductScreenState extends State<ProductScreen> {
   final String idValue;
-  //final String image;
   final String busqueda;
   List<Reason> listaRazones = [];
   Item unItemPrueba = new Item();
@@ -35,6 +32,7 @@ class _ProductScreenState extends State<ProductScreen> {
   String codeDialog = '';
 
   bool muestra = false;
+  bool construccionPantalla = false;
   String id = 'Error';
   String descripcion = 'No aplica';
   String observacion = 'No aplica';
@@ -44,40 +42,36 @@ class _ProductScreenState extends State<ProductScreen> {
   TextEditingController hintController = new TextEditingController();
   TextEditingController _textFieldController = TextEditingController();
 
-  /////////////////////////////////////////////////////////////////////////////
-  final List<String> imgList = [
-    // 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-    // 'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-    // 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-    // 'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-    'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-    'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
-  ];
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
   @override
   void initState() {
     super.initState();
-    productInfoBloc..getProduct(this.idValue);
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<ProductInfoResponse>(
-      stream: productInfoBloc.subject.stream,
-      builder: (context, AsyncSnapshot<ProductInfoResponse> snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data.error != null && snapshot.data.error.length > 0) {
-            return _buildErrorWidget(snapshot.data.error);
+    return FutureBuilder(
+        future: Repository().getProduct(idValue),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (!snapshot.hasData) {
+              return errorProducto();
+            } else {
+              return _buildHomeWidget(snapshot.data);
+            }
+          } else {
+            return _buildLoadingWidget();
           }
-          return _buildHomeWidget(snapshot.data);
-        } else if (snapshot.hasError) {
-          return _buildErrorWidget(snapshot.error);
-        } else {
-          return _buildLoadingWidget();
-        }
-      },
+        });
+  }
+
+  Widget errorProducto() {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Articulo inexistente'),
+      ),
     );
+    return null;
   }
 
   Widget _buildLoadingWidget() {
@@ -92,17 +86,7 @@ class _ProductScreenState extends State<ProductScreen> {
             valueColor: new AlwaysStoppedAnimation<Color>(Colors.white),
             strokeWidth: 4.0,
           ),
-        )
-      ],
-    ));
-  }
-
-  Widget _buildErrorWidget(String error) {
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text("Error occured: $error"),
+        ),
       ],
     ));
   }
@@ -111,6 +95,21 @@ class _ProductScreenState extends State<ProductScreen> {
     ProductInfo unProducto = data.product;
     List<Stock> stockProducto = data.product.stocks;
     List<Price> listaPrecios = data.product.prices;
+
+    List<String> imgListItem = [];
+
+    // unProducto.images.forEach((image) {
+    //   imgListItem.add(image);
+    // });
+
+    final List<String> imgList = [
+      // 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
+      // 'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
+      // 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
+      // 'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
+      'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
+      'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+    ];
 
     final GlobalKey<ExpansionTileCardState> cardPrincipal = new GlobalKey();
     final GlobalKey<ExpansionTileCardState> cardPrecios = new GlobalKey();
@@ -135,9 +134,11 @@ class _ProductScreenState extends State<ProductScreen> {
       backgroundColor: Style.Colors.secondColor,
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
-        title: Text(
-          unProducto.name,
-          overflow: TextOverflow.ellipsis,
+        title: FittedBox(
+          child: Text(
+            unProducto.name,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         centerTitle: true,
       ),
@@ -151,6 +152,9 @@ class _ProductScreenState extends State<ProductScreen> {
                 aspectRatio: 16 / 9,
                 scrollDirection: Axis.horizontal,
               ),
+              //En un futuro, cuando producto tenga varias imagenes, descomentar
+              //esta linea y borrar la de abajo
+              //items: imgListItem
               items: imgList
                   .map((item) => Container(
                         child: Center(
@@ -290,58 +294,60 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                     child: Column(
                       children: [
-                        DataTable(
-                          columnSpacing: 10,
-                          horizontalMargin: 10.0,
-                          columns: const <DataColumn>[
-                            DataColumn(
-                              label: Text(
-                                'Presentación',
-                                style: TextStyle(fontStyle: FontStyle.italic),
+                        FittedBox(
+                          child: DataTable(
+                            columnSpacing: 10,
+                            horizontalMargin: 10.0,
+                            columns: const <DataColumn>[
+                              DataColumn(
+                                label: Text(
+                                  'Presentación',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Nombre',
-                                style: TextStyle(fontStyle: FontStyle.italic),
+                              DataColumn(
+                                label: Text(
+                                  'Nombre',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Precio',
-                                style: TextStyle(fontStyle: FontStyle.italic),
+                              DataColumn(
+                                label: Text(
+                                  'Precio',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Moneda',
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                              ),
-                            )
-                          ],
-                          rows: listaPrecios
-                              .map(
-                                (precios) => DataRow(cells: [
-                                  DataCell(
-                                    Text(precios.presentation),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      precios.priceName,
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(precios.price.toString()),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      precios.currency,
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ]),
+                              DataColumn(
+                                label: Text(
+                                  'Moneda',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               )
-                              .toList(),
+                            ],
+                            rows: listaPrecios
+                                .map(
+                                  (precios) => DataRow(cells: [
+                                    DataCell(
+                                      Text(precios.presentation),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        precios.priceName,
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(precios.price.toString()),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        precios.currency,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ]),
+                                )
+                                .toList(),
+                          ),
                         )
                       ],
                     ),
@@ -373,55 +379,57 @@ class _ProductScreenState extends State<ProductScreen> {
                     ),
                     child: Column(
                       children: [
-                        DataTable(
-                          columnSpacing: 10,
-                          horizontalMargin: 10.0,
-                          columns: const <DataColumn>[
-                            DataColumn(
-                              label: Text(
-                                'Presentacion',
-                                style: TextStyle(fontStyle: FontStyle.italic),
+                        FittedBox(
+                          child: DataTable(
+                            columnSpacing: 10,
+                            horizontalMargin: 10.0,
+                            columns: const <DataColumn>[
+                              DataColumn(
+                                label: Text(
+                                  'Presentacion',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Deposito',
-                                style: TextStyle(fontStyle: FontStyle.italic),
+                              DataColumn(
+                                label: Text(
+                                  'Deposito',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Sucursal',
-                                style: TextStyle(fontStyle: FontStyle.italic),
+                              DataColumn(
+                                label: Text(
+                                  'Sucursal',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               ),
-                            ),
-                            DataColumn(
-                              label: Text(
-                                'Existencias',
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                              ),
-                            )
-                          ],
-                          rows: stockProducto
-                              .map(
-                                (producto) => DataRow(cells: [
-                                  DataCell(
-                                    Text(producto.presentationName),
-                                  ),
-                                  DataCell(
-                                    Text(
-                                      producto.depositName,
-                                    ),
-                                  ),
-                                  DataCell(
-                                    Text(producto.branchOfficeName),
-                                  ),
-                                  DataCell(
-                                    Text(producto.quantity.toString()),
-                                  ),
-                                ]),
+                              DataColumn(
+                                label: Text(
+                                  'Existencias',
+                                  style: TextStyle(fontStyle: FontStyle.italic),
+                                ),
                               )
-                              .toList(),
+                            ],
+                            rows: stockProducto
+                                .map(
+                                  (producto) => DataRow(cells: [
+                                    DataCell(
+                                      Text(producto.presentationName),
+                                    ),
+                                    DataCell(
+                                      Text(
+                                        producto.depositName,
+                                      ),
+                                    ),
+                                    DataCell(
+                                      Text(producto.branchOfficeName),
+                                    ),
+                                    DataCell(
+                                      Text(producto.quantity.toString()),
+                                    ),
+                                  ]),
+                                )
+                                .toList(),
+                          ),
                         )
                       ],
                     ),
@@ -471,12 +479,11 @@ class _ProductScreenState extends State<ProductScreen> {
                         Style.Colors.mainColor),
                     shape: MaterialStateProperty.all(
                         Style.Shapes.botonGrandeRoundedRectangleBorder())),
-                child: Text('Agregar a la auditoria',
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
+                child: FittedBox(
+                  child: Text('Agregar a la auditoria',
+                      style: TextStyle(color: Colors.white, fontSize: 20)),
+                ),
                 onPressed: () {
-                  //Stock nuevoStock = new Stock();
-                  //nuevoStock.quantity = cantStock;
-                  //unProducto.stocks.add(nuevoStock);
                   unProducto.existenciaUnidades = cantStock;
                   (listaRazones != null)
                       ? muestra = true

@@ -83,7 +83,9 @@ class _StockScreenState extends State<StockScreen> {
     return Scaffold(
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
-            title: Text('Stock'),
+            title: FittedBox(
+              child: Text('Stock'),
+            ),
             centerTitle: true,
             backgroundColor: Style.Colors.mainColor,
             leading: new WillPopScope(

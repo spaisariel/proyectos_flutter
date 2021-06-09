@@ -28,7 +28,7 @@ class Colors {
 class Shapes {
 //shape para botones grandes
   static RoundedRectangleBorder botonGrandeRoundedRectangleBorder() {
-    return RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0));
+    return RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0));
   }
 }
 
@@ -118,9 +118,6 @@ class ButtonThemes {
       constraints: BoxConstraints.tightFor(
           width: MediaQuery.of(context).size.width * 0.8,
           height: MediaQuery.of(context).size.height * 0.1),
-      // buttonColor: Colors.mainColor,
-      // height: MediaQuery.of(context).size.height * 0.1,
-      // minWidth: MediaQuery.of(context).size.width * 0.8,
       child: ElevatedButton.icon(
           style: ButtonStyle(
               shape: MaterialStateProperty.all(

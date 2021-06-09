@@ -70,6 +70,7 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
 
   Widget _buildHomeWidget(AuditoriaResponse data) {
     List<Auditoria> auditorias = data.auditorias;
+    auditorias.sort((a, b) => b.date.compareTo(a.date));
     if (auditorias.length == 0) {
       return Container(
         width: MediaQuery.of(context).size.width,
@@ -93,7 +94,9 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text('Operaciones realizadas'),
+          title: FittedBox(
+            child: Text('Operaciones realizadas'),
+          ),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -110,92 +113,93 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
   }
 
   Widget tablaAuditoria(List<Auditoria> auditorias) {
-    return Container(
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          sortColumnIndex: 0,
-          sortAscending: true,
-          columnSpacing: 10, horizontalMargin: 10.0,
-
-          //columnSpacing: 1.0,
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Fecha',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,
+    return FittedBox(
+      child: Container(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            sortColumnIndex: 0,
+            sortAscending: true,
+            columnSpacing: 10,
+            horizontalMargin: 10.0,
+            columns: const <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Fecha',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Comprobante',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Comprobante',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Sucursal',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Sucursal',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Deposito',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                  textAlign: TextAlign.center,
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Deposito',
+                    style: TextStyle(fontStyle: FontStyle.italic),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
-            ),
-          ],
-          rows: auditorias
-              .map(
-                (auditoria) => DataRow(
-                  cells: [
-                    DataCell(
-                      Text(
-                        (auditoria.date).substring(0, 10),
-                        textAlign: TextAlign.center,
-                      ),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AuditoriaDetalleScreen(
-                            auditoria,
-                            "stock",
+            ],
+            rows: auditorias
+                .map(
+                  (auditoria) => DataRow(
+                    cells: [
+                      DataCell(
+                        Text(
+                          (auditoria.date).substring(0, 10),
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AuditoriaDetalleScreen(
+                              auditoria,
+                              "stock",
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    DataCell(Text(
-                      auditoria.abbreviationOperationType +
-                          ' ' +
-                          auditoria.operationType,
-                      textAlign: TextAlign.center,
-                    )),
-                    DataCell(
-                      Text(
-                        auditoria.branchOfficeName,
+                      DataCell(Text(
+                        auditoria.abbreviationOperationType +
+                            ' ' +
+                            auditoria.operationType,
+                        textAlign: TextAlign.center,
+                      )),
+                      DataCell(
+                        Text(
+                          auditoria.branchOfficeName,
+                        ),
                       ),
-                    ),
-                    DataCell(
-                      Text(
-                        auditoria.depositName,
+                      DataCell(
+                        Text(
+                          auditoria.depositName,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-              .toList(),
+                    ],
+                  ),
+                )
+                .toList(),
+          ),
         ),
       ),
     );

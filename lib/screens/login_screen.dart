@@ -37,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
   String idSucursal;
   String idDeposito;
 
+  bool isButtonDisabled = true;
+
   final controladorUsuario = TextEditingController();
   final controladorContrasenia = TextEditingController();
 
@@ -45,9 +47,10 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
   void getGoogleToken() async {
     _googleSignIn.signIn().then((result) {
       result.authentication.then((googleKey) {
-        print(googleKey.accessToken);
-        print(googleKey.idToken);
-        print(_googleSignIn.currentUser.displayName);
+        // print(googleKey.accessToken);
+        // print(googleKey.idToken);
+        // print(_googleSignIn.currentUser.displayName);
+        // print(_googleSignIn.currentUser.email);
       }).catchError((err) {
         print('inner error');
       });
@@ -69,27 +72,8 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
     return base64Str;
   }
 
-  // _login() async {
-  //   try {
-  //     await _googleSignIn.signIn();
-  //     setState(() {
-  //       _isLoggedIn = true;
-  //     });
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
-
-  // _logout() {
-  //   _googleSignIn.signOut();
-  //   setState(() {
-  //     _isLoggedIn = false;
-  //   });
-  // }
-
   Widget build(BuildContext context) {
     getIdDevice();
-    getGoogleToken();
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -113,90 +97,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                         builder: (BuildContext context) =>
                             Login2Screen(unUsuario),
                       ))
-                  // ? Column(
-                  //     mainAxisAlignment: MainAxisAlignment.end,
-                  //     children: <Widget>[
-                  //       Text(
-                  //         'Bienvenido!',
-                  //         textAlign: TextAlign.center,
-                  //         overflow: TextOverflow.ellipsis,
-                  //         style: TextStyle(fontWeight: FontWeight.bold),
-                  //       ),
-                  //       Text(
-                  //         _googleSignIn.currentUser.displayName,
-                  //         style: TextStyle(
-                  //             fontWeight: FontWeight.normal, fontSize: 22),
-                  //       ),
-                  //       SizedBox(height: 25),
-                  //       (_googleSignIn.currentUser.photoUrl == null)
-                  //           ? Image.asset('lib/assets/no_photo.png',
-                  //               height: 100, width: 100)
-                  //           : NetworkImage(_googleSignIn.currentUser.photoUrl),
-                  //       SizedBox(height: 25),
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           Text(
-                  //             'Sucursal Paraná 2',
-                  //             style: TextStyle(fontSize: 20),
-                  //           ),
-                  //           //ComboBoxSucursalWidget()
-                  //         ],
-                  //       ),
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: [
-                  //           Text(
-                  //             'Deposito Federico Bandi',
-                  //             style: TextStyle(fontSize: 20),
-                  //           ),
-                  //           //ComboBoxDepositoWidget(),
-                  //         ],
-                  //       ),
-                  //       SizedBox(height: 15),
-                  //       selecionarComercio(),
-                  //       SizedBox(height: 25),
-                  //       ElevatedButton(
-                  //         style: ButtonStyle(
-                  //           backgroundColor: MaterialStateProperty.all<Color>(
-                  //               Style.Colors.mainColor),
-                  //           shape: MaterialStateProperty.all(
-                  //               RoundedRectangleBorder(
-                  //             borderRadius: new BorderRadius.circular(8.0),
-                  //             side: BorderSide(color: Style.Colors.mainColor),
-                  //           )),
-                  //         ),
-                  //         child: Text('Continuar',
-                  //             style: TextStyle(color: Colors.white)),
-                  //         onPressed: () {
-                  //           Navigator.of(context).pushReplacement(
-                  //               new MaterialPageRoute(
-                  //                   builder: (BuildContext context) =>
-                  //                       PaginaInicial(unUsuario, idSucursal,
-                  //                           idDeposito)));
-                  //         },
-                  //       ),
-                  //       ElevatedButton.icon(
-                  //           style: ButtonStyle(
-                  //             backgroundColor: MaterialStateProperty.all<Color>(
-                  //                 Style.Colors.mainColor),
-                  //             shape: MaterialStateProperty.all(Style.Shapes
-                  //                 .botonGrandeRoundedRectangleBorder()),
-                  //           ),
-                  //           onPressed: () {
-                  //             _logout();
-                  //           },
-                  //           icon: Image.asset('lib/assets/g logo.png',
-                  //               height: 20,
-                  //               width: 20,
-                  //               color: Style.Colors.secondColor),
-                  //           label: Text(
-                  //             'Logout de Google',
-                  //             style:
-                  //                 TextStyle(color: Colors.white, fontSize: 20),
-                  //           )),
-                  //     ],
-                  //   )
                   : Column(
                       children: [
                         Container(
@@ -208,36 +108,38 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                           ),
                         ),
                         SizedBox(height: 25),
-                        Text(
-                          'Bienvenidos!',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 22),
-                        ),
-                        Text(
-                          'Inicie sesión para continuar',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 22),
+                        FittedBox(
+                          child: Column(
+                            children: [
+                              Text(
+                                'Bienvenidos!',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 22),
+                              ),
+                              Text(
+                                'Inicie sesión para continuar',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 22),
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: 25,
                         ),
                         FractionallySizedBox(
-                          widthFactor: 0.6,
+                          widthFactor: 0.8,
                           child: TextFormField(
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
                               hintText: 'ejemplo@ejemplo.com',
-                              labelText: 'Direccion de correo',
+                              labelText: 'Direccion de correo o usuario',
                             ),
                             controller: controladorUsuario,
-                            // onSaved: (String valor) {
-                            //   nombre = valor;
-                            // },
                           ),
                         ),
-                        //passwordField(),
                         FractionallySizedBox(
-                          widthFactor: 0.6,
+                          widthFactor: 0.8,
                           child: TextFormField(
                             obscureText: true,
                             decoration: InputDecoration(
@@ -245,9 +147,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                               labelText: 'Contraseña',
                             ),
                             controller: controladorContrasenia,
-                            // onSaved: (String valor) {
-                            //   password = base64password(valor);
-                            // },
                           ),
                         ),
                         SizedBox(
@@ -262,9 +161,11 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                                           Style.Colors.mainColor),
                                   shape: MaterialStateProperty.all(Style.Shapes
                                       .botonGrandeRoundedRectangleBorder())),
-                              child: Text('Ingresar',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 20)),
+                              child: FittedBox(
+                                child: Text('Ingresar',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20)),
+                              ),
                               onPressed: () async {
                                 password =
                                     base64password(controladorContrasenia.text);
@@ -284,39 +185,74 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                                 });
                               }),
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.60,
-                          child: ElevatedButton.icon(
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Style.Colors.mainColor),
-                                  shape: MaterialStateProperty.all(Style.Shapes
-                                      .botonGrandeRoundedRectangleBorder())),
-                              onPressed: () async {
-                                //_login();
-                                unUsuario = await postLoginConGoogle(context,
-                                    _googleSignIn.currentUser.email, idDevice);
+                        (isButtonDisabled)
+                            ? Container(
+                                width: MediaQuery.of(context).size.width * 0.60,
+                                child: FittedBox(
+                                  child: ElevatedButton.icon(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Style.Colors.mainColor),
+                                          shape: MaterialStateProperty.all(Style
+                                                  .Shapes
+                                              .botonGrandeRoundedRectangleBorder())),
+                                      onPressed: () async {
+                                        getGoogleToken();
+                                        setState(() {
+                                          boolCargando = true;
+                                          isButtonDisabled = false;
+                                        });
+                                      },
+                                      icon: Image.asset('lib/assets/g logo.png',
+                                          height: 20,
+                                          width: 20,
+                                          color: Style.Colors.secondColor),
+                                      label: Text(
+                                        'Iniciar con Google',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      )),
+                                ),
+                              )
+                            : Container(
+                                width: MediaQuery.of(context).size.width * 0.60,
+                                child: FittedBox(
+                                  child: ElevatedButton.icon(
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all<Color>(
+                                                  Style.Colors.mainColor),
+                                          shape: MaterialStateProperty.all(Style
+                                                  .Shapes
+                                              .botonGrandeRoundedRectangleBorder())),
+                                      onPressed: () async {
+                                        unUsuario = await postLoginConGoogle(
+                                            context,
+                                            _googleSignIn.currentUser.email,
+                                            idDevice);
 
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Login2Screen(unUsuario)));
-                                setState(() {
-                                  boolCargando = true;
-                                });
-                              },
-                              icon: Image.asset('lib/assets/g logo.png',
-                                  height: 20,
-                                  width: 20,
-                                  color: Style.Colors.secondColor),
-                              label: Text(
-                                'Iniciar con Google',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                              )),
-                        ),
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    Login2Screen(unUsuario)));
+                                        setState(() {
+                                          boolCargando = true;
+                                        });
+                                      },
+                                      icon: Image.asset('lib/assets/g logo.png',
+                                          height: 20,
+                                          width: 20,
+                                          color: Style.Colors.secondColor),
+                                      label: Text(
+                                        'Continuar',
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      )),
+                                ),
+                              )
                       ],
                     ),
             ),

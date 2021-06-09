@@ -61,7 +61,9 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
       backgroundColor: Style.Colors.secondColor,
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
-        title: Text('Auditoria'),
+        title: FittedBox(
+          child: Text('Auditoria'),
+        ),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -90,7 +92,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                   ),
             SizedBox(height: 80),
             Container(
-              child: botonesBusquedaWidget(context, idSucursal, idDeposito),
+              child: botonesControlAuditoria(context, idSucursal, idDeposito),
               alignment: Alignment.bottomCenter,
             ),
           ],
@@ -101,79 +103,83 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
 
   Widget tablaProductos() {
     return Container(
-      child: DataTable(
-        columnSpacing: 10, horizontalMargin: 10.0,
-
-        //columnSpacing: 1.0,
-        columns: const <DataColumn>[
-          DataColumn(
-            label: Text(
-              'Codigo',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'Nombre',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              'Acciones',
-              style: TextStyle(fontStyle: FontStyle.italic),
-            ),
-          ),
-        ],
-        rows: listaItems
-            .map(
-              (item) => DataRow(
-                selected: items.contains(item),
-                cells: [
-                  DataCell(
-                    Text(item.id.toString()),
-                    onTap: () {},
-                  ),
-                  DataCell(
-                    Text(item.name),
-                    onTap: () {},
-                  ),
-                  DataCell(
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.mode_edit,
-                          ),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  popUpReasons(context, item),
-                            );
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.cancel,
-                            color: Style.Colors.cancelColor,
-                          ),
-                          onPressed: () {
-                            _showMaterialDialogBorrarProducto(item);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+      child: FittedBox(
+        child: DataTable(
+          columnSpacing: 10,
+          horizontalMargin: 10.0,
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Text(
+                'Codigo',
+                style: TextStyle(fontStyle: FontStyle.italic),
               ),
-            )
-            .toList(),
+            ),
+            DataColumn(
+              label: Text(
+                'Nombre',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                'Acciones',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ),
+          ],
+          rows: listaItems
+              .map(
+                (item) => DataRow(
+                  selected: items.contains(item),
+                  cells: [
+                    DataCell(
+                      Text(item.id.toString()),
+                      onTap: () {},
+                    ),
+                    DataCell(
+                      Container(
+                        width: 200,
+                        child: Text(item.name),
+                      ),
+                      onTap: () {},
+                    ),
+                    DataCell(
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.mode_edit,
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    popUpReasons(context, item),
+                              );
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.cancel,
+                              color: Style.Colors.cancelColor,
+                            ),
+                            onPressed: () {
+                              _showMaterialDialogBorrarProducto(item);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        ),
       ),
     );
   }
 
-  Widget botonesBusquedaWidget(BuildContext context, idSucursal, idDeposito) {
+  Widget botonesControlAuditoria(BuildContext context, idSucursal, idDeposito) {
     User unUsuario;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -192,18 +198,20 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
               _showMaterialDialogCancelar(
                   context, unUsuario, idSucursal, idDeposito);
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.cancel,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.cancel,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('Cancelar', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('Cancelar', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         ),
@@ -225,18 +233,20 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                         GroupListViewDemo(listaItems),
                   ));
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.list,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.list,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('Ver detalle', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('Ver detalle', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         ),
@@ -257,18 +267,20 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                     context, unUsuario, idSucursal, idDeposito),
               );
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.check_circle,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('Aceptar', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('Aceptar', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         ),
@@ -281,7 +293,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
         context: context,
         builder: (_) => new AlertDialog(
               title:
-                  new Text("Se guardo correctamente la auditoria de gondola"),
+                  new Text("Se guardó correctamente la auditoria de gondola"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -299,10 +311,15 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Continuar'),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.acceptColor2),
+                  ),
+                  child: Text(
+                    'Aceptar',
+                    style: TextStyle(color: Style.Colors.blanco),
+                  ),
                   onPressed: () {
-                    // Repository()
-                    //     .postNuevaAuditoriaGondola(listaItems, codeDialog);
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -316,22 +333,39 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
 
   _showMaterialDialogCancelar(context, unUsuario, idSucursal, idUsuario) {
     showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-              title: new Text(
-                  "¿Seguro desea cancelar la auditoria? Perderá los datos no guardados"),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-              ),
-              actions: <Widget>[
+      context: context,
+      builder: (_) => new AlertDialog(
+        title: new Text(
+            "¿Seguro desea cancelar la auditoria? Perderá los datos no guardados"),
+        content: new Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
                 TextButton(
-                  child: Text('No'),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Style.Colors.cancelColor2)),
+                  child: Text(
+                    'No',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
+                SizedBox(
+                  width: 50,
+                ),
                 TextButton(
-                  child: Text('Si'),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Style.Colors.acceptColor2)),
+                  child: Text(
+                    'Si',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -339,65 +373,111 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                             builder: (context) => PaginaInicial(
                                 unUsuario, idSucursal, idDeposito)));
                   },
-                ),
+                )
               ],
-            ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _showMaterialDialogBorrarProducto(Item item) {
     showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-              title: new Text('¿Seguro desea eliminar el item?'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-              ),
-              actions: <Widget>[
+      context: context,
+      builder: (_) => new AlertDialog(
+        title: new Text('¿Seguro desea eliminar el item?'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
                 TextButton(
-                  child: Text('No'),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Style.Colors.cancelColor2)),
+                  child: Text(
+                    'No',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
+                SizedBox(
+                  width: 50,
+                ),
                 TextButton(
-                  child: Text('Si'),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Style.Colors.acceptColor2)),
+                  child: Text(
+                    'Si',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   onPressed: () {
                     listaItems.removeWhere((itemBorrar) => itemBorrar == item);
                     Navigator.pop(context);
                     setState(() {});
                   },
-                ),
+                )
               ],
-            ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _showMaterialDialogBorrarObservacion(
       Reason razon, List<Reason> razonesItem, Item unItem) {
     showDialog(
-        context: context,
-        builder: (_) => new AlertDialog(
-              title: new Text('¿Seguro desea eliminar la observación?'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-              ),
-              actions: <Widget>[
+      context: context,
+      builder: (_) => new AlertDialog(
+        title: new Text('¿Seguro desea eliminar la observación?'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
                 TextButton(
-                  child: Text('No'),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Style.Colors.cancelColor2)),
+                  child: Text(
+                    'No',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   onPressed: () {
                     Navigator.pop(context);
                   },
                 ),
+                SizedBox(
+                  width: 50,
+                ),
                 TextButton(
-                  child: Text('Si'),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          Style.Colors.acceptColor2)),
+                  child: Text(
+                    'Si',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   onPressed: () {
                     razonesItem
                         .removeWhere((razonBorrar) => razonBorrar == razon);
                     Navigator.pop(context);
                     popUpReasons(context, unItem);
                   },
-                ),
+                )
               ],
-            ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildPopUpObservation(
@@ -426,7 +506,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
             autofocus: false,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               TextButton(
                 style: ButtonStyle(
@@ -440,16 +520,15 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                   Navigator.pop(context);
                 },
               ),
-              SizedBox(
-                width: 50,
-              ),
               TextButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(
                         Style.Colors.acceptColor2)),
-                child: Text(
-                  'Aceptar',
-                  style: TextStyle(color: Colors.white),
+                child: FittedBox(
+                  child: Text(
+                    'Aceptar',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
                 onPressed: () {
                   Repository()
@@ -497,18 +576,20 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
               });
               setState(() {});
             },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.edit,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('Manual', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('Manual', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         ),
@@ -523,18 +604,20 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Style.Colors.mainColor)),
             onPressed: () => scanQR(listaRazones),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.qr_code,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.qr_code,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('QR', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('QR', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         ),
@@ -549,18 +632,20 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                 backgroundColor:
                     MaterialStateProperty.all<Color>(Style.Colors.mainColor)),
             onPressed: () => scanBarcodeNormal(),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Icon(
-                    Icons.line_weight,
-                    color: Colors.white,
+            child: FittedBox(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.line_weight,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                Text('Barras', style: TextStyle(color: Colors.white)),
-              ],
+                  Text('Barras', style: TextStyle(color: Colors.white)),
+                ],
+              ),
             ),
           ),
         )
@@ -649,7 +734,6 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
     return StatefulBuilder(builder: (context, setState) {
       return SingleChildScrollView(
         child: Container(
-          //width: MediaQuery.of(context).size.width * 0.50,
           child: AlertDialog(
             insetPadding: EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * 0.05),
@@ -657,67 +741,74 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
             content: new Column(
               children: [
                 SingleChildScrollView(
-                  child: DataTable(
-                    columnSpacing: 10,
-                    horizontalMargin: 10.0,
-                    columns: const <DataColumn>[
-                      DataColumn(
-                        label: Text(
-                          'Nombre',
-                          style: TextStyle(fontStyle: FontStyle.italic),
+                  child: FittedBox(
+                    child: DataTable(
+                      columnSpacing: 25,
+                      horizontalMargin: 10.0,
+                      columns: const <DataColumn>[
+                        DataColumn(
+                          label: Text(
+                            'Nombre',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
                         ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Observación',
-                          style: TextStyle(fontStyle: FontStyle.italic),
+                        DataColumn(
+                          label: Text(
+                            'Observación',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
                         ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Acciones',
-                          style: TextStyle(fontStyle: FontStyle.italic),
+                        DataColumn(
+                          label: Text(
+                            'Acciones',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
                         ),
-                      ),
-                    ],
-                    rows: razonesItem
-                        .map(
-                          (razon) => DataRow(
-                              // selected: selectedProducts.contains(producto),
-                              // onSelectChanged: (b) {
-                              //   onSelectedRow(b, producto);
-                              // },
+                      ],
+                      rows: razonesItem
+                          .map(
+                            (razon) => DataRow(
                               cells: [
                                 DataCell(
-                                  Text(razon.descripcion),
+                                  Container(
+                                    width: 80,
+                                    child: Text(
+                                      razon.descripcion,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ),
                                 ),
                                 DataCell(
                                   Container(
                                     width: 100,
                                     child: Text(
                                       razon.observations,
-                                      overflow: TextOverflow.clip,
+                                      overflow: TextOverflow.fade,
                                     ),
                                   ),
                                 ),
-                                DataCell(Row(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        Icons.cancel,
-                                        color: Style.Colors.cancelColor,
+                                DataCell(
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(
+                                          Icons.cancel,
+                                          color: Style.Colors.cancelColor,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          _showMaterialDialogBorrarObservacion(
+                                              razon, razonesItem, unItem);
+                                        },
                                       ),
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                        _showMaterialDialogBorrarObservacion(
-                                            razon, razonesItem, unItem);
-                                      },
-                                    ),
-                                  ],
-                                )),
-                              ]),
-                        )
-                        .toList(),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                          .toList(),
+                    ),
                   ),
                 ),
                 Column(

@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:prueba3_git/blocs/get_chart_bloc.dart';
 import 'package:prueba3_git/models/chart.dart';
@@ -22,9 +23,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
   List<String> nombreGraficos = [];
   List<String> perfiles = [];
   int index = 0;
-  int coso = 0;
+  int bandera = 0;
   String dropDownValue;
-  String graficoSeleccionado = '1156';
+  String graficoSeleccionado;
   String perfilSeleccionado;
   int touchedIndex = -1;
   List<Color> coloresGraficos = [];
@@ -79,17 +80,25 @@ class _ReportsScreenState extends State<ReportsScreen> {
     listaPuntos = [];
     perfiles = [];
 
+    List<ConsultasPersonalizada> consultas = [];
+
     data.datos.consultasPersonalizadas.forEach((grafico) {
+      ConsultasPersonalizada unaConsulta = new ConsultasPersonalizada();
+      unaConsulta.codigoConsulta = grafico.codigoConsulta;
+      unaConsulta.descripcion = grafico.descripcion;
       nombreGraficos.add(grafico.descripcion);
       perfiles.add(grafico.codigoConsulta);
+      consultas.add(unaConsulta);
     });
 
-    dropDownValue = perfiles[0];
+    //dropDownValue = consultas[0].descripcion;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
-        title: Text('Reporteria'),
+        title: FittedBox(
+          child: Text('Reporteria'),
+        ),
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
@@ -98,19 +107,24 @@ class _ReportsScreenState extends State<ReportsScreen> {
           children: [
             new DropdownButton<String>(
               value: dropDownValue,
-              items: perfiles.map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
-                  child: new Text(value),
-                );
-              }).toList(),
-              onChanged: (String newValue) {
-                graficoSeleccionado = newValue;
-                dropDownValue = newValue;
+              onChanged: (newValue) {
+                consultas.forEach((consulta) {
+                  if (newValue == consulta.descripcion) {
+                    graficoSeleccionado = consulta.codigoConsulta;
+                  }
+                });
+                //graficoSeleccionado = newValue;
                 setState(() {
+                  dropDownValue = newValue;
                   listaColores();
                 });
               },
+              items: nombreGraficos.map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
             ),
             StreamBuilder(
               stream: chartBloc.subject.stream,
@@ -118,8 +132,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 ChartResponse response = snapshot.data;
                 Chart unGrafico = response.graficos;
-
-                print(unGrafico.toJson());
+                List nombresAbajo = unGrafico.categorias;
 
                 switch (unGrafico.tipoGrafico) {
                   case "line":
@@ -129,18 +142,17 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     return graficoTorta(unGrafico);
                     break;
                   case "column":
-                    if (snapshot.data.graficos.datos[0].data == null)
+                    if (snapshot.data.graficos.datos[0].data != null)
                       snapshot.data.graficos.datos[0].data.forEach((punto) {
                         listaPuntos.add(punto);
                       });
 
-                    if (coso == 0) puntosPrueba();
-                    coso++;
-                    return graficoBarra();
+                    puntosCartesianos();
+                    return graficoBarra(nombresAbajo, unGrafico.titulo);
                     break;
                   default:
                     {
-                      return graficoBarra();
+                      return graficoBarra(nombresAbajo, unGrafico.titulo);
                     }
                 }
               },
@@ -152,12 +164,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  List<FlSpot> puntosPrueba() {
+  List<FlSpot> puntosCartesianos() {
     listaPuntos.forEach((unPunto) {
       listaPuntos2.add(FlSpot(index.toDouble(), unPunto.toDouble()));
       index++;
     });
-    coso = 0;
+    index = 0;
+    listaPuntos = [];
     return listaPuntos2;
   }
 
@@ -195,7 +208,19 @@ class _ReportsScreenState extends State<ReportsScreen> {
         height: MediaQuery.of(context).size.height * 0.5,
         child: PieChart(
           PieChartData(
-              pieTouchData: PieTouchData(touchCallback: (pieTouchResponse) {}),
+              pieTouchData: PieTouchData(touchCallback: (pieTouchResponse) {
+                setState(() {
+                  final desiredTouch =
+                      pieTouchResponse.touchInput is! PointerExitEvent &&
+                          pieTouchResponse.touchInput is! PointerUpEvent;
+                  if (desiredTouch && pieTouchResponse.touchedSection != null) {
+                    touchedIndex =
+                        pieTouchResponse.touchedSection.touchedSectionIndex;
+                  } else {
+                    touchedIndex = -1;
+                  }
+                });
+              }),
               borderData: FlBorderData(
                 show: false,
               ),
@@ -207,28 +232,33 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget graficoBarra() {
+  Widget graficoBarra(nombresAbajo, titulo) {
     return Container(
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.9,
         height: MediaQuery.of(context).size.height * 0.5,
         child: LineChart(
           LineChartData(
-            gridData: FlGridData(
-              show: true,
-            ),
-            borderData: FlBorderData(show: true),
-            lineBarsData: [
-              LineChartBarData(
-                spots: listaPuntos2,
-                isCurved: false,
-                barWidth: 3,
-                colors: [
-                  Colors.orange,
-                ],
+              gridData: FlGridData(
+                show: true,
               ),
-            ],
-          ),
+              borderData: FlBorderData(show: true),
+              lineBarsData: [
+                LineChartBarData(
+                  spots: listaPuntos2,
+                  isCurved: false,
+                  barWidth: 3,
+                  colors: [
+                    Colors.orange,
+                  ],
+                ),
+              ],
+              titlesData: FlTitlesData(
+                  bottomTitles: SideTitles(
+                      showTitles: true,
+                      getTitles: (value) {
+                        return nombresAbajo[value.toInt()];
+                      }))),
         ),
       ),
     );
@@ -239,8 +269,8 @@ class _ReportsScreenState extends State<ReportsScreen> {
     int x = -1;
     return List.generate(secciones, (i) {
       final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
+      final fontSize = isTouched ? 25.0 : 12.0;
+      final radius = isTouched ? 70.0 : 50.0;
       x++;
       Data2 info = unGraficoTorta.datos[0].data2[x];
 

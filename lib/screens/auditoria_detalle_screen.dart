@@ -36,9 +36,11 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
         backgroundColor: Style.Colors.secondColor,
         appBar: AppBar(
           backgroundColor: Style.Colors.mainColor,
-          title: Text(unaAuditoriaInfo.nameOperationType +
-              ' N°: ' +
-              unaAuditoriaInfo.operationType),
+          title: FittedBox(
+            child: Text(unaAuditoriaInfo.nameOperationType +
+                ' N°: ' +
+                unaAuditoriaInfo.operationType),
+          ),
           centerTitle: true,
           actions: [
             Padding(
@@ -71,47 +73,70 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
     List<Reason> listaRazones = [];
 
     return Container(
-        child: DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text(
-            'Nombre',
-            style: TextStyle(fontStyle: FontStyle.italic),
+        child: FittedBox(
+      child: DataTable(
+        columnSpacing: 10,
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'Nombre',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
           ),
-        ),
-        DataColumn(
-          label: Text(
-            'Cantidad',
-            style: TextStyle(fontStyle: FontStyle.italic),
+          DataColumn(
+            label: Text(
+              'Cantidad',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
           ),
-        ),
-        DataColumn(
-          label: Text(
-            'Razones',
-            style: TextStyle(fontStyle: FontStyle.italic),
+          DataColumn(
+            label: Text(
+              'Razones',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
           ),
-        ),
-      ],
-      rows: auditoriaItems
-          .map((auditItem) => DataRow(cells: [
-                DataCell(
-                  Text(auditItem.name ?? "No tiene"),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProductScreen(
-                          auditItem.id.toString(), '', listaRazones),
+        ],
+        rows: auditoriaItems
+            .map(
+              (auditItem) => DataRow(
+                cells: [
+                  DataCell(
+                    Container(
+                      width: 200,
+                      child: Text(auditItem.name ?? "No tiene"),
+                    ),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductScreen(
+                            auditItem.productId, '', listaRazones),
+                      ),
                     ),
                   ),
-                ),
-                DataCell(
-                  Text(auditItem.quantity.toString()),
-                ),
-                DataCell(Text(auditItem.reasons[0].descripcion),
+                  DataCell(
+                    Container(
+                      width: 40,
+                      child: Text(
+                        auditItem.quantity.toString(),
+                      ),
+                    ),
+                  ),
+                  DataCell(
+                    Container(
+                      width: 80,
+                      child: Text(
+                        auditItem.reasons[0].descripcion,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                     onTap: () =>
-                        _showMaterialDialogReasons(context, auditItem.reasons)),
-              ]))
-          .toList(),
+                        _showMaterialDialogReasons(context, auditItem.reasons),
+                  ),
+                ],
+              ),
+            )
+            .toList(),
+      ),
     ));
   }
 
@@ -120,38 +145,43 @@ class _AuditoriaDetalleScreenState extends State<AuditoriaDetalleScreen> {
     List<Reason> listaRazones = [];
 
     return Container(
-        child: DataTable(
-      columns: const <DataColumn>[
-        DataColumn(
-          label: Text(
-            'Nombre',
-            style: TextStyle(fontStyle: FontStyle.italic),
+        child: FittedBox(
+      child: DataTable(
+        columns: const <DataColumn>[
+          DataColumn(
+            label: Text(
+              'Nombre',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
           ),
-        ),
-        DataColumn(
-          label: Text(
-            'Cantidad',
-            style: TextStyle(fontStyle: FontStyle.italic),
+          DataColumn(
+            label: Text(
+              'Cantidad',
+              style: TextStyle(fontStyle: FontStyle.italic),
+            ),
           ),
-        ),
-      ],
-      rows: auditoriaItems
-          .map((auditItem) => DataRow(cells: [
-                DataCell(
-                  Text(auditItem.name ?? "No tiene"),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ProductScreen(auditItem.productId, '', listaRazones),
+        ],
+        rows: auditoriaItems
+            .map((auditItem) => DataRow(cells: [
+                  DataCell(
+                    Container(
+                      width: 200,
+                      child: Text(auditItem.name ?? "No tiene"),
+                    ),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProductScreen(
+                            auditItem.productId, '', listaRazones),
+                      ),
                     ),
                   ),
-                ),
-                DataCell(
-                  Text(auditItem.quantity.toString()),
-                ),
-              ]))
-          .toList(),
+                  DataCell(
+                    Text(auditItem.quantity.toString()),
+                  ),
+                ]))
+            .toList(),
+      ),
     ));
   }
 }
@@ -275,44 +305,46 @@ _showMaterialDialogReasons(context, List<Reason> auditItem) {
     builder: (_) => new AlertDialog(
       insetPadding: EdgeInsets.all(10),
       title: new Text("Listado de razones"),
-      content: DataTable(
-        columnSpacing: 30.0,
-        columns: const <DataColumn>[
-          DataColumn(
-            label: Text(
-              'ID',
-              style: TextStyle(fontStyle: FontStyle.italic),
+      content: FittedBox(
+        child: DataTable(
+          columnSpacing: 30.0,
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Text(
+                'ID',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
             ),
-          ),
-          DataColumn(
-            label: Text(
-              'Descripcion',
-              style: TextStyle(fontStyle: FontStyle.italic),
+            DataColumn(
+              label: Text(
+                'Descripcion',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
             ),
-          ),
-          DataColumn(
-            label: Text(
-              'Observación',
-              style: TextStyle(fontStyle: FontStyle.italic),
+            DataColumn(
+              label: Text(
+                'Observación',
+                style: TextStyle(fontStyle: FontStyle.italic),
+              ),
             ),
-          ),
-        ],
-        rows: auditItem
-            .map((rasones) => DataRow(cells: [
-                  DataCell(
-                    Text(rasones.id.toString()),
-                  ),
-                  DataCell(
-                    Text(rasones.descripcion),
-                  ),
-                  DataCell(
-                    Text(
-                      rasones.observations ?? 'No tiene',
-                      overflow: TextOverflow.fade,
+          ],
+          rows: auditItem
+              .map((rasones) => DataRow(cells: [
+                    DataCell(
+                      Text(rasones.id.toString()),
                     ),
-                  ),
-                ]))
-            .toList(),
+                    DataCell(
+                      Text(rasones.descripcion),
+                    ),
+                    DataCell(
+                      Text(
+                        rasones.observations ?? 'No tiene',
+                        overflow: TextOverflow.fade,
+                      ),
+                    ),
+                  ]))
+              .toList(),
+        ),
       ),
       actions: <Widget>[
         TextButton(
@@ -341,28 +373,48 @@ _showMaterialDialogEliminar(context, Auditoria auditoriaBorrar) {
           "¿Seguro desea eliminar la $nombreOperacion? Perderá todos los datos de la misma."),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-      ),
-      actions: <Widget>[
-        TextButton(
-          child: Text('No'),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        TextButton(
-          child: Text('Si'),
-          onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('Se eliminó correctamente'),
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.cancelColor2)),
+                child: Text(
+                  'No',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
-            );
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Repository().deleteAudit(auditoriaBorrar.id);
-          },
-        ),
-      ],
+              SizedBox(
+                width: 50,
+              ),
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.acceptColor2)),
+                child: Text(
+                  'Si',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Se eliminó correctamente'),
+                    ),
+                  );
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Repository().deleteAudit(auditoriaBorrar.id);
+                },
+              )
+            ],
+          ),
+        ],
+      ),
     ),
   );
 }
