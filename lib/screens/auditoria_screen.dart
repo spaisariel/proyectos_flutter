@@ -85,7 +85,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                         ),
                         Icon(
                           Icons.list,
-                          size: 200,
+                          size: 150,
                         ),
                       ],
                     ),
@@ -107,6 +107,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
         child: DataTable(
           columnSpacing: 10,
           horizontalMargin: 10.0,
+          dataRowHeight: 60,
           columns: const <DataColumn>[
             DataColumn(
               label: Text(
@@ -180,6 +181,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
   }
 
   Widget botonesControlAuditoria(BuildContext context, idSucursal, idDeposito) {
+    double fuenteBotonControlAuditoria = 0.05;
     User unUsuario;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -209,7 +211,13 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Cancelar', style: TextStyle(color: Colors.white)),
+                  Text(
+                    'Cancelar',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width *
+                            fuenteBotonControlAuditoria),
+                  ),
                 ],
               ),
             ),
@@ -244,7 +252,13 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Ver detalle', style: TextStyle(color: Colors.white)),
+                  Text(
+                    'Detalle',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width *
+                            fuenteBotonControlAuditoria),
+                  ),
                 ],
               ),
             ),
@@ -278,7 +292,13 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Aceptar', style: TextStyle(color: Colors.white)),
+                  Text(
+                    'Aceptar',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width *
+                            fuenteBotonControlAuditoria),
+                  ),
                 ],
               ),
             ),
@@ -547,6 +567,7 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
   }
 
   Widget _buildSearchButtons() {
+    double fuenteBotonChico = 0.05;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -587,7 +608,13 @@ class _AuditoriaScreenState extends State<AuditoriaScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Manual', style: TextStyle(color: Colors.white)),
+                  Text(
+                    'Manual',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width *
+                            fuenteBotonChico),
+                  ),
                 ],
               ),
             ),

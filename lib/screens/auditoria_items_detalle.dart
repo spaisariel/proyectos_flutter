@@ -33,8 +33,7 @@ class _GroupListViewDemoState extends State<GroupListViewDemo> {
       body: GroupedListView<dynamic, String>(
         elements: listaItems,
         groupBy: (element) => element.reasons[0].descripcion,
-        order: GroupedListOrder.DESC,
-        // useStickyGroupSeparators: true,
+        order: GroupedListOrder.ASC,
         groupSeparatorBuilder: (String value) => Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(

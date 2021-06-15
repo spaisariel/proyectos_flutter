@@ -18,7 +18,6 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
   @override
   void initState() {
     super.initState();
-    //auditoriaStockListBloc..getAuditoriaStockLista();
     auditoriasListBloc..getAuditoriasLista();
   }
 
@@ -118,7 +117,8 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: DataTable(
-            sortColumnIndex: 0,
+            dataRowHeight: 75,
+            showCheckboxColumn: false,
             sortAscending: true,
             columnSpacing: 10,
             horizontalMargin: 10.0,
@@ -163,13 +163,9 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
             rows: auditorias
                 .map(
                   (auditoria) => DataRow(
-                    cells: [
-                      DataCell(
-                        Text(
-                          (auditoria.date).substring(0, 10),
-                          textAlign: TextAlign.center,
-                        ),
-                        onTap: () => Navigator.push(
+                    onSelectChanged: (bool selected) {
+                      if (selected) {
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => AuditoriaDetalleScreen(
@@ -177,7 +173,24 @@ class _ConsultaInventarioScreenState extends State<ConsultaInventarioScreen> {
                               "stock",
                             ),
                           ),
+                        );
+                      }
+                    },
+                    cells: [
+                      DataCell(
+                        Text(
+                          (auditoria.date).substring(0, 10),
+                          textAlign: TextAlign.center,
                         ),
+                        // onTap: () => Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => AuditoriaDetalleScreen(
+                        //       auditoria,
+                        //       "stock",
+                        //     ),
+                        //   ),
+                        // ),
                       ),
                       DataCell(Text(
                         auditoria.abbreviationOperationType +

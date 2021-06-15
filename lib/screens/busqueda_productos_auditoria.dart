@@ -146,7 +146,7 @@ class _BusquedaProductosAuditoriaScreenState
     cantProductos = data.products.length;
 
     return Scaffold(
-      backgroundColor: Style.Colors.blanco,
+      backgroundColor: Style.Colors.secondColor,
       appBar: AppBar(
         backgroundColor: Style.Colors.mainColor,
         leading: Builder(
@@ -187,7 +187,15 @@ class _BusquedaProductosAuditoriaScreenState
                       decoration: InputDecoration(
                         hintText: 'Ingrese nombre o codigo',
                       ),
-                      onSaved: (String valor) {},
+                      onChanged: (String valor) {
+                        if (valor.length > 2) {
+                          setState(() {
+                            productListBloc
+                              ..getProductLista(
+                                  hintController.text, begin, end);
+                          });
+                        }
+                      },
                     )),
                 IconButton(
                     icon: Icon(Icons.search),
@@ -211,9 +219,10 @@ class _BusquedaProductosAuditoriaScreenState
     return FittedBox(
       child: Container(
         child: DataTable(
+          showCheckboxColumn: false,
           columnSpacing: 10,
           horizontalMargin: 10.0,
-          showCheckboxColumn: false,
+          dataRowHeight: 75,
           columns: const <DataColumn>[
             DataColumn(
               label: Text(

@@ -116,7 +116,6 @@ Future<User> postLoginConGoogle(
 }
 
 class Repository {
-  //DESPUES LO SACO DE ACÁ
   void guardarIdentificacionSucursalDeposito(idS, idD) {
     idSucursal = idS;
     idDeposito = idD;
@@ -322,6 +321,7 @@ class Repository {
     return respuesta.body;
   }
 
+  //Devuelve las razones generales
   Future<ReasonResponse> getReasons() async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
@@ -337,6 +337,7 @@ class Repository {
     }
   }
 
+  //Devuelve los graficos asociados
   Future<ChartResponse> getChartsByCode(codigo) async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
@@ -353,6 +354,7 @@ class Repository {
     }
   }
 
+  //Devuelve los perfiles
   Future<PerfilResponse> getCharts() async {
     _dio.options.headers['content-Type'] = 'application/json';
     _dio.options.headers["authorization"] = "Bearer $token";
@@ -382,7 +384,7 @@ class Repository {
   ///////////////METODOS POST PARA SUBIDA DE DE DATOS //////////////////////////
   //////////////////////////////////////////////////////////////////////////////
 
-  //Realiza un post de la auditoria, recibe la lista de productos y un string que le especifica las observaciones
+  //Realiza un post de la auditoria, recibe la lista de productos
   void postNuevaAuditoriaStock(List<Item> listaItems, codeDialog) {
     String webServiceUrl = 'Audit/NewAuditStock';
 
@@ -408,7 +410,7 @@ class Repository {
     print(auditoriaToJson(unaAuditoria));
   }
 
-  //Realiza un post de la auditoria de gondola, recibe la lista de productos y un string que le especifica las observaciones
+  //Realiza un post de la auditoria de gondola, recibe la lista de productos
   void postNuevaAuditoriaGondola(List<Item> listaItems, codeDialog) {
     String webServiceUrl = 'Audit/NewAuditStockRack';
 

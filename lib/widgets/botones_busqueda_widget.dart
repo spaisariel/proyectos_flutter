@@ -100,6 +100,7 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double fuenteBotonChico = 0.05;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -158,7 +159,11 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Manual', style: TextStyle(color: Colors.white)),
+                  Text('Manual',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width *
+                              fuenteBotonChico)),
                 ],
               ),
             ),
@@ -187,7 +192,13 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('QR', style: TextStyle(color: Colors.white)),
+                  Text(
+                    'QR',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width *
+                            fuenteBotonChico),
+                  ),
                 ],
               ),
             ),
@@ -216,7 +227,11 @@ class _BotonesBusquedaWidgetState extends State<BotonesBusquedaWidget> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Barras', style: TextStyle(color: Colors.white)),
+                  Text('Barras',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width *
+                              fuenteBotonChico)),
                 ],
               ),
             ),

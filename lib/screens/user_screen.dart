@@ -167,29 +167,7 @@ class _UserScreenState extends State<UserScreen> {
                     ],
                   ),
                 ),
-                //SizedBox(height: 50),
-                // ConstrainedBox(
-                //   constraints: BoxConstraints.tightFor(
-                //       width: MediaQuery.of(context).size.width * 0.8,
-                //       height: MediaQuery.of(context).size.height * 0.1),
-                //   child: ElevatedButton(
-                //     style: ButtonStyle(
-                //         backgroundColor: MaterialStateProperty.all<Color>(
-                //             Style.Colors.mainColor),
-                //         shape: MaterialStateProperty.all(
-                //             Style.Shapes.botonGrandeRoundedRectangleBorder())),
-                //     onPressed: () {
-                //       _showMaterialDialog(context);
-                //     },
-                //     child: Text(
-                //       'Cambiar de sucursal o deposito',
-                //       style: TextStyle(color: Colors.white, fontSize: 20),
-                //       textAlign: TextAlign.center,
-                //     ),
-                //   ),
-                // ),
-
-                SizedBox(height: 200),
+                SizedBox(height: 100),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.80,
                   alignment: Alignment.bottomCenter,
@@ -217,44 +195,3 @@ class _UserScreenState extends State<UserScreen> {
     );
   }
 }
-
-// _showMaterialDialog(context) {
-//   return showDialog(
-//       context: context,
-//       builder: (_) => new AlertDialog(
-//             title: new Text("Cambio de sucursal/deposito"),
-//             content: Column(
-//               mainAxisSize: MainAxisSize.min,
-//               children: [
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Text(
-//                       'Sucursal ',
-//                       style: TextStyle(fontSize: 20),
-//                     ),
-//                     //ComboBoxSucursalWidget()
-//                   ],
-//                 ),
-//                 Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Text(
-//                       'Deposito ',
-//                       style: TextStyle(fontSize: 20),
-//                     ),
-//                     //ComboBoxDepositoWidget(),
-//                   ],
-//                 )
-//               ],
-//             ),
-//             actions: <Widget>[
-//               TextButton(
-//                 child: Text('Aceptar'),
-//                 onPressed: () {
-//                   Navigator.of(context).pop();
-//                 },
-//               )
-//             ],
-//           ));
-// }

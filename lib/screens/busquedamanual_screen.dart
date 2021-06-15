@@ -112,14 +112,22 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    child: TextFormField(
-                      controller: hintController,
-                      decoration: InputDecoration(
-                        hintText: 'Ingrese nombre o codigo',
-                      ),
-                      onSaved: (String valor) {},
-                    )),
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: TextFormField(
+                    controller: hintController,
+                    decoration: InputDecoration(
+                      hintText: 'Ingrese nombre o codigo',
+                    ),
+                    onChanged: (String valor) {
+                      if (valor.length > 2) {
+                        setState(() {
+                          productListBloc
+                            ..getProductLista(hintController.text, begin, end);
+                        });
+                      }
+                    },
+                  ),
+                ),
                 IconButton(
                     icon: Icon(Icons.search),
                     onPressed: () {
@@ -127,7 +135,7 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                         productListBloc
                           ..getProductLista(hintController.text, begin, end);
                       });
-                    })
+                    }),
               ],
             ),
             tablaProductos(productos)
@@ -141,8 +149,10 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
     return FittedBox(
       child: Container(
         child: DataTable(
+          showCheckboxColumn: false,
           columnSpacing: 10,
           horizontalMargin: 10.0,
+          dataRowHeight: 75,
           columns: const <DataColumn>[
             DataColumn(
               label: Text(
@@ -166,14 +176,28 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
           rows: productos
               .map(
                 (producto) => DataRow(
+                    onSelectChanged: (bool selected) {
+                      if (selected) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProductScreen(
+                              producto.id.toString(),
+                              '',
+                              listaRazones,
+                            ),
+                          ),
+                        );
+                      }
+                    },
                     //selected: productos.contains(producto),
                     cells: [
                       DataCell(
                         Container(
-                          width: 40,
+                          width: 75,
                           child: Text(
                             producto.id.toString(),
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.visible,
                           ),
                         ),
                       ),
@@ -188,82 +212,24 @@ class _BusquedaManualScreenState extends State<BusquedaManualScreen> {
                       ),
                       DataCell(
                         Container(
-                            width: 60, child: Image.network(producto.image)),
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProductScreen(
-                                producto.id.toString(),
-                                '',
-                                listaRazones,
-                              ),
-                            )),
+                          width: 60,
+                          child: Image.network(producto.image),
+                        ),
+                        // onTap: () => Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => ProductScreen(
+                        //       producto.id.toString(),
+                        //       '',
+                        //       listaRazones,
+                        //     ),
+                        //   ),
+                        // ),
                       ),
                     ]),
               )
               .toList(),
         ),
-        // child: DataTable(
-        //   columnSpacing: 10,
-        //   horizontalMargin: 10.0,
-        //   columns: [
-        //     DataColumn(
-        //       label: Text(
-        //         'Codigo',
-        //         style: TextStyle(fontStyle: FontStyle.italic),
-        //       ),
-        //     ),
-        //     DataColumn(
-        //       label: Text(
-        //         'Descripción',
-        //         style: TextStyle(fontStyle: FontStyle.italic),
-        //       ),
-        //     ),
-        //     DataColumn(
-        //       label: Text(
-        //         'Foto',
-        //         style: TextStyle(fontStyle: FontStyle.italic),
-        //       ),
-        //     ),
-        //   ],
-        //   rows: productos
-        //       .map(
-        //         (producto) =>
-        //             DataRow(selected: productos.contains(producto), cells: [
-        //           DataCell(
-        //             Container(
-        //               width: 40,
-        //               child: Text(
-        //                 producto.id.toString(),
-        //                 overflow: TextOverflow.ellipsis,
-        //               ),
-        //             ),
-        //           ),
-        //           DataCell(
-        //             Container(
-        //               width: 260,
-        //               child: Text(
-        //                 producto.name,
-        //                 overflow: TextOverflow.clip,
-        //               ),
-        //             ),
-        //           ),
-        //           DataCell(
-        //             Container(child: Image.network(producto.image)),
-        //             onTap: () => Navigator.push(
-        //                 context,
-        //                 MaterialPageRoute(
-        //                   builder: (context) => ProductScreen(
-        //                     producto.id.toString(),
-        //                     '',
-        //                     listaRazones,
-        //                   ),
-        //                 )),
-        //           ),
-        //         ]),
-        //       )
-        //       .toList(),
-        // ),
       ),
     );
   }

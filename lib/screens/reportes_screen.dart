@@ -91,6 +91,10 @@ class _ReportsScreenState extends State<ReportsScreen> {
       consultas.add(unaConsulta);
     });
 
+    if (graficoSeleccionado == null) {
+      graficoSeleccionado = consultas[0].codigoConsulta.toString();
+    }
+
     //dropDownValue = consultas[0].descripcion;
 
     return Scaffold(

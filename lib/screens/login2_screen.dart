@@ -89,8 +89,8 @@ class _Login2ScreenState extends State<Login2Screen> {
               Container(
                 child: new Image.asset(
                   'lib/assets/favicon.png',
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  fit: BoxFit.cover,
+                  height: 65,
+                  fit: BoxFit.fill,
                 ),
               ),
               SizedBox(height: 25),
@@ -115,9 +115,8 @@ class _Login2ScreenState extends State<Login2Screen> {
                   seleccionarDeposito(unaSucursal.deposits)
                 ],
               ),
-              SizedBox(height: 15),
               //selecionarComercio(), //Funcion sin uso de momento
-              SizedBox(height: 100),
+              SizedBox(height: 150),
               ButtonTheme(
                 minWidth: 200.0,
                 child:
@@ -204,31 +203,51 @@ class _Login2ScreenState extends State<Login2Screen> {
 Widget continuarButton(context, unUsuario, idSucursal, idDeposito) {
   return Container(
     width: MediaQuery.of(context).size.width * 0.60,
-    child: FittedBox(
-      child: ElevatedButton(
-        style: ButtonStyle(
-            backgroundColor:
-                MaterialStateProperty.all<Color>(Style.Colors.mainColor),
-            //shape: MaterialStateProperty.all(botonRoundedRectangleBorder())),
-            shape: MaterialStateProperty.all(
-                Style.Shapes.botonGrandeRoundedRectangleBorder())),
+    child: ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+          shape: MaterialStateProperty.all(
+              Style.Shapes.botonGrandeRoundedRectangleBorder())),
+      child: FittedBox(
         child: Text('Continuar',
-            style: TextStyle(color: Colors.white, fontSize: 20)),
-        onPressed: () {
-          Repository()
-              .guardarIdentificacionSucursalDeposito(idSucursal, idDeposito);
-          Navigator.of(context).pushReplacement(new MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  PaginaInicial(unUsuario, idSucursal, idDeposito)));
-        },
+            style: TextStyle(color: Colors.white, fontSize: 15)),
       ),
+      onPressed: () {
+        Repository()
+            .guardarIdentificacionSucursalDeposito(idSucursal, idDeposito);
+        Navigator.of(context).pushReplacement(new MaterialPageRoute(
+            builder: (BuildContext context) =>
+                PaginaInicial(unUsuario, idSucursal, idDeposito)));
+      },
     ),
   );
+  // return Container(
+  //   width: MediaQuery.of(context).size.width * 0.60,
+  //   //alignment: Alignment.bottomCenter,
+  //   child: FittedBox(
+  //     child: ElevatedButton(
+  //       style: ButtonStyle(
+  //           backgroundColor:
+  //               MaterialStateProperty.all<Color>(Style.Colors.mainColor),
+  //           shape: MaterialStateProperty.all(
+  //               Style.Shapes.botonGrandeRoundedRectangleBorder())),
+  //       child: Text('Continuar',
+  //           style: TextStyle(color: Colors.white, fontSize: 15)),
+  //       onPressed: () {
+  //         Repository()
+  //             .guardarIdentificacionSucursalDeposito(idSucursal, idDeposito);
+  //         Navigator.of(context).pushReplacement(new MaterialPageRoute(
+  //             builder: (BuildContext context) =>
+  //                 PaginaInicial(unUsuario, idSucursal, idDeposito)));
+  //       },
+  //     ),
+  //   ),
+  // );
 }
 
 Widget omitirButton(context, unUsuario) {
   return Container(
-    width: MediaQuery.of(context).size.width * 0.60,
     child: ElevatedButton(
       style: ButtonStyle(
           backgroundColor:

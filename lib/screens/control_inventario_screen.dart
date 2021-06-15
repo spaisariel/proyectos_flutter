@@ -79,14 +79,14 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                         ),
                         Icon(
                           Icons.list,
-                          size: 200,
+                          size: 150,
                         ),
                       ],
                     ),
                   ),
             SizedBox(height: 80),
             Container(
-              child: botonesBusquedaWidget(context, idSucursal, idDeposito),
+              child: botonesControlAuditoria(context, idSucursal, idDeposito),
               alignment: Alignment.bottomCenter,
             ),
           ],
@@ -101,6 +101,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
         child: DataTable(
           columnSpacing: 10,
           horizontalMargin: 10.0,
+          dataRowHeight: 60,
           columns: const <DataColumn>[
             DataColumn(
               label: Text(
@@ -183,7 +184,8 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
     );
   }
 
-  Widget botonesBusquedaWidget(BuildContext context, idSucursal, idDeposito) {
+  Widget botonesControlAuditoria(BuildContext context, idSucursal, idDeposito) {
+    double fuenteBotonControlAuditoria = 0.05;
     User unUsuario;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -213,7 +215,11 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Cancelar', style: TextStyle(color: Colors.white)),
+                  Text('Cancelar',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width *
+                              fuenteBotonControlAuditoria)),
                 ],
               ),
             ),
@@ -247,7 +253,11 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Aceptar', style: TextStyle(color: Colors.white)),
+                  Text('Aceptar',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width *
+                              fuenteBotonControlAuditoria)),
                 ],
               ),
             ),
@@ -463,6 +473,7 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
   }
 
   Widget _buildSearchButtons() {
+    double fuenteBotonChico = 0.05;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -502,7 +513,11 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('Manual', style: TextStyle(color: Colors.white)),
+                  Text('Manual',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width *
+                              fuenteBotonChico)),
                 ],
               ),
             ),
@@ -531,7 +546,11 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  Text('QR', style: TextStyle(color: Colors.white)),
+                  Text('QR',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: MediaQuery.of(context).size.width *
+                              fuenteBotonChico)),
                 ],
               ),
             ),
@@ -632,10 +651,11 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
   }
 
   Widget popUpQuantity(context, Item unItem) {
-    return StatefulBuilder(builder: (context, setState) {
-      return AlertDialog(
-        title: const Text('Ingrese una observación'),
-        content: Column(children: [
+    return AlertDialog(
+      title: const Text('Ingrese el stock'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           TextField(
             maxLength: 4,
             onChanged: (value) {
@@ -652,24 +672,43 @@ class _ControlInventarioScreenState extends State<ControlInventarioScreen> {
             keyboardType: TextInputType.number,
             autofocus: true,
           ),
-          TextButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Style.Colors.acceptColor2)),
-            child: Text(
-              'Aceptar',
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: () {
-              unItem.quantity = cantStock;
-              unItem.presentationId = 'Unidad';
-              setState(() {
-                Navigator.pop(context);
-              });
-            },
-          ),
-        ]),
-      );
-    });
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.cancelColor2)),
+                child: Text(
+                  'Cancelar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Style.Colors.acceptColor2)),
+                child: Text(
+                  'Aceptar',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  unItem.quantity = cantStock;
+                  unItem.presentationId = 'Unidad';
+                  setState(
+                    () {
+                      Navigator.pop(context);
+                    },
+                  );
+                },
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }

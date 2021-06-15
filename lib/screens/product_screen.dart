@@ -548,39 +548,41 @@ class _ProductScreenState extends State<ProductScreen> {
                 ),
                 autofocus: false,
               ),
-              DropdownButton<String>(
-                value: dropdownValue,
-                icon: Icon(Icons.arrow_drop_down),
-                iconSize: 24,
-                elevation: 16,
-                underline: Container(
-                  height: 2,
-                  color: Style.Colors.secondColor,
-                ),
-                onChanged: (String newValue) {
-                  setState(() {
-                    dropdownValue = newValue;
-                    descripcion = dropdownValue;
-                    listaRazones.forEach((item) {
-                      if (item.descripcion == descripcion) {
-                        id = item.id;
-                      }
+              FittedBox(
+                child: DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: Icon(Icons.arrow_drop_down),
+                  iconSize: 24,
+                  elevation: 16,
+                  underline: Container(
+                    height: 2,
+                    color: Style.Colors.secondColor,
+                  ),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                      descripcion = dropdownValue;
+                      listaRazones.forEach((item) {
+                        if (item.descripcion == descripcion) {
+                          id = item.id;
+                        }
+                      });
                     });
-                  });
-                },
-                items:
-                    nombreRazones.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  );
-                }).toList(),
+                  },
+                  items: nombreRazones
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    );
+                  }).toList(),
+                ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
                     style: ButtonStyle(

@@ -20,12 +20,14 @@ class BotonesPrincipalWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double fuenteBotonGrande = 0.06;
+
     List<Product> listaProductos = [];
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       ButtonTheme(
         child: ConstrainedBox(
           constraints: BoxConstraints.tightFor(
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width * 0.95,
               height: MediaQuery.of(context).size.height * 0.1),
           child: ElevatedButton(
             style: ButtonStyle(
@@ -46,10 +48,13 @@ class BotonesPrincipalWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(Icons.shopping_cart,
-                      size: 40, color: Style.Colors.secondColor),
+                      size: 25, color: Style.Colors.secondColor),
                   Text(
-                    'Auditoria de gondola',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    'Auditoría de góndola',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width *
+                            fuenteBotonGrande),
                   ),
                 ],
               ),
@@ -61,7 +66,7 @@ class BotonesPrincipalWidget extends StatelessWidget {
       ButtonTheme(
         child: ConstrainedBox(
           constraints: BoxConstraints.tightFor(
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width * 0.95,
               height: MediaQuery.of(context).size.height * 0.1),
           child: ElevatedButton(
             style: ButtonStyle(
@@ -82,10 +87,13 @@ class BotonesPrincipalWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(Icons.assignment_turned_in,
-                      size: 40, color: Style.Colors.secondColor),
+                      size: 25, color: Style.Colors.secondColor),
                   Text(
                     'Control de inventario',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width *
+                            fuenteBotonGrande),
                   ),
                 ],
               ),
@@ -97,7 +105,7 @@ class BotonesPrincipalWidget extends StatelessWidget {
       ButtonTheme(
         child: ConstrainedBox(
           constraints: BoxConstraints.tightFor(
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width * 0.95,
               height: MediaQuery.of(context).size.height * 0.1),
           child: ElevatedButton(
             style: ButtonStyle(
@@ -117,10 +125,13 @@ class BotonesPrincipalWidget extends StatelessWidget {
               child: Row(
                 children: [
                   Icon(Icons.assignment,
-                      size: 40, color: Style.Colors.secondColor),
+                      size: 25, color: Style.Colors.secondColor),
                   Text(
                     'Operaciones realizadas',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width *
+                            fuenteBotonGrande),
                   ),
                 ],
               ),

@@ -29,7 +29,6 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
   User unUsuario;
   bool boolPassword = true;
   String idDevice;
-  bool boolCargando = false;
   BranchOffice unaSucursal;
 
   String nombreSucursal = '';
@@ -44,20 +43,33 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
 
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
-  void getGoogleToken() async {
-    _googleSignIn.signIn().then((result) {
-      result.authentication.then((googleKey) {
-        // print(googleKey.accessToken);
-        // print(googleKey.idToken);
-        // print(_googleSignIn.currentUser.displayName);
-        // print(_googleSignIn.currentUser.email);
-      }).catchError((err) {
-        print('inner error');
+  Future<void> getGoogleToken() async {
+    try {
+      await _googleSignIn.signIn().then((result) async {
+        unUsuario = await postLoginConGoogle(
+            context, _googleSignIn.currentUser.email, idDevice);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => Login2Screen(unUsuario),
+          ),
+        );
+        result.authentication.then((googleKey) {}).catchError((err) {
+          print('inner error');
+        });
       });
-    }).catchError((err) {
-      print('error occured');
-    });
+    } catch (err) {
+      print('error ocurred');
+    }
   }
+  // _googleSignIn.signIn().then((result) {
+  //   result.authentication.then((googleKey) {}).catchError((err) {
+  //     print('inner error');
+  //   });
+  // }).catchError((err) {
+  //   print('error occured');
+  //   print(_googleSignIn.currentUser.displayName);
+  // });
 
   void getIdDevice() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -86,10 +98,11 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
         backgroundColor: Style.Colors.secondColor,
         body: SingleChildScrollView(
           padding:
-              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+              EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.15),
           child: Center(
             key: formkey,
             child: Container(
+              alignment: Alignment.center,
               child: _isLoggedIn
                   ? Navigator.pushReplacement(
                       context,
@@ -97,64 +110,98 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                         builder: (BuildContext context) =>
                             Login2Screen(unUsuario),
                       ))
-                  : Column(
-                      children: [
-                        Container(
-                          child: new Image.asset(
-                            'lib/assets/favicon.png',
-                            height: 65,
-                            //height: MediaQuery.of(context).size.height * 0.1,
-                            //fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(height: 25),
-                        FittedBox(
-                          child: Column(
-                            children: [
-                              Text(
-                                'Bienvenidos!',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 22),
-                              ),
-                              Text(
-                                'Inicie sesión para continuar',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 22),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        FractionallySizedBox(
-                          widthFactor: 0.8,
-                          child: TextFormField(
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                              hintText: 'ejemplo@ejemplo.com',
-                              labelText: 'Direccion de correo o usuario',
+                  : Container(
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      child: Column(
+                        children: [
+                          Container(
+                            child: new Image.asset(
+                              'lib/assets/favicon.png',
+                              height: 65,
                             ),
-                            controller: controladorUsuario,
                           ),
-                        ),
-                        FractionallySizedBox(
-                          widthFactor: 0.8,
-                          child: TextFormField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Contraseña',
-                              labelText: 'Contraseña',
+                          SizedBox(height: 25),
+                          FittedBox(
+                            child: Column(
+                              children: [
+                                Text(
+                                  'Bienvenidos!',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22),
+                                ),
+                                Text(
+                                  'Inicie sesión para continuar',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22),
+                                ),
+                              ],
                             ),
-                            controller: controladorContrasenia,
                           ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.60,
-                          child: ElevatedButton(
+                          SizedBox(
+                            height: 25,
+                          ),
+                          FractionallySizedBox(
+                            widthFactor: 0.8,
+                            child: TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                hintText: 'ejemplo@ejemplo.com',
+                                labelText: 'Direccion de correo o usuario',
+                              ),
+                              controller: controladorUsuario,
+                            ),
+                          ),
+                          FractionallySizedBox(
+                            widthFactor: 0.8,
+                            child: TextFormField(
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                hintText: 'Contraseña',
+                                labelText: 'Contraseña',
+                              ),
+                              controller: controladorContrasenia,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.60,
+                            child: ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Style.Colors.mainColor),
+                                    shape: MaterialStateProperty.all(Style
+                                            .Shapes
+                                        .botonGrandeRoundedRectangleBorder())),
+                                child: FittedBox(
+                                  child: Text('Ingresar',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 15)),
+                                ),
+                                onPressed: () async {
+                                  password = base64password(
+                                      controladorContrasenia.text);
+                                  unUsuario = await postLogin(
+                                      context,
+                                      controladorUsuario.text,
+                                      password,
+                                      idDevice);
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            Login2Screen(unUsuario),
+                                      ));
+                                  setState(() {});
+                                }),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width * 0.60,
+                            child: ElevatedButton(
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
@@ -162,98 +209,97 @@ class _LoginScreenState extends State<LoginScreen> with ValidacionMixin {
                                   shape: MaterialStateProperty.all(Style.Shapes
                                       .botonGrandeRoundedRectangleBorder())),
                               child: FittedBox(
-                                child: Text('Ingresar',
+                                child: Text('Google',
                                     style: TextStyle(
-                                        color: Colors.white, fontSize: 20)),
+                                        color: Colors.white, fontSize: 15)),
                               ),
                               onPressed: () async {
-                                password =
-                                    base64password(controladorContrasenia.text);
-                                unUsuario = await postLogin(
-                                    context,
-                                    controladorUsuario.text,
-                                    password,
-                                    idDevice);
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          Login2Screen(unUsuario),
-                                    ));
-                                setState(() {
-                                  boolCargando = true;
-                                });
-                              }),
-                        ),
-                        (isButtonDisabled)
-                            ? Container(
-                                width: MediaQuery.of(context).size.width * 0.60,
-                                child: FittedBox(
-                                  child: ElevatedButton.icon(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Style.Colors.mainColor),
-                                          shape: MaterialStateProperty.all(Style
-                                                  .Shapes
-                                              .botonGrandeRoundedRectangleBorder())),
-                                      onPressed: () async {
-                                        getGoogleToken();
-                                        setState(() {
-                                          boolCargando = true;
-                                          isButtonDisabled = false;
-                                        });
-                                      },
-                                      icon: Image.asset('lib/assets/g logo.png',
-                                          height: 20,
-                                          width: 20,
-                                          color: Style.Colors.secondColor),
-                                      label: Text(
-                                        'Iniciar con Google',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      )),
-                                ),
-                              )
-                            : Container(
-                                width: MediaQuery.of(context).size.width * 0.60,
-                                child: FittedBox(
-                                  child: ElevatedButton.icon(
-                                      style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Style.Colors.mainColor),
-                                          shape: MaterialStateProperty.all(Style
-                                                  .Shapes
-                                              .botonGrandeRoundedRectangleBorder())),
-                                      onPressed: () async {
-                                        unUsuario = await postLoginConGoogle(
-                                            context,
-                                            _googleSignIn.currentUser.email,
-                                            idDevice);
+                                getGoogleToken();
+                                // unUsuario = await postLoginConGoogle(context,
+                                //     _googleSignIn.currentUser.email, idDevice);
+                                // Navigator.pushReplacement(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (BuildContext context) =>
+                                //         Login2Screen(unUsuario),
+                                //   ),
+                                // );
+                                setState(
+                                  () {},
+                                );
+                              },
+                            ),
+                          ),
+                          // (isButtonDisabled)
+                          //     ? Container(
+                          //         width: MediaQuery.of(context).size.width * 0.60,
+                          //         child: FittedBox(
+                          //           child: ElevatedButton.icon(
+                          //               style: ButtonStyle(
+                          //                   backgroundColor:
+                          //                       MaterialStateProperty.all<Color>(
+                          //                           Style.Colors.mainColor),
+                          //                   shape: MaterialStateProperty.all(Style
+                          //                           .Shapes
+                          //                       .botonGrandeRoundedRectangleBorder())),
+                          //               onPressed: () async {
+                          //                 getGoogleToken();
+                          //                 setState(() {
+                          //                   boolCargando = true;
+                          //                   isButtonDisabled = false;
+                          //                 });
+                          //               },
+                          //               icon: Image.asset('lib/assets/g logo.png',
+                          //                   height: 20,
+                          //                   width: 20,
+                          //                   color: Style.Colors.secondColor),
+                          //               label: Text(
+                          //                 'Iniciar con Google',
+                          //                 style: TextStyle(
+                          //                     color: Colors.white, fontSize: 20),
+                          //               )),
+                          //         ),
+                          //       )
+                          //     : Container(
+                          //         width: MediaQuery.of(context).size.width * 0.60,
+                          //         child: FittedBox(
+                          //           child: ElevatedButton.icon(
+                          //               style: ButtonStyle(
+                          //                   backgroundColor:
+                          //                       MaterialStateProperty.all<Color>(
+                          //                           Style.Colors.mainColor),
+                          //                   shape: MaterialStateProperty.all(Style
+                          //                           .Shapes
+                          //                       .botonGrandeRoundedRectangleBorder())),
+                          //               onPressed: () async {
+                          //                 unUsuario = await postLoginConGoogle(
+                          //                     context,
+                          //                     _googleSignIn.currentUser.email,
+                          //                     idDevice);
 
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    Login2Screen(unUsuario)));
-                                        setState(() {
-                                          boolCargando = true;
-                                        });
-                                      },
-                                      icon: Image.asset('lib/assets/g logo.png',
-                                          height: 20,
-                                          width: 20,
-                                          color: Style.Colors.secondColor),
-                                      label: Text(
-                                        'Continuar',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      )),
-                                ),
-                              )
-                      ],
+                          //                 Navigator.pushReplacement(
+                          //                     context,
+                          //                     MaterialPageRoute(
+                          //                         builder: (BuildContext
+                          //                                 context) =>
+                          //                             Login2Screen(unUsuario)));
+                          //                 setState(() {
+                          //                   boolCargando = true;
+                          //                 });
+                          //               },
+                          //               icon: Image.asset('lib/assets/g logo.png',
+                          //                   height: 20,
+                          //                   width: 20,
+                          //                   color: Style.Colors.secondColor),
+                          //               label: Text(
+                          //                 'Continuar',
+                          //                 style: TextStyle(
+                          //                     color: Colors.white, fontSize: 20),
+                          //               )),
+                          //         ),
+                          //       )
+                        ],
+                      ),
                     ),
             ),
           ),

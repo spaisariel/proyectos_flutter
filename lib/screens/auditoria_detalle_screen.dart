@@ -305,45 +305,59 @@ _showMaterialDialogReasons(context, List<Reason> auditItem) {
     builder: (_) => new AlertDialog(
       insetPadding: EdgeInsets.all(10),
       title: new Text("Listado de razones"),
-      content: FittedBox(
-        child: DataTable(
-          columnSpacing: 30.0,
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Text(
-                'ID',
-                style: TextStyle(fontStyle: FontStyle.italic),
+      content: SingleChildScrollView(
+        child: FittedBox(
+          child: DataTable(
+            dataRowHeight: 100,
+            columns: const <DataColumn>[
+              DataColumn(
+                label: Text(
+                  'ID',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
               ),
-            ),
-            DataColumn(
-              label: Text(
-                'Descripcion',
-                style: TextStyle(fontStyle: FontStyle.italic),
+              DataColumn(
+                label: Text(
+                  'Descripcion',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
               ),
-            ),
-            DataColumn(
-              label: Text(
-                'Observación',
-                style: TextStyle(fontStyle: FontStyle.italic),
+              DataColumn(
+                label: Text(
+                  'Observación',
+                  style: TextStyle(fontStyle: FontStyle.italic),
+                ),
               ),
-            ),
-          ],
-          rows: auditItem
-              .map((rasones) => DataRow(cells: [
-                    DataCell(
-                      Text(rasones.id.toString()),
-                    ),
-                    DataCell(
-                      Text(rasones.descripcion),
-                    ),
-                    DataCell(
-                      Text(
-                        rasones.observations ?? 'No tiene',
-                        overflow: TextOverflow.fade,
+            ],
+            rows: auditItem
+                .map((rasones) => DataRow(cells: [
+                      DataCell(
+                        Container(
+                          width: 55,
+                          child: Text(
+                            rasones.id.toString(),
+                            overflow: TextOverflow.clip,
+                          ),
+                        ),
                       ),
-                    ),
-                  ]))
-              .toList(),
+                      DataCell(
+                        Container(
+                          width: 100,
+                          child: Text(rasones.descripcion,
+                              overflow: TextOverflow.clip),
+                        ),
+                      ),
+                      DataCell(
+                        Container(
+                          child: Text(
+                            rasones.observations ?? 'No tiene',
+                            overflow: TextOverflow.fade,
+                          ),
+                        ),
+                      ),
+                    ]))
+                .toList(),
+          ),
         ),
       ),
       actions: <Widget>[
